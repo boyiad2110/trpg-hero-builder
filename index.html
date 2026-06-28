@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英雄範型登錄處</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0e1326;--night-2:#161d38;--paper:#f4efe4;--ink:#191922;--ink-soft:#4a4a57;
+  --red:#e5342b;--gold:#f2b705;--green:#2f9e54;--line:2px solid var(--ink);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--night);background-image:radial-gradient(circle at 20% -10%,#1d2647 0%,transparent 45%),radial-gradient(circle at 90% 0%,#241a3a 0%,transparent 40%);color:var(--paper);line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased}
+.display{font-family:"Oswald","Noto Sans TC",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* 報頭 */
+.masthead{padding:54px 0 30px;text-align:center}
+.eyebrow{display:inline-block;font-family:"Oswald",sans-serif;letter-spacing:.42em;font-size:.72rem;text-transform:uppercase;color:var(--gold);border:1px solid rgba(242,183,5,.5);padding:5px 14px 5px 18px;border-radius:2px;margin-bottom:20px}
+.wordmark{font-weight:900;font-size:clamp(2.6rem,8vw,5rem);line-height:.95;letter-spacing:.04em}
+.wordmark .slash{color:var(--red)}
+.tagline{margin-top:16px;color:#b9bed1;font-size:clamp(.95rem,2.4vw,1.1rem);max-width:none}
+.count-strip{margin-top:26px;display:inline-flex;align-items:center;gap:14px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;color:#8d93ad}
+.count-strip b{color:var(--paper);font-size:1.05rem}
+.count-strip .ln{display:inline-block;width:34px;height:1px;background:#3b4263}
+
+/* 卡片牆 */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding:14px 0 70px}
+.card{position:relative;background:var(--paper);color:var(--ink);border:var(--line);border-radius:4px;padding:22px 20px 20px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease;outline:none;display:flex;flex-direction:column}
+.card:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
+.card:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--gold)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:20px}
+.card-en{font-family:"Oswald",sans-serif;letter-spacing:.16em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:600}
+.role-badge{font-family:"Oswald",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--gold);padding:3px 9px;border-radius:2px;white-space:nowrap}
+.card-name{font-weight:900;font-size:2rem;line-height:1.1;margin:6px 0 4px;letter-spacing:.02em}
+.card-hex{display:flex;justify-content:center;margin:4px 0 10px}
+.card-intro{font-size:.9rem;color:#3c3c47}
+.card-cta{margin-top:16px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:6px}
+.card-cta::after{content:"→";transition:transform .14s ease}
+.card:hover .card-cta::after{transform:translateX(4px)}
+
+/* 雷達：數字＋名稱皆在六角尖端外側，沿軸由內而外 */
+.hex-grid{stroke:#c9c0ad;stroke-width:1;fill:none}
+.hex-spoke{stroke:#d6cdba;stroke-width:1}
+.hex-shape{fill:rgba(229,52,43,.18);stroke:var(--red);stroke-width:2.5;stroke-linejoin:round}
+.hex-dot{fill:var(--red)}
+.hex-dot.peak{fill:var(--gold);stroke:var(--ink);stroke-width:1.2}
+.hex-num{font-family:"Oswald",sans-serif;font-weight:700;fill:var(--ink)}
+.hex-name{font-family:"Noto Sans TC",sans-serif;font-weight:700;fill:var(--ink-soft)}
+
+/* 覆蓋頁 */
+.screen{display:none;position:fixed;inset:0;z-index:40;background:var(--night);background-image:radial-gradient(circle at 15% 0%,#1d2647 0%,transparent 50%),radial-gradient(circle at 95% 10%,#241a3a 0%,transparent 45%);overflow-y:auto}
+.screen.on{display:block}
+.screen-inner{max-width:1000px;margin:0 auto;padding:26px 24px 90px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 0 24px;gap:12px;flex-wrap:wrap}
+.btn{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;font-weight:600;padding:11px 20px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:transform .12s ease,background .12s ease,color .12s ease,border-color .12s ease;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{background:transparent;color:#c5cadd;border-color:#39406a}
+.btn-ghost:hover{border-color:var(--paper);color:var(--paper)}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:#dba504}
+.btn-ink{background:var(--paper);color:var(--ink);border-color:var(--ink)}
+.btn-ink:hover{background:#fff}
+
+/* 建檔 */
+.builder-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.builder-head .display{font-weight:900;font-size:clamp(1.8rem,5vw,2.6rem)}
+.builder-chip{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;background:var(--red);color:#fff;padding:5px 12px;border-radius:2px}
+.builder-en{font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;color:#b7bcd2}
+.builder-role{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;border:1px solid #3a4673;color:#b7bcd2;padding:5px 10px;border-radius:2px}
+.roll-all{margin-left:auto}
+.builder-sub{color:#9aa0bd;margin-bottom:26px}
+.builder-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:30px;align-items:start}
+.builder-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.bsec{background:#141b33;border:1.5px solid #262e54;border-radius:6px;padding:18px 18px 20px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.sec-title{font-weight:900;font-size:1.15rem;color:var(--paper)}
+.sec-hint{display:block;font-size:.75rem;color:#8d93ad;margin-top:2px;letter-spacing:.04em}
+.dice-btn{flex:none;background:#1d2647;border:1.5px solid #3a4673;color:#cfd4e6;font-family:"Oswald",sans-serif;font-size:.74rem;letter-spacing:.06em;padding:6px 11px;border-radius:3px;cursor:pointer;transition:border-color .12s,color .12s}
+.dice-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* 範型概覽 */
+.ov-top{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start;margin-bottom:18px}
+.ov-art{width:120px}
+.ov-intro{font-size:.98rem;color:#d7dbe8;line-height:1.7}
+.ov-top2{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.ov-stats{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.ov-hexbox{background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:6px;display:flex;justify-content:center}
+.ov-gauge{min-width:0}
+.art{width:100%;aspect-ratio:4/5;border:var(--line);border-radius:4px;overflow:hidden;background:#0f1530;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
+.art img{width:100%;height:100%;object-fit:cover;display:block}
+.art-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:3rem;color:#fff;background:linear-gradient(135deg,#e5342b,#7a1e8a)}
+
+/* 屬性量表 */
+.stat-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.stat-row:last-child{margin-bottom:0}
+.stat-name{width:3.4em;font-weight:700;flex:none}
+.stat-bar{flex:1;height:15px;background:#0c1124;border:1px solid #2d345c;border-radius:3px;overflow:hidden;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.10) 0 1.5px,transparent 1.5px 10%)}
+.stat-fill{height:100%;border-radius:2px 0 0 2px;box-shadow:0 0 8px rgba(0,0,0,.25) inset}
+.stat-num{width:2.1em;text-align:right;flex:none;font-family:"Oswald",sans-serif;font-weight:700;font-size:1.25rem}
+
+/* 表單 / 選項 */
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:#aeb3cc;margin-bottom:7px}
+.field input,.field textarea{width:100%;background:#0f1530;border:1.5px solid #343c64;border-radius:3px;color:var(--paper);font-family:inherit;font-size:1rem;padding:11px 13px;line-height:1.6;transition:border-color .12s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--red)}
+.field textarea{resize:vertical;min-height:96px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1.5px solid #2a3258;border-radius:5px;cursor:pointer;margin-bottom:9px;background:#0f1530;transition:border-color .12s,background .12s;outline:none}
+.opt:last-child{margin-bottom:0}
+.opt:hover{border-color:#46508a}
+.opt:focus-visible{border-color:var(--gold)}
+.opt.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
+.opt-mark{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #46508a;margin-top:3px;position:relative}
+.opt.sel .opt-mark{border-color:var(--red)}
+.opt.sel .opt-mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--red)}
+.opt-name{display:block;font-weight:700;color:var(--paper);margin-bottom:3px}
+.opt-desc{display:block;font-size:.88rem;color:#b7bcd2;line-height:1.65}
+.opt-pills{display:flex;flex-wrap:wrap;gap:9px}
+.pill{background:#0f1530;border:1.5px solid #2a3258;color:#cfd4e6;padding:8px 16px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.95rem;transition:background .12s,border-color .12s,color .12s}
+.pill:hover{border-color:#46508a}
+.pill.sel{background:var(--red);border-color:var(--red);color:#fff}
+.mini-hint{margin-top:10px;font-size:.78rem;color:#8d93ad}
+.powers{display:flex;flex-direction:column;gap:14px}
+.power{border-left:3px solid var(--gold);padding-left:12px}
+.power-name{font-weight:900;color:var(--gold);font-size:1.05rem;margin-bottom:3px}
+.power-desc{font-size:.88rem;color:#b7bcd2;line-height:1.65}
+.talent-slot{margin-top:14px;padding-top:16px;border-top:1px dashed #2e3768}
+.subject-inline{margin:0 0 9px 18px;padding:12px 14px;border-left:2px dashed #46508a;background:rgba(70,80,138,.08);border-radius:0 6px 6px 0}
+.subject-inline .sec-title{font-size:1rem}
+.subject-inline .sec-head{margin-bottom:10px}
+.talent-hint{margin-top:12px;font-size:.85rem;color:#7e84a3;font-style:italic}
+
+/* 內文標記 */
+.kw{background:#23305c;color:#cfe0ff;padding:1px 6px;border-radius:3px;font-size:.92em;font-weight:600}
+.die{padding:.05em .42em;border-radius:.3em;font-family:"Oswald",sans-serif;font-weight:700;font-size:.92em;color:#fff}
+.die6{background:var(--green)}
+.die1{background:var(--red)}
+
+/* 預覽 */
+.preview-wrap{position:sticky;top:24px;min-width:0}
+.preview-label{font-family:"Oswald",sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:.76rem;color:#9aa0bd;margin-bottom:10px}
+.preview{background:#0a0e1d;border:1.5px solid #2d345c;border-radius:4px;padding:18px;font-family:"Oswald","Courier New",monospace;white-space:pre-wrap;word-break:break-word;color:#d7dbe8;font-size:.9rem;line-height:1.75;max-height:74vh;overflow-y:auto}
+.builder-actions{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
+
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(12px);background:var(--gold);color:var(--ink);font-weight:700;padding:12px 24px;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .25s ease,transform .3s cubic-bezier(.2,1.3,.4,1),visibility .25s;z-index:90}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+
+.progress{margin-bottom:14px}
+.progress-bar{height:8px;background:#0c1124;border:1px solid #2d345c;border-radius:5px;overflow:hidden}
+.progress-bar span{display:block;height:100%;transition:width .2s ease}
+.progress-text{margin-top:7px;font-size:.82rem;color:#9aa0bd}
+
+.saves-title{font-weight:900;font-size:1.4rem;margin:6px 0 14px;color:var(--paper)}
+.saves-list{display:flex;flex-direction:column;gap:10px;margin-bottom:30px}
+.save-item{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--paper);color:var(--ink);border:var(--line);border-radius:4px;padding:12px 16px;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
+.save-name{font-weight:900;font-size:1.1rem;display:block}
+.save-sub{display:block;font-size:.78rem;color:var(--ink-soft);font-family:"Oswald",sans-serif;letter-spacing:.04em;margin-top:2px}
+.save-btns{display:flex;gap:8px;flex:none}
+.save-btns button{font-family:"Oswald",sans-serif;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:8px 14px;border-radius:3px;cursor:pointer;border:2px solid var(--ink)}
+.save-load{background:var(--red);color:#fff;border-color:var(--red)}
+.save-load:hover{background:#c72a22}
+.save-del{background:transparent;color:var(--ink-soft);border-color:#bcb3a0}
+.save-del:hover{border-color:var(--ink);color:var(--ink)}
+
+.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(8,10,20,.72);align-items:center;justify-content:center;padding:24px}
+.modal.on{display:flex}
+.modal-box{background:#141b33;border:1.5px solid #3a4673;border-radius:8px;max-width:430px;width:100%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal-title{font-weight:900;font-size:1.3rem;color:var(--gold);margin-bottom:12px}
+.modal-body{white-space:pre-line;color:#d7dbe8;font-size:.95rem;line-height:1.75;margin-bottom:20px}
+.modal-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+
+.landing-options{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:10px 0 70px;max-width:780px;margin:0 auto}
+.land-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;font:inherit;background:var(--paper);color:var(--ink);border:var(--line);border-radius:6px;padding:32px 28px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease}
+.land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
+.land-icon{font-size:2rem;color:var(--red);line-height:1}
+.land-title{font-weight:900;font-size:1.9rem}
+.land-desc{font-size:.92rem;color:#3c3c47;line-height:1.6}
+.land-cta{margin-top:8px;font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:600}
+.land-card-disabled{opacity:.5;cursor:not-allowed;box-shadow:4px 4px 0 rgba(0,0,0,.4)}
+.land-card-disabled .land-icon,.land-card-disabled .land-cta{color:var(--ink-soft)}
+.reg-back{padding:20px 0 0}
+
+.draft-badge{font-family:"Oswald",sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#8a7e63;border:1px dashed #b3a888;padding:3px 8px;border-radius:2px;white-space:nowrap}
+.draft-note{background:rgba(242,183,5,.12);border:1.5px solid rgba(242,183,5,.5);color:#f2d27a;border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:.9rem;line-height:1.6}
+.tag-req{color:var(--red);font-size:.72em;margin-left:6px;font-family:"Oswald",sans-serif;letter-spacing:.06em}
+.tag-opt{color:#7e84a3;font-size:.72em;margin-left:6px;font-family:"Oswald",sans-serif;letter-spacing:.06em}
+
+@media (max-width:600px){.landing-options{grid-template-columns:1fr}}
+footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
+
+@media (max-width:980px){.gallery{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.gallery{grid-template-columns:1fr}}
+@media (max-width:780px){.builder-grid{grid-template-columns:1fr}.preview-wrap{position:static}.roll-all{margin-left:0}}
+@media (max-width:600px){.ov-top2{grid-template-columns:1fr;justify-items:center}.ov-intro{order:2}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<main id="home">
+  <!-- 著陸頁：兩大入口 -->
+  <div id="landing" class="wrap">
+    <header class="masthead">
+      <span class="eyebrow">超級英雄角色產生器</span>
+      <h1 class="wordmark display">打造你的<span class="slash">／</span>超級英雄</h1>
+      <p class="tagline">選一條路開始：挑選現成範型，或從零自創英雄。</p>
+    </header>
+    <div class="landing-options">
+      <button class="land-card" id="landArchetype">
+        <span class="land-icon">◆</span>
+        <span class="land-title display">選擇範型</span>
+        <span class="land-desc">從 16 種英雄範型中挑一個，點選或擲骰快速完成角色。</span>
+        <span class="land-cta display">進入登錄處 →</span>
+      </button>
+      <button class="land-card land-card-disabled" id="landCustom" disabled>
+        <span class="land-icon">✦</span>
+        <span class="land-title display">自創英雄</span>
+        <span class="land-desc">從零開始打造完全原創的英雄。</span>
+        <span class="land-cta display">敬請期待</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 範型登錄處 -->
+  <div id="registry" class="wrap" style="display:none">
+    <div class="reg-back"><button class="btn btn-ghost" onclick="showLanding()">← 返回</button></div>
+    <header class="masthead">
+      <span class="eyebrow">英雄範型登錄處</span>
+      <h1 class="wordmark display">選擇你的<span class="slash">／</span>英雄範型</h1>
+      <p class="tagline">挑一個範型開始建檔，做出選擇，匯出成可分享的文字檔。</p>
+      <div class="count-strip display"><span>已登錄</span><b id="loadedCount">0</b><span class="ln"></span><span>規劃中</span><b>16</b></div>
+    </header>
+    <section id="savesSection"></section>
+    <section class="gallery" id="gallery"></section>
+  </div>
+
+  <footer>超級英雄角色產生器 · 角色建檔工具</footer>
+</main>
+
+<section class="screen" id="builderScreen">
+  <div class="screen-inner">
+    <div class="topbar"><button class="btn btn-ghost" onclick="goHome()">← 返回登錄處</button></div>
+    <div id="builderBody"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="modal"><div class="modal-box">
+  <h3 class="modal-title display">尚未完成</h3>
+  <div class="modal-body" id="modalBody"></div>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" id="modalCancel">返回填寫</button>
+    <button class="btn btn-gold" id="modalOk">仍要繼續</button>
+  </div>
+</div></div>
+
+<script>
+/* =====================================================================
+   範型資料（各欄位選填，有提供才顯示，可分批補資料）
+     name / en / role / image / intro / attrs
+     powerSource:{options:[...]}                         異能來源 → 選 1
+     powers:[{name,desc}]                                異能（自動全得）
+     professions:[{name,desc,talents:[{name,desc}]}]     職業 → 選 1，再選 1 天賦
+     freeTalents:[{name,desc}]                           自選天賦 → 選 1
+     personalities:["專注",...]                          個性 → 選 2
+     motivations:[{name,desc}]                           動機 → 選 1
+     flaws:[{name,desc}]                                 缺陷 → 選 1
+   內文語法：`關鍵字`、:invincible-6:（成功6）、:invincible-1:（並發1）、【狀態】
+   ===================================================================== */
+
+const ATTR_ORDER=["格鬥","敏捷","力量","理智","直覺","氣場"];
+const ATTR_MAX=10;
+
+const ARCHETYPES=[
+  {
+    name:"領導者", en:"The Beacon", role:"領袖", image:"78.png",
+    intro:"你相信英雄必須有所堅持，才能真正帶來改變。你是團隊的核心，他們願意追隨你到任何地方。有時你會覺得自己不夠格，但也正因如此，他們才那麼信任你。你明白：最強大的超能力其實是勇氣，而你能將勇氣感染給身邊的人。",
+    attrs:{格鬥:6,敏捷:5,力量:6,理智:4,直覺:4,氣場:9},
+    powerSource:{options:["實驗血清","專用裝備","軍事訓練"]},
+    powers:[
+      {name:"抗性",desc:"你擁有某種防禦形式，可以抵抗影響心智的效果。當你受到會造成壓力的攻擊時，此異能會提供`護甲` 3；當你抵抗【震盪】、【心靈控制】和【心靈感應】時，你的檢定會 +3 骰。此異能不會幫你抵抗因為發動異能或強推屬性檢定而承受的壓力。"},
+      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 名能與你溝通的其他英雄，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不影響他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 名英雄格擋或閃避襲來的攻擊，而不花費他自己的動作。"},
+      {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"}
+    ],
+    professions:[
+      {name:"冒險家",desc:"你渴望冒險的刺激與風險。這個職業包括極限運動員、探險家、遺跡獵人、戶外活動愛好者或全職超級英雄。",
+       talents:[
+        {name:"堅定決心",desc:"你的`最大決心` +2。此天賦最多可以選擇 5 次。"},
+        {name:"桀驁不馴",desc:"每場團務 1 次，你可以無視強推後所有的 :invincible-1:。"},
+        {name:"化險為夷",desc:"當你受到重傷時，你可以擲 2 次重傷表，並選擇你想要的結果。"}
+      ]},
+      {name:"執法者",desc:"你可能擔任警察、警長、州警、聯邦執法官、政府探員或獄警，負責維護公共安全。",
+       talents:[
+        {name:"忠誠護衛",desc:"若你所處區塊內有其他角色受到攻擊，你可以使用反應動作替他承受攻擊。若是肉搏攻擊則進行`格鬥`檢定；若是射擊攻擊則進行`敏捷`檢定。若你檢定成功，你會成功替對方承受攻擊。"},
+        {name:"強力重擊",desc:"若你捨棄本輪的快速動作，你的肉搏攻擊 +2 骰。"},
+        {name:"壓制高手",desc:"當你試圖擒抱對手時，你的肉搏攻擊 +2 骰。你試圖抵抗對手掙脫的檢定也會 +2 骰。"}
+      ]},
+      {name:"士兵",desc:"你是軍事部隊中的戰鬥人員，例如步兵、軍官、特種部隊、傭兵或民兵。",
+       talents:[
+        {name:"運籌帷幄",desc:"你可以使用快速動作進行`氣場`檢定來發號施令，而不是主要動作。"},
+        {name:"無堅不摧",desc:"你可以強推任何`格鬥`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"戰術支援",desc:"在動作場景中，作為任何檢定的特技，你可以為你所處區塊或 1 個相鄰區塊內的 1 個盟友提供戰術支援。你每花費 1 個 :invincible-6:，盟友下次的屬性檢定就 +2 骰。若你額外擲出多個 :invincible-6:，你可以自由分配給多個盟友。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"運籌帷幄",desc:"你可以使用快速動作進行`氣場`檢定來發號施令，而不是主要動作。"},
+      {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"堅定決心",desc:"你的`最大決心` +2。此天賦最多可以選擇 5 次。"},
+      {name:"激勵人心",desc:"以 1 個快速動作，你可以主動承受最多 5 點壓力，讓 1 名能夠與你溝通的盟友恢復等量的`決心`。"},
+      {name:"團隊領袖",desc:"以 1 個完整動作，你可以主動承受 1 點壓力並進行`氣場`檢定來激勵隊友。你每擲出 1 個 :invincible-6:，所有能夠與你溝通的隊友都會恢復 1 點`決心`（不包括你自己）。"},
+      {name:"重振活力",desc:"若你處於崩潰，你可以進行 +2 骰的`力量`檢定來鼓舞自己，而非`氣場`。"}
+    ],
+    personalities:["專注","嚴謹","無私","愛國","謙遜","耐煩"],
+    motivations:[
+      {name:"利他",desc:"無論要付出什麼代價，你都會選擇做正確與善良的事。"},
+      {name:"理想",desc:"你會為了某個你願意為之犧牲的信念挺身而出。"},
+      {name:"傳授",desc:"你努力將自己學會的一切傳承下去，帶領後輩走上英雄之路。"}
+    ],
+    flaws:[
+      {name:"魯莽",desc:"你總是第一個衝進危險裡。"},
+      {name:"自卑",desc:"你從來都不相信自己。"},
+      {name:"專橫",desc:"你總是要別人照你說的做。"}
+    ]
+  },
+
+  /* 以下尚未提供完整資料，僅有基本欄位 */
+  { name:"打手", en:"The Bruiser", role:"鬥士",
+    intro:"你是火力全開的狠角色，最愛貼身肉搏，用硬碰硬的方式展現你的力量。他們傷不了你，就算真的打痛了，你也不會停下來。你的隊友總愛在旁邊碎念：控制損害、別打過頭，還說「拳頭大不代表你有理」。但說真的，揍人的感覺真的很爽。",
+    attrs:{格鬥:8,敏捷:4,力量:10,理智:2,直覺:4,氣場:4},
+    powerSource:{options:["突變生理","量子灌注骨骼","神話恩賜"]},
+    powers:[
+      {name:"強力跳躍",desc:"你可以使用 1 個快速動作或完整動作來跳躍最多 4 個區塊。若你主動承受 1 點壓力，則可以跳躍最多 8 個區塊。你可以跳過建築物和其他高處區塊，但必須在地面或屋頂結束移動。若你使用此異能對目標發動衝鋒，你的檢定會 +2 骰。你甚至可以對高處的目標發動衝鋒。"},
+      {name:"強力防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 3。"}
+    ],
+    professions:[
+      {name:"運動員",desc:"你投身於職業體育運動，例如運動團隊的球員或經理、奧運獎牌得主、摔角表演者、拳擊手、特技演員或綜合格鬥選手。",
+       talents:[
+        {name:"靈活協調",desc:"你可以強推任何`敏捷`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"勵志大師",desc:"你可以使用快速動作鼓舞其他崩潰的角色（不包括自己），而且檢定 +2 骰。"},
+        {name:"重振活力",desc:"若你處於崩潰，你可以進行 +2 骰的`力量`檢定來鼓舞自己，而非`氣場`。"}
+      ]},
+      {name:"藍領",desc:"你從事體力勞動或技術性工作。你可能是建築工人、工廠員工、承包商、農夫、技工、服務業員工、水電工或清潔工。",
+       talents:[
+        {name:"頑強生命",desc:"你的`最大生命` +2。此天賦最多可以選擇 5 次。"},
+        {name:"尋找破綻",desc:"作為肉搏攻擊的特技，你可以花費 1 個 :invincible-6: 來找出對手的防禦破綻，將`護甲`減半（無條件進位）。"},
+        {name:"獨到見解",desc:"當你首次發現或遭遇敵人、組織或危害時，你可以進行`直覺`檢定（無需動作）。每擲出 1 個 :invincible-6:，GM 必須告訴你 1 個關於對方的有用資訊（組成、狀況或目標等）。"}
+      ]},
+      {name:"局外人",desc:"你遠離家鄉而格格不入，可能是放逐者、流浪者、難民，或來自異世界的陌生人。",
+       talents:[
+        {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"獨行孤狼",desc:"你不需要參與社交場景，就可以在動作場景之間恢復`決心`。你休息數分鐘就能恢復等於`氣場`的`決心`，休息數小時就能恢復所有`決心`。不過你還是得描述一下你的「非社交場景」。"},
+        {name:"獨到見解",desc:"當你首次發現或遭遇敵人、組織或危害時，你可以進行`直覺`檢定（無需動作）。每擲出 1 個 :invincible-6:，GM 必須告訴你 1 個關於對方的有用資訊（組成、狀況或目標等）。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"巨獸剋星",desc:"對抗巨獸時，你的肉搏攻擊 +2 骰。"},
+      {name:"衝鋒陷陣",desc:"發動衝鋒攻擊時，你的`力量`檢定 +2 骰。"},
+      {name:"頑強生命",desc:"你的`最大生命` +2。此天賦最多可以選擇 5 次。"},
+      {name:"強力重擊",desc:"若你捨棄本輪的快速動作，你的肉搏攻擊 +2 骰。"},
+      {name:"桀驁不馴",desc:"每場團務 1 次，你可以無視強推後所有的 :invincible-1:。"},
+      {name:"力大無窮",desc:"你可以強推任何`力量`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"}
+    ],
+    personalities:["勤奮","幽默","機靈","固執","務實","忠誠"],
+    motivations:[
+      {name:"保護",desc:"你想守護那些無力自保的人。"},
+      {name:"友情",desc:"你渴望遇見一個真正的朋友。"},
+      {name:"韌性",desc:"無論路上有什麼阻礙，你都不會輕言放棄。"}
+    ],
+    flaws:[
+      {name:"粗魯",desc:"你不太懂禮數，常常不小心就得罪周遭的人。"},
+      {name:"破壞",desc:"就算明知道不該這麼做，你總是想把東西砸爛。"},
+      {name:"貪吃",desc:"只要有機會，你就想吃點美食。"}
+    ]
+  },
+  { name:"發明家", en:"The Gadgeteer", role:"輔助",
+    intro:"沒有這些超棒的小玩意，生活還有什麼樂趣？在超級反派到處搞事的世界裡，你穿著懸浮靴瀟灑掠過戰場，用奈米無人機將他們耍得團團轉，再引爆那些他們根本沒發現你早就佈好的炸彈，讓他們的陰謀瞬間崩盤。對你來說，對付邪惡最可靠的武器，就是你的尖端科技。",
+    attrs:{格鬥:4,敏捷:5,力量:3,理智:8,直覺:4,氣場:4},
+    powerSource:{options:["專用器械","整合式義體","仿生身體"]},
+    powers:[
+      {name:"轟擊",desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。"},
+      {name:"偵測",desc:"你會自動感知你所處區塊內的無形能量，包括磁場、輻射、靈能、暗影力場、星界能量和魔法。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有這類能量存在。"},
+      {name:"飛行",desc:"你可以使用 1 個快速動作或完整動作來飛行最多 2 個區塊。若你主動承受 1 點壓力，則可以飛行最多 4 個區塊。"},
+      {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
+      {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要使用完整動作進行 -2 骰的`力量`檢定。此異能對巨獸無效。使用此異能時，你無法使用射擊攻擊的任何特技。"},
+      {name:"科技控制",desc:"以 1 個完整動作，你可以連接你所處區塊或 1 個相鄰區塊內的任何科技或機械，並將其啟動、關閉、組裝或操作。你可以執行該科技或機械的所有功能，如同正常操作一樣。若要存取受限的操作，或以非常規方式使用科技，需要進行`理智`檢定。若你控制武器，你可以在同個回合內進行`敏捷`檢定來進行攻擊。控制效果會持續數分鐘，或直到你崩潰為止。"}
+    ],
+    professions:[
+      {name:"祕密特務",desc:"你從事祕密行動，可能是間諜、刺客、情報官、黑色行動專家、臥底警察或企業間諜。",
+       talents:[
+        {name:"無堅不摧",desc:"你可以強推任何`格鬥`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"搬弄是非",desc:"當你脅迫、敲詐或欺騙某人時，`氣場`檢定 +2 骰。"},
+        {name:"潛行高手",desc:"若你試圖偷偷接近敵人發動偷襲，對方發現你的`直覺`檢定 -2 骰。注意，你必須單獨行動（或與其他同樣擁有此天賦的人一起行動），此天賦才會生效。"}
+      ]},
+      {name:"技術員",desc:"你在技術領域工作，例如工程師、技工、駭客、生產專家、分析師或系統管理員。",
+       talents:[
+        {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
+        {name:"學識淵博（科技）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（科技：你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械）。"},
+        {name:"得力助手",desc:"當你協助他人時，對方的檢定會 +2 骰（而非 +1）。"}
+      ]},
+      {name:"白領",desc:"你從事辦公室工作，可能是商務人士、高階主管、會計師、律師、銀行家、財務顧問、業務員、行銷人員或房地產仲介。",
+       talents:[
+        {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"巧妙轉移",desc:"當你受到攻擊時，若你所處區塊內有其他盟友，你可以進行`氣場`檢定（無需動作）讓該盟友替你承受攻擊。你每次使用此天賦都會承受 1 點壓力。"},
+        {name:"意外之財",desc:"你的`資源` +2。此天賦可以多次選擇。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"巧妙轉移",desc:"當你受到攻擊時，若你所處區塊內有其他盟友，你可以進行`氣場`檢定（無需動作）讓該盟友替你承受攻擊。你每次使用此天賦都會承受 1 點壓力。"},
+      {name:"學識淵博（科技）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（科技：你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械）。"},
+      {name:"醫療專家",desc:"當你試圖穩定重傷時，`理智`檢定 +2 骰。此外，只要處於相同區塊，你可以使用`理智`來鼓舞崩潰的人，而不是`氣場`。"},
+      {name:"不屈不撓",desc:"每當你的`生命`即將受到傷害時，你可以將傷害 1:1 轉為壓力（每 1 點壓力抵消 1 點傷害）。你無法在`決心`為 0 的情況下使用此天賦。"},
+      {name:"得力助手",desc:"當你協助他人時，對方的檢定會 +2 骰（而非 +1）。"}
+    ],
+    personalities:["活潑","嚴謹","粗俗","多工","豁達","諷刺"],
+    motivations:[
+      {name:"警戒",desc:"你必須保持戒備，隨時應對威脅。"},
+      {name:"發明",desc:"你立志打造出能改變世界的科技。"},
+      {name:"肯定",desc:"你要讓所有人知道——你靠自己也能當個稱職的英雄。"}
+    ],
+    flaws:[
+      {name:"苛求",desc:"你對別人的要求總是太高。"},
+      {name:"輕浮",desc:"你幾乎什麼都不當一回事。"},
+      {name:"控制",desc:"你總是得主導一切、掌握局面。"}
+    ]
+  },
+  { name:"典範", en:"The Icon", role:"守衛",
+    intro:"你是翱翔天際的希望象徵，人們仰賴你、盼望你出手相救。這正是你夢寐以求的事情，只是沒想到當個超級英雄竟然會這麼複雜？你總覺得自己老是辜負所有人的期待，但那些剛從空難中被你拯救的乘客恐怕會有完全不同的看法。到頭來，你的行動會比自我懷疑更有說服力。",
+    attrs:{格鬥:8,敏捷:5,力量:8,理智:3,直覺:3,氣場:5},
+    powerSource:{options:["改造肉體","外星生理","神性火花"]},
+    powers:[
+      {name:"飛行",desc:"你可以使用 1 個快速動作或完整動作來飛行最多 2 個區塊。若你主動承受 1 點壓力，則可以飛行最多 4 個區塊。"},
+      {name:"強力防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 3。"},
+      {name:"迅捷",desc:"你擁有閃電般的反應速度、敏銳的判斷力，或增強的反應時間。每輪 1 次，在自己的回合或使用反應動作，你可以主動承受 1 點壓力來額外獲得 1 個快速動作或完整動作。"}
+    ],
+    professions:[
+      {name:"藝術家",desc:"你將想法與藝術化為現實，無論你是作家、視覺藝術家、遊戲設計師、音樂家、攝影師、平面設計師、電影導演或發明家。",
+       talents:[
+        {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"學識淵博（人文）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（人文：你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義）。"},
+        {name:"得力助手",desc:"當你協助他人時，對方的檢定會 +2 骰（而非 +1）。"}
+      ]},
+      {name:"士兵",desc:"你是軍事部隊中的戰鬥人員，例如步兵、軍官、特種部隊、傭兵或民兵。",
+       talents:[
+        {name:"運籌帷幄",desc:"你可以使用快速動作進行`氣場`檢定來發號施令，而不是主要動作。"},
+        {name:"無堅不摧",desc:"你可以強推任何`格鬥`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"戰術支援",desc:"在動作場景中，作為任何檢定的特技，你可以為你所處區塊或 1 個相鄰區塊內的 1 個盟友提供戰術支援。你每花費 1 個 :invincible-6:，盟友下次的屬性檢定就 +2 骰。若你額外擲出多個 :invincible-6:，你可以自由分配給多個盟友。"}
+      ]},
+      {name:"學生",desc:"你在學校、社區學院、大學、神學院、軍事學院或其他教育機構中學習並訓練某個領域或學科。",
+       talents:[
+        {name:"堅定決心",desc:"你的`最大決心` +2。此天賦最多可以選擇 5 次。"},
+        {name:"學識淵博",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰。隨機決定或自選以下 1 個主題（也可以自己發想）：",subjects:[
+          {name:"自然科學",desc:"你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。"},
+          {name:"社會科學",desc:"你能透過心理學、社會學、考古學、語言學與政治學來理解人類行為。"},
+          {name:"人文",desc:"你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義。"},
+          {name:"科技",desc:"你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械。"}
+        ]},
+        {name:"不屈不撓",desc:"每當你的`生命`即將受到傷害時，你可以將傷害 1:1 轉為壓力（每 1 點壓力抵消 1 點傷害）。你無法在`決心`為 0 的情況下使用此天賦。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"衝鋒陷陣",desc:"發動衝鋒攻擊時，你的`力量`檢定 +2 骰。"},
+      {name:"堅強防禦",desc:"當你受到攻擊時，你可以主動承受 1 點壓力來進行格擋或閃避，而不消耗該輪的動作額度。只要有足夠的`決心`，你就可以多次使用此天賦。"},
+      {name:"忠誠護衛",desc:"若你所處區塊內有其他角色受到攻擊，你可以使用反應動作替他承受攻擊。若是肉搏攻擊則進行`格鬥`檢定；若是射擊攻擊則進行`敏捷`檢定。若你檢定成功，你會成功替對方承受攻擊。"},
+      {name:"力大無窮",desc:"你可以強推任何`力量`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"聲名遠播",desc:"你的`聲望` +3。"},
+      {name:"重振活力",desc:"若你處於崩潰，你可以進行 +2 骰的`力量`檢定來鼓舞自己，而非`氣場`。"}
+    ],
+    personalities:["純真","穩定","冷靜","嚴格","熱情","坦率"],
+    motivations:[
+      {name:"傳承",desc:"你想承接前人留下的一切，並以此為榮。"},
+      {name:"命運",desc:"你注定要肩負更偉大的使命。"},
+      {name:"責任",desc:"你認為自己有義務將天賦用於行善與助人。"}
+    ],
+    flaws:[
+      {name:"惡夢",desc:"你被那些你無法拯救之人的回憶折磨著。"},
+      {name:"天真",desc:"你總是太容易信任他人。"},
+      {name:"衝動",desc:"你總是不計後果地孤注一擲。"}
+    ]
+  },
+
+  {
+    name:"首腦", en:"The Mastermind", role:"領袖",
+    intro:"你擅長佈局算計，總是能得到想要的東西。幸好，你的目標是讓世界變得更好。你最厲害的本事，就是將苦工丟給其他人做，讓自己能把心力全放在那些最棘手的大問題。無論局勢怎麼變化，你永遠都有對策。",
+    attrs:{格鬥:3,敏捷:3,力量:3,理智:9,直覺:5,氣場:7},
+    powerSource:{options:["超級智力","整合式奈米電路","奧術祕密"]},
+    powers:[
+      {name:"行動計畫",desc:"以 1 個完整動作，你可以進行`理智`檢定來制定絕妙的行動計畫。選擇「攻擊」、「防禦」或「指揮」其中 1 項。若檢定成功，你每擲出 1 個 :invincible-6:，團隊中所有聽得見你的其他 PC（包括透過通訊設備或異能）只要按照你的計畫行動，屬性檢定就會 +1 骰。攻擊計畫用於攻擊檢定；防禦計畫用於閃避和格擋；指揮計畫用於所有其他檢定。"},
+      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 名能與你溝通的其他英雄，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不影響他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 名英雄格擋或閃避襲來的攻擊，而不花費他自己的動作。"},
+      {name:"化解",desc:"你可以使用此異能來消除或終止其他異能的效果。\n以 1 個快速動作（或作為反應動作），你可以進行`氣場`檢定來解除你所處區塊或 1 個相鄰區塊內的 1 個持續性異能效果，或在目標即將發動異能時化解該異能（若是後者，必須與對方進行`氣場`對抗檢定）。你只能化解基礎等級的異能，而且你必須在目標進行任何檢定前宣告發動此異能。若目標的異能在即將發動時被化解，目標會失去該動作額度。若化解的是常駐型的異能，該異能效果只會被暫時抑制到你下個回合開始。"},
+      {name:"召喚",desc:"以 1 個完整動作，你可以召喚 3 個盟友來協助你，他們會立刻抵達你的所處區塊或 1 個相鄰區塊。你的盟友與你共享先攻順序，而且可以在剛登場的回合就行動。在預設情況下，你盟友的所有屬性皆為 4，`決心`為 6，在戰鬥中視為雜魚。每次發動此異能時，你可以選擇以下其中 1 種特性：\n• 萬用盟友：將 2 項不同的屬性各提升 2 點（記得`決心`也要相應增加）。\n• 強大盟友：你主動承受 1 點壓力，為盟友選擇 1 個基礎等級的攻擊類異能、防禦類異能、機動類異能，或 1 個天賦。\n• 更多盟友：你額外召喚 2 個盟友。\n被召喚的盟友會持續存在數分鐘、直到因傷害而崩潰、直到你崩潰，或直到你使用完整動作解散他們為止。只要場上還有被你召喚的盟友存在，你就不能再額外召喚新的盟友。被你召喚的盟友能夠獨立行動，也可以協助檢定，並跟你擁有某種連結，你能感知他們經歷的一切，反之亦然。"},
+      {name:"傳送",desc:"你可以瞬間從 1 個地點移動到另 1 個地點，不需要穿越中間的空間。你可以使用 1 個快速動作或完整動作來傳送最多 2 個區塊。若你主動承受 1 點壓力，則可以傳送最多 4 個區塊。"}
+    ],
+    professions:[
+      {name:"罪犯",desc:"你曾在法律的錯誤一側度過一段時間。你可能是小偷、詐騙高手、黑幫成員、走私者、恐怖分子，或其他類型的職業罪犯。",
+       talents:[
+        {name:"搬弄是非",desc:"當你脅迫、敲詐或欺騙某人時，`氣場`檢定 +2 骰。"},
+        {name:"冷酷無情",desc:"你每次讓 1 名敵人陷入崩潰時，你就恢復 1 點`決心`。"},
+        {name:"識途老馬",desc:"當你試圖打聽街頭巷尾的祕密情報時，`氣場`檢定 +2 骰。此外，你發現偷襲的`直覺`檢定 +2 骰。"}
+      ]},
+      {name:"權貴",desc:"你過著富足繁榮的生活，可能是企業家、慈善家、投資者、社交名流或信託基金受益人。",
+       talents:[
+        {name:"巧妙轉移",desc:"當你受到攻擊時，若你所處區塊內有其他盟友，你可以進行`氣場`檢定（無需動作）讓該盟友替你承受攻擊。你每次使用此天賦都會承受 1 點壓力。"},
+        {name:"聲名遠播",desc:"你的`聲望` +3。"},
+        {name:"意外之財",desc:"你的`資源` +2。此天賦可以多次選擇。"}
+      ]},
+      {name:"技術員",desc:"你在技術領域工作，例如工程師、技工、駭客、生產專家、分析師或系統管理員。",
+       talents:[
+        {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
+        {name:"學識淵博（科技）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（科技：你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械）。"},
+        {name:"得力助手",desc:"當你協助他人時，對方的檢定會 +2 骰（而非 +1）。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"運籌帷幄",desc:"你可以使用快速動作進行`氣場`檢定來發號施令，而不是主要動作。"},
+      {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"激勵人心",desc:"以 1 個快速動作，你可以主動承受最多 5 點壓力，讓 1 名能夠與你溝通的盟友恢復等量的`決心`。"},
+      {name:"團隊領袖",desc:"以 1 個完整動作，你可以主動承受 1 點壓力並進行`氣場`檢定來激勵隊友。你每擲出 1 個 :invincible-6:，所有能夠與你溝通的隊友都會恢復 1 點`決心`（不包括你自己）。"},
+      {name:"戰術支援",desc:"在動作場景中，作為任何檢定的特技，你可以為你所處區塊或 1 個相鄰區塊內的 1 個盟友提供戰術支援。你每花費 1 個 :invincible-6:，盟友下次的屬性檢定就 +2 骰。若你額外擲出多個 :invincible-6:，你可以自由分配給多個盟友。"},
+      {name:"及時警告",desc:"當聽覺範圍內的其他角色被攻擊時，你可以使用反應動作大聲警告對方。目標可以進行 +2 骰的格擋或閃避，而不會消耗他該輪的動作額度。"}
+    ],
+    personalities:["果斷","精明","冷淡","專業","自律","神祕"],
+    motivations:[
+      {name:"革新",desc:"你想治癒這個世界的病灶。"},
+      {name:"知足",desc:"你渴望能找到真正的滿足與圓滿。"},
+      {name:"準備",desc:"你凡事都會預先準備，連備案都有備案。"}
+    ],
+    flaws:[
+      {name:"嚴苛",desc:"你無法容忍任何失誤。"},
+      {name:"貪婪",desc:"你永遠無法感到滿足。"},
+      {name:"傲慢",desc:"你瞧不起你遇見的每個人。"}
+    ]
+  },
+
+  {
+    name:"變形者", en:"The Metamorph", role:"奇兵",
+    intro:"你可以在任何時候變成任何樣子，每種場合都有對應的形態。你有太多時間都在扮演別人或變成別的東西，以至於自己的真面目都快想不起來了。但只要能繼續當超級英雄，你不在乎這點小事。你從來都不怕任何麻煩，因為你什麼困難都能適應。",
+    attrs:{格鬥:6,敏捷:5,力量:5,理智:4,直覺:6,氣場:4},
+    powerSource:{options:["變幻粒子","火星人生理","變形煉金術"]},
+    powers:[
+      {name:"延展",desc:"你可以延展身體，將觸及範圍延伸至驚人的長度。你可以拿取相鄰區塊的物品，或對相鄰區塊的敵人發動肉搏攻擊，而不需要移動到該區塊。\n• 強化：可塑性。你的身體極度柔韌且富有彈性，在對抗動能攻擊時（例如拳頭和子彈，但不包括火焰或電擊），此異能會提供`護甲` 3。\n• 強化：延伸步伐。以 1 個快速動作或完整動作，你可以發動此異能來移動最多 2 個區塊，包括沿著牆壁垂直移動。若你主動承受 1 點壓力，則可以移動最多 4 個區塊。"},
+      {name:"化形",desc:"以 1 個完整動作，你可以改變自己的形態，化為其他生物或物體，呈現出對方的外觀與物理特徵，持續數小時或直到你崩潰為止。你可以長出翅膀，使用 1 個快速動作或完整動作來移動最多 2 個區塊。你也可以使用此異能來冒充其他人，但本尊的熟人可以進行`直覺`檢定來發現異樣。擁有【增強感官】的角色會自動識破你的偽裝。"},
+      {name:"體型變化",desc:"以 1 個完整動作，你可以在數分鐘內大幅增大或縮小體型。每次發動此異能時，你需要決定變大或縮小。你的衣物或裝備不會隨之改變尺寸，除非是由彈性分子或特殊材料製成。\n當你變大時，你的`力量`提升 2 點（最高至 12），因此你的`肉搏傷害`會提升 1 點（無法與【打擊】的加成疊加），同時你的`敏捷`降低 2 點（最低至 1）。你可以使用 1 個快速動作或完整動作來移動最多 2 個區塊。你可以對高處的目標發動肉搏攻擊，並且免疫擒抱、「擊退」和「衝撞」特技。\n當你縮小時，你的`敏捷`提升 2 點（最高至 12），同時你的`力量`降低 2 點（最低至 1），因此你的`肉搏傷害`會降低 1 點。你可以穿越非常狹小的空間，而且所有針對你的物理攻擊都會 -2 骰。"}
+    ],
+    professions:[
+      {name:"信徒",desc:"你深深投入於某個信仰、理念或精神，例如擔任神職人員、追隨特定的哲學思想、執著於復仇的聖戰士，或神祕學與祕術的修行者。",
+       talents:[
+        {name:"堅定決心",desc:"你的`最大決心` +2。此天賦最多可以選擇 5 次。"},
+        {name:"學識淵博（祕聞）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（祕聞：你能理解通常不為人知的知識，例如魔法、靈性學、神祕學、超自然活動與祕術）。"},
+        {name:"不屈不撓",desc:"每當你的`生命`即將受到傷害時，你可以將傷害 1:1 轉為壓力（每 1 點壓力抵消 1 點傷害）。你無法在`決心`為 0 的情況下使用此天賦。"}
+      ]},
+      {name:"局外人",desc:"你遠離家鄉而格格不入，可能是放逐者、流浪者、難民，或來自異世界的陌生人。",
+       talents:[
+        {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+        {name:"獨行孤狼",desc:"你不需要參與社交場景，就可以在動作場景之間恢復`決心`。你休息數分鐘就能恢復等於`氣場`的`決心`，休息數小時就能恢復所有`決心`。不過你還是得描述一下你的「非社交場景」。"},
+        {name:"獨到見解",desc:"當你首次發現或遭遇敵人、組織或危害時，你可以進行`直覺`檢定（無需動作）。每擲出 1 個 :invincible-6:，GM 必須告訴你 1 個關於對方的有用資訊（組成、狀況或目標等）。"}
+      ]},
+      {name:"科學家",desc:"你是物理學家、天文學家、生物學家、遺傳學家、植物學家、心理學家、社會學家或地質學家，在形式科學、自然科學或社會科學領域從事工作、研究與實驗。",
+       talents:[
+        {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
+        {name:"調查專家",desc:"若你待在某個區域數分鐘，你可以進行`直覺`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問以下其中 1 個問題：\n• 這裡發生了什麼事？\n• 這裡有隱藏什麼東西嗎？有的話，在哪裡？\n• 這裡有特別異常的細節嗎？\nGM 必須誠實回答，但可以含糊其辭。"},
+        {name:"學識淵博（自然科學）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（自然科學：你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。）。"}
+      ]}
+    ],
+    freeTalents:[
+      {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"輪擺閃躲",desc:"你不僅可以閃避射擊攻擊，也可以閃避肉搏攻擊。"},
+      {name:"頑強生命",desc:"你的`最大生命` +2。此天賦最多可以選擇 5 次。"},
+      {name:"學識淵博",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰。隨機決定或自選以下 1 個主題（也可以自己發想）：",subjects:[
+        {name:"自然科學",desc:"你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。"},
+        {name:"社會科學",desc:"你能透過心理學、社會學、考古學、語言學與政治學來理解人類行為。"},
+        {name:"人文",desc:"你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義。"},
+        {name:"科技",desc:"你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械。"},
+        {name:"時事",desc:"你能掌握最新的新聞、娛樂、政治、體育與國際事務的脈動。"},
+        {name:"祕聞",desc:"你能理解通常不為人知的知識，例如魔法、靈性學、神祕學、超自然活動與祕術。"}
+      ]},
+      {name:"獨行孤狼",desc:"你不需要參與社交場景，就可以在動作場景之間恢復`決心`。你休息數分鐘就能恢復等於`氣場`的`決心`，休息數小時就能恢復所有`決心`。不過你還是得描述一下你的「非社交場景」。"},
+      {name:"獨到見解",desc:"當你首次發現或遭遇敵人、組織或危害時，你可以進行`直覺`檢定（無需動作）。每擲出 1 個 :invincible-6:，GM 必須告訴你 1 個關於對方的有用資訊（組成、狀況或目標等）。"}
+    ],
+    personalities:["沉著","笨拙","厭世","體諒","疏離","睿智"],
+    motivations:[
+      {name:"熱情",desc:"你追逐自己所愛，並激勵他人與你一起同行。"},
+      {name:"驚奇",desc:"你將每次變成新形態、每次踏上新地方，都視為成長的機會。"},
+      {name:"顯現",desc:"你想找出最完美、最適合自己的形態。"}
+    ],
+    flaws:[
+      {name:"自滿",desc:"你太有自信，總愛讓別人先行動。"},
+      {name:"輕信",desc:"你很容易將別人的話照單全收。"},
+      {name:"隱瞞",desc:"你口中的真相總是有所偏頗。"}
+    ]
+  }
+];
+
+/* 以下 10 個範型暫時沿用「變形者」的資料，待正式資料整理好再更新。
+   name / en 已是正式值；其餘（定位、簡介、屬性、異能、職業、天賦、個性、動機、缺陷）皆為暫定佔位。
+   日後要替換時，把對應範型整段改寫成完整物件、從這個迴圈移除即可。 */
+(function(){
+  const clone=o=>JSON.parse(JSON.stringify(o));
+  const tpl=ARCHETYPES.find(a=>a.name==="變形者");
+  [
+    ["怪物","The Monster"],
+    ["新星","The Nova"],
+    ["動力裝甲","The Powersuit"],
+    ["靈能者","The Psychic"],
+    ["塑形者","The Shaper"],
+    ["神射手","The Sharpshooter"],
+    ["速行者","The Speedster"],
+    ["義警","The Vigilante"],
+    ["勇士","The Warrior"],
+    ["妙語客","The Wisecracker"]
+  ].forEach(([name,en])=>{const a=clone(tpl);a.name=name;a.en=en;a.draft=true;ARCHETYPES.push(a);});
+})();
+
+/* ===================== 工具 ===================== */
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function fmtHTML(s){
+  return esc(s)
+    .replace(/:invincible-6:/g,'<span class="die die6">6</span>')
+    .replace(/:invincible-1:/g,'<span class="die die1">1</span>')
+    .replace(/`([^`]+)`/g,'<span class="kw">$1</span>')
+    .replace(/\n/g,'<br>');
+}
+function fmtTxt(s){return s.replace(/:invincible-6:/g,'［6］').replace(/:invincible-1:/g,'［1］').replace(/`([^`]+)`/g,'$1');}
+function indent(s,pad){pad=pad||"  ";return s.split("\n").map(l=>pad+l).join("\n");}
+function talentExport(t,subjIdx){
+  let name=t.name, body=fmtTxt(t.desc);
+  if(t.subjects){
+    if(subjIdx!=null){ name+="（"+t.subjects[subjIdx].name+"）"; body+="\n• "+t.subjects[subjIdx].name+"："+fmtTxt(t.subjects[subjIdx].desc); }
+    else name+="（尚未選擇主題）";
+  }
+  return {name,body};
+}
+function rand(n){return Math.floor(Math.random()*n);}
+function pick2(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,2).sort((x,y)=>x-y);}
+function peakAttr(attrs){let b=ATTR_ORDER[0];ATTR_ORDER.forEach(a=>{if(attrs[a]>attrs[b])b=a;});return b;}
+function tierColor(v){ if(v<=2)return"#d23b2f"; if(v<=4)return"#e8853a"; if(v<=6)return"#f2b705"; if(v<=8)return"#8fc23e"; return"#33c463"; }
+
+/* 雷達圖：每根軸的尖端外側，由內而外 = 數字、名稱 */
+function hexSVG(attrs,size){
+  const cx=size/2,cy=size/2,R=size*0.24,numR=size*0.30,nameR=size*0.42;
+  const pts=ATTR_ORDER.map((a,i)=>{const ang=(-90+i*60)*Math.PI/180;return{a,cos:Math.cos(ang),sin:Math.sin(ang),val:attrs[a]};});
+  let grid="";[0.4,0.7,1].forEach(r=>{grid+=`<polygon class="hex-grid" points="${pts.map(p=>`${(cx+p.cos*R*r).toFixed(1)},${(cy+p.sin*R*r).toFixed(1)}`).join(" ")}"/>`;});
+  let spokes="";pts.forEach(p=>{spokes+=`<line class="hex-spoke" x1="${cx}" y1="${cy}" x2="${(cx+p.cos*R).toFixed(1)}" y2="${(cy+p.sin*R).toFixed(1)}"/>`;});
+  const shape=pts.map(p=>{const rr=(p.val/ATTR_MAX)*R;return`${(cx+p.cos*rr).toFixed(1)},${(cy+p.sin*rr).toFixed(1)}`;}).join(" ");
+  let dots="";pts.forEach(p=>{const rr=(p.val/ATTR_MAX)*R;dots+=`<circle class="hex-dot" cx="${(cx+p.cos*rr).toFixed(1)}" cy="${(cy+p.sin*rr).toFixed(1)}" r="3"/>`;});
+  let lab="";
+  pts.forEach(p=>{
+    let anc="middle"; if(p.cos>0.3)anc="start"; else if(p.cos<-0.3)anc="end";
+    const nx=cx+p.cos*numR, ny=cy+p.sin*numR, mx=cx+p.cos*nameR, my=cy+p.sin*nameR;
+    lab+=`<text class="hex-num" x="${nx.toFixed(1)}" y="${ny.toFixed(1)}" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.064).toFixed(1)}">${p.val}</text>`;
+    lab+=`<text class="hex-name" x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.05).toFixed(1)}">${p.a}</text>`;
+  });
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="六項屬性雷達圖">${grid}${spokes}<polygon class="hex-shape" points="${shape}"/>${dots}${lab}</svg>`;
+}
+function artHTML(arc){
+  const ini=arc.name.charAt(0);
+  if(arc.image) return `<div class="art"><img src="${esc(arc.image)}" alt="${esc(arc.name)} 角色圖" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="art-fallback" style="display:none">${ini}</div></div>`;
+  return `<div class="art"><div class="art-fallback">${ini}</div></div>`;
+}
+function gaugeRows(arc){
+  return ATTR_ORDER.map(a=>{const v=arc.attrs[a],pct=(v/ATTR_MAX)*100,c=tierColor(v);
+    return `<div class="stat-row"><span class="stat-name">${a}</span><span class="stat-bar"><span class="stat-fill" style="width:${pct}%;background:${c}"></span></span><span class="stat-num" style="color:${c}">${v}</span></div>`;}).join("");
+}
+
+/* ===================== 首頁 ===================== */
+const gallery=document.getElementById("gallery");
+document.getElementById("loadedCount").textContent=ARCHETYPES.length;
+ARCHETYPES.forEach((arc,i)=>{
+  const card=document.createElement("div");
+  card.className="card";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",arc.name+"，選擇此範型");
+  card.innerHTML=`
+    <div class="card-top"><span class="card-en">${arc.en||""}</span>${arc.draft?`<span class="draft-badge">資料未定</span>`:(arc.role?`<span class="role-badge">${arc.role}</span>`:"")}</div>
+    <h2 class="card-name display">${arc.name}</h2>
+    <div class="card-hex">${hexSVG(arc.attrs,210)}</div>
+    <p class="card-intro">${arc.intro}</p>
+    <div class="card-cta display">選擇此範型</div>`;
+  const open=()=>{currentIndex=i;openBuilder();};
+  card.addEventListener("click",open);
+  card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+  gallery.appendChild(card);
+});
+
+/* ===================== 建檔 ===================== */
+let currentIndex=null;
+function blankSel(){return{archIndex:null,hero:"",real:"",look:"",note:"",powerSource:null,profession:null,professionTalent:null,professionTalentSubject:null,freeTalent:null,freeTalentSubject:null,personalities:[],motivation:null,flaw:null};}
+let sel=blankSel();
+let builderWired=false;
+
+function openBuilder(){
+  if(sel.archIndex!==currentIndex){sel=blankSel();sel.archIndex=currentIndex;}
+  document.getElementById("builderBody").innerHTML=renderBuilderForm();
+  wireBuilder();
+  showScreen("builderScreen");
+}
+
+function secHead(title,hint,dice){
+  return `<div class="sec-head"><div><span class="sec-title display">${title}</span>${hint?`<span class="sec-hint">${hint}</span>`:""}</div>${dice?`<button class="dice-btn" data-dice="${dice}">🎲 隨機</button>`:""}</div>`;
+}
+function optRow(group,idx,name,desc,selected){
+  return `<div class="opt${selected?" sel":""}" data-group="${group}" data-idx="${idx}" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">${name}</span>${desc?`<span class="opt-desc">${fmtHTML(desc)}</span>`:""}</div></div>`;
+}
+function pill(group,idx,label,selected){
+  return `<button class="pill${selected?" sel":""}" data-group="${group}" data-idx="${idx}">${label}</button>`;
+}
+function talentList(group,subjGroup,talents,selIdx,selSubjIdx){
+  return talents.map((t,i)=>{
+    let html=optRow(group,i,t.name,t.desc,selIdx===i);
+    if(selIdx===i&&t.subjects){
+      html+=`<div class="subject-inline">${secHead("專精主題","1D"+t.subjects.length+" 或自選 1 個",subjGroup)}${t.subjects.map((s,j)=>optRow(subjGroup,j,s.name,s.desc,selSubjIdx===j)).join("")}</div>`;
+    }
+    return html;
+  }).join("");
+}
+
+function renderBuilderForm(){
+  const arc=ARCHETYPES[currentIndex];
+  let L="";
+  if(arc.draft) L+=`<div class="draft-note">⚠ 此範型的資料尚未確定，目前內容為暫定（沿用其他範型），僅供預覽參考。</div>`;
+  // 範型概覽（簡介 + 雷達）
+  L+=`<section class="bsec">
+    <div class="ov-top2"><p class="ov-intro">${arc.intro}</p><div class="ov-hexbox">${hexSVG(arc.attrs,240)}</div></div>
+  </section>`;
+  if(arc.powerSource) L+=`<section class="bsec">${secHead("異能來源","1D3 或自選 1 個","powerSource")}<div class="opt-pills">${arc.powerSource.options.map((o,i)=>pill("powerSource",i,o,sel.powerSource===i)).join("")}</div></section>`;
+  if(arc.powers) L+=`<section class="bsec">${secHead("異能","你擁有以下所有異能")}<div class="powers">${arc.powers.map(p=>`<div class="power"><div class="power-name display">${p.name}</div><div class="power-desc">${fmtHTML(p.desc)}</div></div>`).join("")}</div></section>`;
+  if(arc.professions){
+    let b=`<section class="bsec">${secHead("職業","1D3 或自選 1 個","profession")}`;
+    b+=arc.professions.map((pf,i)=>optRow("profession",i,pf.name,pf.desc,sel.profession===i)).join("");
+    if(sel.profession!=null){
+      const pf=arc.professions[sel.profession];
+      b+=`<div class="talent-slot">${secHead("職業天賦（"+pf.name+"）","1D3 或自選 1 個","professionTalent")}${talentList("professionTalent","professionTalentSubject",pf.talents,sel.professionTalent,sel.professionTalentSubject)}</div>`;
+    }else b+=`<div class="talent-hint">選好職業後，這裡會出現可挑選的職業天賦。</div>`;
+    L+=b+`</section>`;
+  }
+  if(arc.freeTalents) L+=`<section class="bsec">${secHead("自選天賦","1D6 或自選 1 個","freeTalent")}${talentList("freeTalent","freeTalentSubject",arc.freeTalents,sel.freeTalent,sel.freeTalentSubject)}</section>`;
+  if(arc.personalities) L+=`<section class="bsec">${secHead("個性","擲 1D6 兩次 或自選 2 個","personalities")}<div class="opt-pills">${arc.personalities.map((p,i)=>pill("personalities",i,p,sel.personalities.includes(i))).join("")}</div><div class="mini-hint">已選 ${sel.personalities.length} / 2</div></section>`;
+  if(arc.motivations) L+=`<section class="bsec">${secHead("動機","1D3 或自選 1 個","motivation")}${arc.motivations.map((m,i)=>optRow("motivation",i,m.name,m.desc,sel.motivation===i)).join("")}</section>`;
+  if(arc.flaws) L+=`<section class="bsec">${secHead("缺陷","1D3 或自選 1 個","flaw")}${arc.flaws.map((f,i)=>optRow("flaw",i,f.name,f.desc,sel.flaw===i)).join("")}</section>`;
+  L+=`<section class="bsec">${secHead("補充細節")}
+    <div class="field"><label>代號 <span class="tag-req">必填</span></label><input data-field="hero" type="text" placeholder="例如：晨星" value="${esc(sel.hero)}"></div>
+    <div class="field"><label>本名 <span class="tag-opt">選填</span></label><input data-field="real" type="text" placeholder="例如：林子澄" value="${esc(sel.real)}"></div>
+    <div class="field"><label>外觀 <span class="tag-opt">選填</span></label><input data-field="look" type="text" placeholder="例如：褪色的紅色連帽外套，左眼有一道疤" value="${esc(sel.look)}"></div>
+    <div class="field"><label>背景故事 <span class="tag-opt">選填</span></label><textarea data-field="note" placeholder="角色的來歷、性格、與隊友的關係……都可以寫在這裡">${esc(sel.note)}</textarea></div>
+  </section>`;
+
+  const R=`<div class="preview-wrap"><div class="preview-label">文字檔預覽</div><pre class="preview" id="preview">${esc(buildText())}</pre>
+    <div class="progress" id="progress">${progressHTML()}</div>
+    <div class="builder-actions">
+      <button class="btn btn-gold" onclick="downloadTxt()">匯出文字檔</button>
+      <button class="btn btn-ink" onclick="copyTxt()">複製文字</button>
+      <button class="btn btn-ghost" onclick="copyShare()">複製分享連結</button>
+      <button class="btn btn-ghost" onclick="saveBuild()">儲存角色</button>
+    </div></div>`;
+
+  return `<div class="builder-head"><span class="display">英雄建檔</span><span class="builder-chip">${arc.name}</span>${arc.en?`<span class="builder-en">${arc.en}</span>`:""}${arc.role?`<span class="builder-role">${arc.role}</span>`:""}<button class="btn btn-ghost roll-all" onclick="rollAll()">🎲 全部隨機</button></div>
+    <p class="builder-sub">用滑鼠點選或擲骰決定各項選擇，右側會即時更新文字檔。完成後可匯出或複製分享。</p>
+    <div class="builder-grid"><div class="builder-col">${L}</div>${R}</div>`;
+}
+
+function wireBuilder(){
+  if(builderWired) return; builderWired=true;
+  const b=document.getElementById("builderBody");
+  b.addEventListener("click",e=>{
+    const d=e.target.closest("[data-dice]"); if(d){rollGroup(d.dataset.dice);return;}
+    const o=e.target.closest("[data-group]"); if(o){chooseOption(o.dataset.group,+o.dataset.idx);return;}
+  });
+  b.addEventListener("keydown",e=>{
+    if(e.key==="Enter"||e.key===" "){const o=e.target.closest("[data-group]");if(o&&o.tagName!=="BUTTON"){e.preventDefault();chooseOption(o.dataset.group,+o.dataset.idx);}}
+  });
+  b.addEventListener("input",e=>{const f=e.target.dataset.field;if(f){sel[f]=e.target.value;const pv=document.getElementById("preview");if(pv)pv.textContent=buildText();const pr=document.getElementById("progress");if(pr)pr.innerHTML=progressHTML();}});
+}
+function chooseOption(group,idx){
+  if(group==="personalities"){
+    const i=sel.personalities.indexOf(idx);
+    if(i>=0) sel.personalities.splice(i,1);
+    else{ if(sel.personalities.length>=2) sel.personalities.shift(); sel.personalities.push(idx); }
+  }else if(group==="profession"){ sel.profession=idx; sel.professionTalent=null; sel.professionTalentSubject=null; }
+  else if(group==="professionTalent"){ sel.professionTalent=idx; sel.professionTalentSubject=null; }
+  else if(group==="freeTalent"){ sel.freeTalent=idx; sel.freeTalentSubject=null; }
+  else sel[group]=idx;
+  reRender();
+}
+function rollGroup(g){
+  const arc=ARCHETYPES[currentIndex];
+  if(g==="powerSource") sel.powerSource=rand(arc.powerSource.options.length);
+  else if(g==="profession"){sel.profession=rand(arc.professions.length);sel.professionTalent=null;sel.professionTalentSubject=null;}
+  else if(g==="professionTalent"){if(sel.profession==null)sel.profession=rand(arc.professions.length);sel.professionTalent=rand(arc.professions[sel.profession].talents.length);sel.professionTalentSubject=null;}
+  else if(g==="professionTalentSubject"){const subs=arc.professions[sel.profession].talents[sel.professionTalent].subjects;sel.professionTalentSubject=rand(subs.length);}
+  else if(g==="freeTalent"){sel.freeTalent=rand(arc.freeTalents.length);sel.freeTalentSubject=null;}
+  else if(g==="freeTalentSubject"){const subs=arc.freeTalents[sel.freeTalent].subjects;sel.freeTalentSubject=rand(subs.length);}
+  else if(g==="personalities") sel.personalities=pick2(arc.personalities.length);
+  else if(g==="motivation") sel.motivation=rand(arc.motivations.length);
+  else if(g==="flaw") sel.flaw=rand(arc.flaws.length);
+  reRender();
+}
+function rollAll(){
+  const arc=ARCHETYPES[currentIndex];
+  if(arc.powerSource) sel.powerSource=rand(arc.powerSource.options.length);
+  if(arc.professions){
+    sel.profession=rand(arc.professions.length);
+    const pf=arc.professions[sel.profession];
+    sel.professionTalent=rand(pf.talents.length);
+    const pt=pf.talents[sel.professionTalent];
+    sel.professionTalentSubject=pt.subjects?rand(pt.subjects.length):null;
+  }
+  if(arc.freeTalents){
+    sel.freeTalent=rand(arc.freeTalents.length);
+    const ft=arc.freeTalents[sel.freeTalent];
+    sel.freeTalentSubject=ft.subjects?rand(ft.subjects.length):null;
+  }
+  if(arc.personalities) sel.personalities=pick2(arc.personalities.length);
+  if(arc.motivations) sel.motivation=rand(arc.motivations.length);
+  if(arc.flaws) sel.flaw=rand(arc.flaws.length);
+  reRender();
+}
+function reRender(){
+  const sc=document.getElementById("builderScreen"),top=sc?sc.scrollTop:0;
+  document.getElementById("builderBody").innerHTML=renderBuilderForm();
+  if(sc) sc.scrollTop=top;
+}
+
+/* ===================== 匯出 ===================== */
+function buildText(){
+  const arc=ARCHETYPES[currentIndex];
+  const LINE="══════════════════════════════";
+  const hero=sel.hero.trim()||"（未命名英雄）";
+  let o="";
+  let head=LINE+"\n";
+  head+="  範　　型："+arc.name+(arc.role?"（"+arc.role+"）":"")+"\n";
+  head+="  代　　號："+hero+"\n";
+  if(sel.real.trim()) head+="  本　　名："+sel.real.trim()+"\n";
+  if(sel.look.trim()) head+="  外　　觀："+sel.look.trim()+"\n";
+  o+=head+LINE+"\n\n";
+  o+="【簡介】\n"+arc.intro+"\n\n";
+  o+="【屬性】"+ATTR_ORDER.map(a=>a+arc.attrs[a]).join("　")+"\n\n";
+  if(arc.powerSource) o+="【異能來源】"+(sel.powerSource!=null?arc.powerSource.options[sel.powerSource]:"（尚未選擇）")+"\n\n";
+  if(arc.powers){o+="【異能】\n"+arc.powers.map(p=>"◆ "+p.name+"\n"+indent(fmtTxt(p.desc))).join("\n\n")+"\n\n";}
+  if(arc.professions){
+    if(sel.profession!=null){
+      const pf=arc.professions[sel.profession];
+      o+="【職業】"+pf.name+"\n"+indent(fmtTxt(pf.desc))+"\n";
+      if(sel.professionTalent!=null){const te=talentExport(pf.talents[sel.professionTalent],sel.professionTalentSubject);o+="  ▸ 職業天賦："+te.name+"\n"+indent(te.body,"    ")+"\n";}
+      else o+="  ▸ 職業天賦：（尚未選擇）\n";
+    }else o+="【職業】（尚未選擇）\n";
+    o+="\n";
+  }
+  if(arc.freeTalents){
+    if(sel.freeTalent!=null){const te=talentExport(arc.freeTalents[sel.freeTalent],sel.freeTalentSubject);o+="【自選天賦】"+te.name+"\n"+indent(te.body)+"\n\n";}
+    else o+="【自選天賦】（尚未選擇）\n\n";
+  }
+  if(arc.personalities){const ps=sel.personalities.map(i=>arc.personalities[i]);o+="【個性】"+(ps.length?ps.join("、"):"（尚未選擇）")+"\n\n";}
+  if(arc.motivations){
+    if(sel.motivation!=null){const m=arc.motivations[sel.motivation];o+="【動機】"+m.name+"\n"+indent(fmtTxt(m.desc))+"\n\n";}
+    else o+="【動機】（尚未選擇）\n\n";
+  }
+  if(arc.flaws){
+    if(sel.flaw!=null){const f=arc.flaws[sel.flaw];o+="【缺陷】"+f.name+"\n"+indent(fmtTxt(f.desc))+"\n\n";}
+    else o+="【缺陷】（尚未選擇）\n\n";
+  }
+  if(sel.note.trim()) o+="【背景故事】\n"+sel.note.trim()+"\n";
+  return o.trimEnd()+"\n";
+}
+/* ---- 完成度 ---- */
+function completion(){
+  const arc=ARCHETYPES[currentIndex];const items=[];
+  items.push({label:"代號",done:!!sel.hero.trim()});
+  if(arc.powerSource) items.push({label:"異能來源",done:sel.powerSource!=null});
+  if(arc.professions){
+    items.push({label:"職業",done:sel.profession!=null});
+    items.push({label:"職業天賦",done:sel.professionTalent!=null});
+    if(sel.profession!=null&&sel.professionTalent!=null&&arc.professions[sel.profession].talents[sel.professionTalent].subjects)
+      items.push({label:"專精主題（職業天賦）",done:sel.professionTalentSubject!=null});
+  }
+  if(arc.freeTalents){
+    items.push({label:"自選天賦",done:sel.freeTalent!=null});
+    if(sel.freeTalent!=null&&arc.freeTalents[sel.freeTalent].subjects)
+      items.push({label:"專精主題（自選天賦）",done:sel.freeTalentSubject!=null});
+  }
+  if(arc.personalities) items.push({label:"個性（2 項）",done:sel.personalities.length===2});
+  if(arc.motivations) items.push({label:"動機",done:sel.motivation!=null});
+  if(arc.flaws) items.push({label:"缺陷",done:sel.flaw!=null});
+  return {done:items.filter(i=>i.done).length,total:items.length,missing:items.filter(i=>!i.done).map(i=>i.label)};
+}
+function progressHTML(){
+  const c=completion(),pct=c.total?Math.round(c.done/c.total*100):100,ok=c.done===c.total;
+  return `<div class="progress-bar"><span style="width:${pct}%;background:${ok?'var(--green)':'var(--gold)'}"></span></div><div class="progress-text">${ok?'✓ 必選項目都完成了':'已完成 '+c.done+' / '+c.total+' 項'}</div>`;
+}
+
+/* ---- 匯出（含完成度提醒） ---- */
+function guardExport(proceed){
+  const c=completion();
+  if(c.missing.length) showConfirm("還有以下項目尚未完成：\n"+c.missing.map(m=>"・"+m).join("\n"),proceed);
+  else proceed();
+}
+function downloadTxt(){guardExport(doDownload);}
+function doDownload(){
+  const text=buildText(),arc=ARCHETYPES[currentIndex];
+  const fname=((sel.hero.trim()||arc.name))+"_角色卡.txt";
+  const blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fname;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  showToast("已匯出 "+fname);
+}
+function copyTxt(){guardExport(doCopy);}
+async function doCopy(){
+  const text=buildText();
+  try{await navigator.clipboard.writeText(text);showToast("已複製到剪貼簿");}
+  catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast("已複製到剪貼簿");}catch(_){showToast("複製失敗，請手動選取");}document.body.removeChild(ta);}
+}
+
+/* ---- 分享連結（把選擇編碼進網址 #c=...） ---- */
+function buildPayload(){const arc=ARCHETYPES[currentIndex];return {a:arc.name,h:sel.hero,r:sel.real,l:sel.look,n:sel.note,ps:sel.powerSource,pf:sel.profession,pt:sel.professionTalent,pts:sel.professionTalentSubject,ft:sel.freeTalent,fts:sel.freeTalentSubject,pe:sel.personalities,mo:sel.motivation,fl:sel.flaw};}
+function utf8ToB64(s){return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b64ToUtf8(b){b=b.replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';return decodeURIComponent(escape(atob(b)));}
+function encodeBuild(){return utf8ToB64(JSON.stringify(buildPayload()));}
+function applyPayload(p){
+  const idx=ARCHETYPES.findIndex(a=>a.name===p.a);if(idx<0)return false;
+  currentIndex=idx;sel=blankSel();sel.archIndex=idx;
+  sel.hero=p.h||"";sel.real=p.r||"";sel.look=p.l||"";sel.note=p.n||"";
+  sel.powerSource=p.ps??null;sel.profession=p.pf??null;sel.professionTalent=p.pt??null;sel.professionTalentSubject=p.pts??null;
+  sel.freeTalent=p.ft??null;sel.freeTalentSubject=p.fts??null;
+  sel.personalities=Array.isArray(p.pe)?p.pe:[];sel.motivation=p.mo??null;sel.flaw=p.fl??null;
+  return true;
+}
+async function copyShare(){
+  const url=location.href.split('#')[0]+"#c="+encodeBuild();
+  try{history.replaceState(null,"",url);}catch(e){}
+  try{await navigator.clipboard.writeText(url);showToast("已複製分享連結");}
+  catch(e){const ta=document.createElement("textarea");ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast("已複製分享連結");}catch(_){showToast("複製失敗，請手動複製網址");}document.body.removeChild(ta);}
+}
+function restoreFromHash(){
+  const h=location.hash||"";const k=h.indexOf("c=");if(k<0)return false;
+  try{const p=JSON.parse(b64ToUtf8(h.slice(k+2)));if(applyPayload(p)){document.getElementById("landing").style.display="none";document.getElementById("registry").style.display="";openBuilder();return true;}}catch(e){}
+  return false;
+}
+
+/* ---- 本機存檔（localStorage；需下載檔案後在瀏覽器開啟才能用） ---- */
+const STORE_KEY="heroBuilds_v1";
+function storageAvailable(){try{const k="__t";localStorage.setItem(k,"1");localStorage.removeItem(k);return true;}catch(e){return false;}}
+function storageGet(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||"[]");}catch(e){return [];}}
+function storageSet(a){try{localStorage.setItem(STORE_KEY,JSON.stringify(a));return true;}catch(e){return false;}}
+function saveBuild(){
+  if(!storageAvailable()){showToast("此環境無法儲存，請下載檔案後在瀏覽器開啟");return;}
+  const arc=ARCHETYPES[currentIndex],builds=storageGet();
+  builds.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts:Date.now(),name:arc.name,hero:sel.hero.trim(),data:buildPayload()});
+  storageSet(builds);showToast("已儲存角色");renderSaves();
+}
+function loadBuild(p){if(applyPayload(p))openBuilder();}
+function renderSaves(){
+  const el=document.getElementById("savesSection");if(!el)return;
+  const builds=storageAvailable()?storageGet():[];
+  if(!builds.length){el.innerHTML="";return;}
+  el.innerHTML='<h2 class="saves-title display">我的存檔</h2><div class="saves-list">'+builds.map(b=>{
+    const d=new Date(b.ts),date=(d.getMonth()+1)+"/"+d.getDate()+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+    return '<div class="save-item"><div class="save-meta"><span class="save-name display">'+esc(b.hero||"（未命名英雄）")+'</span><span class="save-sub">'+esc(b.name)+" · "+date+'</span></div><div class="save-btns"><button class="save-load" data-id="'+b.id+'">載入</button><button class="save-del" data-id="'+b.id+'">刪除</button></div></div>';
+  }).join("")+'</div>';
+}
+
+/* ---- 完成度提醒對話框 ---- */
+let _modalOk=null;
+function showConfirm(msg,onOk){_modalOk=onOk;document.getElementById("modalBody").textContent=msg;document.getElementById("modal").classList.add("on");}
+function hideModal(){document.getElementById("modal").classList.remove("on");_modalOk=null;}
+
+/* ===================== 共用 ===================== */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("on");s.scrollTop=0;});
+  document.getElementById(id).classList.add("on");window.scrollTo(0,0);
+}
+function goHome(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));window.scrollTo(0,0);}
+function showLanding(){document.getElementById("landing").style.display="";document.getElementById("registry").style.display="none";window.scrollTo(0,0);}
+function showRegistry(){document.getElementById("landing").style.display="none";document.getElementById("registry").style.display="";renderSaves();window.scrollTo(0,0);}
+let toastTimer;
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2200);}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if(document.getElementById("modal").classList.contains("on")) hideModal();
+    else if(document.getElementById("builderScreen").classList.contains("on")) goHome();
+  }
+});
+
+document.getElementById("modalOk").addEventListener("click",()=>{const f=_modalOk;hideModal();if(f)f();});
+document.getElementById("modalCancel").addEventListener("click",hideModal);
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")hideModal();});
+document.getElementById("savesSection").addEventListener("click",e=>{
+  const load=e.target.closest(".save-load"),del=e.target.closest(".save-del");
+  if(load){const b=storageGet().find(x=>x.id===load.dataset.id);if(b)loadBuild(b.data);}
+  else if(del){storageSet(storageGet().filter(x=>x.id!==del.dataset.id));renderSaves();}
+});
+document.getElementById("landArchetype").addEventListener("click",showRegistry);
+renderSaves();
+restoreFromHash();
+</script>
+</body>
+</html>
