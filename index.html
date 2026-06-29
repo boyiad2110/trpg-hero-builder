@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英雄範型登錄處</title>
+<title>超級英雄建檔工具</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--night);background-image:radial-gradient(circle at 20% -10%,#1d2647 0%,transparent 45%),radial-gradient(circle at 90% 0%,#241a3a 0%,transparent 40%);color:var(--paper);line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--night);background-image:radial-gradient(circle at 20% -10%,#1d2647 0%,transparent 45%),radial-gradient(circle at 90% 0%,#241a3a 0%,transparent 40%);color:var(--paper);line-height:1.7;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
 .display{font-family:"Oswald","Noto Sans TC",sans-serif}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
@@ -22,7 +22,7 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .masthead{padding:54px 0 30px;text-align:center}
 .eyebrow{display:inline-block;font-family:"Oswald",sans-serif;letter-spacing:.42em;font-size:.72rem;text-transform:uppercase;color:var(--gold);border:1px solid rgba(242,183,5,.5);padding:5px 14px 5px 18px;border-radius:2px;margin-bottom:20px}
 .wordmark{font-weight:900;font-size:clamp(2.6rem,8vw,5rem);line-height:.95;letter-spacing:.04em}
-.wordmark .slash{color:var(--red)}
+.wordmark .wm-part{display:inline-block;white-space:nowrap}
 .tagline{margin-top:16px;color:#b9bed1;font-size:clamp(.95rem,2.4vw,1.1rem);max-width:none}
 .count-strip{margin-top:26px;display:inline-flex;align-items:center;gap:14px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;color:#8d93ad}
 .count-strip b{color:var(--paper);font-size:1.05rem}
@@ -31,7 +31,6 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 /* 卡片牆 */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding:14px 0 70px}
 .card{position:relative;background:var(--paper);color:var(--ink);border:var(--line);border-radius:4px;padding:22px 20px 20px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease;outline:none;display:flex;flex-direction:column}
-.card:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
 .card:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--gold)}
 .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:20px}
 .card-en{font-family:"Oswald",sans-serif;letter-spacing:.16em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:600}
@@ -41,7 +40,6 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .card-intro{font-size:.9rem;color:#3c3c47}
 .card-cta{margin-top:16px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:6px}
 .card-cta::after{content:"→";transition:transform .14s ease}
-.card:hover .card-cta::after{transform:translateX(4px)}
 
 /* 雷達：數字＋名稱皆在六角尖端外側，沿軸由內而外 */
 .hex-grid{stroke:#c9c0ad;stroke-width:1;fill:none}
@@ -53,9 +51,9 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .hex-name{font-family:"Noto Sans TC",sans-serif;font-weight:700;fill:var(--ink-soft)}
 
 /* 覆蓋頁 */
-.screen{display:none;position:fixed;inset:0;z-index:40;background:var(--night);background-image:radial-gradient(circle at 15% 0%,#1d2647 0%,transparent 50%),radial-gradient(circle at 95% 10%,#241a3a 0%,transparent 45%);overflow-y:auto}
+.screen{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;height:100dvh;z-index:40;background:var(--night);background-image:radial-gradient(circle at 15% 0%,#1d2647 0%,transparent 50%),radial-gradient(circle at 95% 10%,#241a3a 0%,transparent 45%);overflow-y:auto}
 .screen.on{display:block}
-.screen-inner{max-width:1000px;margin:0 auto;padding:26px 24px 90px}
+.screen-inner{max-width:1000px;margin:0 auto;padding:calc(26px + env(safe-area-inset-top)) 24px 90px}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 0 24px;gap:12px;flex-wrap:wrap}
 .btn{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;font-weight:600;padding:11px 20px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:transform .12s ease,background .12s ease,color .12s ease,border-color .12s ease;display:inline-flex;align-items:center;gap:8px}
 .btn:active{transform:translateY(1px)}
@@ -67,14 +65,15 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .btn-ink:hover{background:#fff}
 
 /* 建檔 */
-.builder-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.builder-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
 .builder-head .display{font-weight:900;font-size:clamp(1.8rem,5vw,2.6rem)}
-.builder-chip{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;background:var(--red);color:#fff;padding:5px 12px;border-radius:2px}
-.builder-en{font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;color:#b7bcd2}
-.builder-role{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;border:1px solid #3a4673;color:#b7bcd2;padding:5px 10px;border-radius:2px}
-.roll-all{margin-left:auto}
-.builder-sub{color:#9aa0bd;margin-bottom:26px}
-.builder-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:30px;align-items:start}
+.builder-name{color:var(--gold)}
+.builder-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.builder-en{font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.82rem;color:#b7bcd2}
+.builder-role{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;border:1px solid #3a4673;color:#b7bcd2;padding:5px 10px;border-radius:2px}
+.builder-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.builder-sub{color:#9aa0bd;margin-bottom:16px}
+.builder-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;align-items:start}
 .builder-col{display:flex;flex-direction:column;gap:18px;min-width:0}
 .bsec{background:#141b33;border:1.5px solid #262e54;border-radius:6px;padding:18px 18px 20px}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
@@ -90,6 +89,12 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .ov-top2{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
 .ov-stats{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
 .ov-hexbox{background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:6px;display:flex;justify-content:center}
+.ov-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.ov-stat{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:12px 10px;text-align:center}
+.ov-stat-up{border-color:var(--green)}
+.ov-stat-num{display:block;font-weight:900;font-size:1.7rem;color:var(--paper);line-height:1}
+.ov-stat-up .ov-stat-num{color:var(--green)}
+.ov-stat-label{display:block;margin-top:5px;font-family:"Oswald",sans-serif;letter-spacing:.08em;font-size:.72rem;color:#9aa0bd}
 .ov-gauge{min-width:0}
 .art{width:100%;aspect-ratio:4/5;border:var(--line);border-radius:4px;overflow:hidden;background:#0f1530;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
 .art img{width:100%;height:100%;object-fit:cover;display:block}
@@ -176,7 +181,6 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 
 .landing-options{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:10px 0 70px;max-width:780px;margin:0 auto}
 .land-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;font:inherit;background:var(--paper);color:var(--ink);border:var(--line);border-radius:6px;padding:32px 28px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease}
-.land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
 .land-icon{font-size:2rem;color:var(--red);line-height:1}
 .land-title{font-weight:900;font-size:1.9rem}
 .land-desc{font-size:.92rem;color:#3c3c47;line-height:1.6}
@@ -188,16 +192,41 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .draft-badge{font-family:"Oswald",sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#8a7e63;border:1px dashed #b3a888;padding:3px 8px;border-radius:2px;white-space:nowrap}
 .draft-note{background:rgba(242,183,5,.12);border:1.5px solid rgba(242,183,5,.5);color:#f2d27a;border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:.9rem;line-height:1.6}
 .tag-req{color:var(--red);font-size:.72em;margin-left:6px;font-family:"Oswald",sans-serif;letter-spacing:.06em}
-.tag-opt{color:#7e84a3;font-size:.72em;margin-left:6px;font-family:"Oswald",sans-serif;letter-spacing:.06em}
 
 @media (max-width:600px){.landing-options{grid-template-columns:1fr}}
 footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
 
 @media (max-width:980px){.gallery{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.gallery{grid-template-columns:1fr}}
-@media (max-width:780px){.builder-grid{grid-template-columns:1fr}.preview-wrap{position:static}.roll-all{margin-left:0}}
-@media (max-width:600px){.ov-top2{grid-template-columns:1fr;justify-items:center}.ov-intro{order:2}}
+@media (max-width:780px){.builder-grid{grid-template-columns:1fr}.preview-wrap{position:static}}
+@media (max-width:600px){.ov-top2{grid-template-columns:1fr;justify-items:center}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* 浮起 hover 僅在有滑鼠的裝置觸發，避免觸控點完卡住 */
+@media (hover:hover){
+  .card:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
+  .card:hover .card-cta::after{transform:translateX(4px)}
+  .land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
+}
+
+/* 手機底部動作列（常駐匯出/複製＋完成度），桌機隱藏 */
+.mobile-bar{display:none}
+.mb-progress{flex:1;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.04em;color:#9aa0bd;min-width:0}
+.mb-progress .mb-done{color:var(--green);font-weight:700}
+.mb-actions{display:flex;gap:10px;flex:none}
+.mb-actions button{font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.06em;font-size:.88rem;padding:0 18px;min-height:44px;border-radius:4px;border:none;cursor:pointer}
+.mb-export{background:var(--gold);color:var(--ink)}
+.mb-copy{background:#1d2647;color:var(--paper);border:1.5px solid #3a4673}
+
+@media (max-width:780px){
+  .preview{max-height:none;overflow:visible}
+  .btn{min-height:44px}
+  .dice-btn{min-height:42px;padding:8px 14px}
+  .pill{min-height:44px;padding:10px 18px}
+  .save-btns button{min-height:44px}
+  .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;gap:12px;background:rgba(14,19,38,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1.5px solid #2d345c;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .screen-inner{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+}
 </style>
 </head>
 <body>
@@ -206,46 +235,49 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
   <!-- 著陸頁：兩大入口 -->
   <div id="landing" class="wrap">
     <header class="masthead">
-      <span class="eyebrow">超級英雄角色產生器</span>
-      <h1 class="wordmark display">打造你的<span class="slash">／</span>超級英雄</h1>
-      <p class="tagline">選一條路開始：挑選現成範型，或從零自創英雄。</p>
+      <span class="eyebrow">超級英雄建檔工具</span>
+      <h1 class="wordmark display"><span class="wm-part">打造你的</span><span class="wm-part">超級英雄</span></h1>
     </header>
     <div class="landing-options">
       <button class="land-card" id="landArchetype">
         <span class="land-icon">◆</span>
         <span class="land-title display">選擇範型</span>
-        <span class="land-desc">從 16 種英雄範型中挑一個，點選或擲骰快速完成角色。</span>
-        <span class="land-cta display">進入登錄處 →</span>
+        <span class="land-cta display">快速創建角色 →</span>
       </button>
       <button class="land-card land-card-disabled" id="landCustom" disabled>
         <span class="land-icon">✦</span>
         <span class="land-title display">自創英雄</span>
-        <span class="land-desc">從零開始打造完全原創的英雄。</span>
+        <span class="land-desc">打造原創英雄</span>
         <span class="land-cta display">敬請期待</span>
       </button>
     </div>
   </div>
 
-  <!-- 範型登錄處 -->
+  <!-- 範型登記處 -->
   <div id="registry" class="wrap" style="display:none">
     <div class="reg-back"><button class="btn btn-ghost" onclick="showLanding()">← 返回</button></div>
     <header class="masthead">
-      <span class="eyebrow">英雄範型登錄處</span>
-      <h1 class="wordmark display">選擇你的<span class="slash">／</span>英雄範型</h1>
-      <p class="tagline">挑一個範型開始建檔，做出選擇，匯出成可分享的文字檔。</p>
-      <div class="count-strip display"><span>已登錄</span><b id="loadedCount">0</b><span class="ln"></span><span>規劃中</span><b>16</b></div>
+      <span class="eyebrow">英雄範型登記處</span>
+      <h1 class="wordmark display"><span class="wm-part">選擇你的</span><span class="wm-part">英雄範型</span></h1>
+      <p class="tagline">挑選 1 個範型開始建檔，匯出成可分享的文字檔。</p>
     </header>
     <section id="savesSection"></section>
     <section class="gallery" id="gallery"></section>
   </div>
 
-  <footer>超級英雄角色產生器 · 角色建檔工具</footer>
 </main>
 
 <section class="screen" id="builderScreen">
   <div class="screen-inner">
-    <div class="topbar"><button class="btn btn-ghost" onclick="goHome()">← 返回登錄處</button></div>
+    <div class="topbar"><button class="btn btn-ghost" onclick="goHome()">← 返回登記處</button></div>
     <div id="builderBody"></div>
+    <div class="mobile-bar">
+      <div class="mb-progress" id="mbProgress"></div>
+      <div class="mb-actions">
+        <button class="mb-copy" onclick="copyTxt()">複製</button>
+        <button class="mb-export" onclick="downloadTxt()">匯出</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -670,7 +702,6 @@ function gaugeRows(arc){
 
 /* ===================== 首頁 ===================== */
 const gallery=document.getElementById("gallery");
-document.getElementById("loadedCount").textContent=ARCHETYPES.length;
 ARCHETYPES.forEach((arc,i)=>{
   const card=document.createElement("div");
   card.className="card";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",arc.name+"，選擇此範型");
@@ -697,6 +728,7 @@ function openBuilder(){
   document.getElementById("builderBody").innerHTML=renderBuilderForm();
   wireBuilder();
   showScreen("builderScreen");
+  syncMobileBar();
 }
 
 function secHead(title,hint,dice){
@@ -722,9 +754,12 @@ function renderBuilderForm(){
   const arc=ARCHETYPES[currentIndex];
   let L="";
   if(arc.draft) L+=`<div class="draft-note">⚠ 此範型的資料尚未確定，目前內容為暫定（沿用其他範型），僅供預覽參考。</div>`;
-  // 範型概覽（簡介 + 雷達）
+  // 範型概覽（簡介 + 雷達 + 數據）
+  const _ds=derivedStats();
+  const statItem=(label,val,bumped)=>`<div class="ov-stat${bumped?' ov-stat-up':''}"><span class="ov-stat-num display">${val}</span><span class="ov-stat-label">${label}</span></div>`;
   L+=`<section class="bsec">
     <div class="ov-top2"><p class="ov-intro">${arc.intro}</p><div class="ov-hexbox">${hexSVG(arc.attrs,240)}</div></div>
+    <div class="ov-stats">${statItem("生命",_ds.health,_ds.mod.health>0)}${statItem("決心",_ds.resolve,_ds.mod.resolve>0)}${statItem("肉搏傷害",_ds.melee,_ds.mod.melee>0)}</div>
   </section>`;
   if(arc.powerSource) L+=`<section class="bsec">${secHead("異能來源","1D3 或自選 1 個","powerSource")}<div class="opt-pills">${arc.powerSource.options.map((o,i)=>pill("powerSource",i,o,sel.powerSource===i)).join("")}</div></section>`;
   if(arc.powers) L+=`<section class="bsec">${secHead("異能","你擁有以下所有異能")}<div class="powers">${arc.powers.map(p=>`<div class="power"><div class="power-name display">${p.name}</div><div class="power-desc">${fmtHTML(p.desc)}</div></div>`).join("")}</div></section>`;
@@ -738,14 +773,14 @@ function renderBuilderForm(){
     L+=b+`</section>`;
   }
   if(arc.freeTalents) L+=`<section class="bsec">${secHead("自選天賦","1D6 或自選 1 個","freeTalent")}${talentList("freeTalent","freeTalentSubject",arc.freeTalents,sel.freeTalent,sel.freeTalentSubject)}</section>`;
-  if(arc.personalities) L+=`<section class="bsec">${secHead("個性","擲 1D6 兩次 或自選 2 個","personalities")}<div class="opt-pills">${arc.personalities.map((p,i)=>pill("personalities",i,p,sel.personalities.includes(i))).join("")}</div><div class="mini-hint">已選 ${sel.personalities.length} / 2</div></section>`;
+  if(arc.personalities) L+=`<section class="bsec">${secHead("個性","1D6 擲兩次或自選 2 個","personalities")}<div class="opt-pills">${arc.personalities.map((p,i)=>pill("personalities",i,p,sel.personalities.includes(i))).join("")}</div><div class="mini-hint">已選 ${sel.personalities.length} / 2</div></section>`;
   if(arc.motivations) L+=`<section class="bsec">${secHead("動機","1D3 或自選 1 個","motivation")}${arc.motivations.map((m,i)=>optRow("motivation",i,m.name,m.desc,sel.motivation===i)).join("")}</section>`;
   if(arc.flaws) L+=`<section class="bsec">${secHead("缺陷","1D3 或自選 1 個","flaw")}${arc.flaws.map((f,i)=>optRow("flaw",i,f.name,f.desc,sel.flaw===i)).join("")}</section>`;
   L+=`<section class="bsec">${secHead("補充細節")}
     <div class="field"><label>代號 <span class="tag-req">必填</span></label><input data-field="hero" type="text" placeholder="例如：晨星" value="${esc(sel.hero)}"></div>
-    <div class="field"><label>本名 <span class="tag-opt">選填</span></label><input data-field="real" type="text" placeholder="例如：林子澄" value="${esc(sel.real)}"></div>
-    <div class="field"><label>外觀 <span class="tag-opt">選填</span></label><input data-field="look" type="text" placeholder="例如：褪色的紅色連帽外套，左眼有一道疤" value="${esc(sel.look)}"></div>
-    <div class="field"><label>背景故事 <span class="tag-opt">選填</span></label><textarea data-field="note" placeholder="角色的來歷、性格、與隊友的關係……都可以寫在這裡">${esc(sel.note)}</textarea></div>
+    <div class="field"><label>本名</label><input data-field="real" type="text" placeholder="例如：林子澄" value="${esc(sel.real)}"></div>
+    <div class="field"><label>外觀</label><input data-field="look" type="text" placeholder="例如：褪色的紅色連帽外套，左眼有一道疤" value="${esc(sel.look)}"></div>
+    <div class="field"><label>背景故事</label><textarea data-field="note" placeholder="角色的來歷、性格、與隊友的關係……都可以寫在這裡">${esc(sel.note)}</textarea></div>
   </section>`;
 
   const R=`<div class="preview-wrap"><div class="preview-label">文字檔預覽</div><pre class="preview" id="preview">${esc(buildText())}</pre>
@@ -753,13 +788,16 @@ function renderBuilderForm(){
     <div class="builder-actions">
       <button class="btn btn-gold" onclick="downloadTxt()">匯出文字檔</button>
       <button class="btn btn-ink" onclick="copyTxt()">複製文字</button>
-      <button class="btn btn-ghost" onclick="copyShare()">複製分享連結</button>
       <button class="btn btn-ghost" onclick="saveBuild()">儲存角色</button>
     </div></div>`;
 
-  return `<div class="builder-head"><span class="display">英雄建檔</span><span class="builder-chip">${arc.name}</span>${arc.en?`<span class="builder-en">${arc.en}</span>`:""}${arc.role?`<span class="builder-role">${arc.role}</span>`:""}<button class="btn btn-ghost roll-all" onclick="rollAll()">🎲 全部隨機</button></div>
-    <p class="builder-sub">用滑鼠點選或擲骰決定各項選擇，右側會即時更新文字檔。完成後可匯出或複製分享。</p>
-    <div class="builder-grid"><div class="builder-col">${L}</div>${R}</div>`;
+  const intro=`<div class="builder-intro">
+    <div class="builder-head"><span class="display">英雄建檔</span><span class="builder-name display">${arc.name}</span></div>
+    <div class="builder-meta">${arc.en?`<span class="builder-en">${arc.en}</span>`:""}${arc.role?`<span class="builder-role">${arc.role}</span>`:""}</div>
+    <p class="builder-sub">自選或擲骰決定各項選擇，完成後可匯出或複製文字檔。</p>
+    <div class="builder-tools"><button class="btn btn-ghost" onclick="rollAll()">🎲 全部隨機</button><button class="btn btn-ghost" onclick="clearAll()">✕ 全部清除</button></div>
+  </div>`;
+  return `<div class="builder-grid"><div class="builder-col">${intro}${L}</div>${R}</div>`;
 }
 
 function wireBuilder(){
@@ -772,7 +810,7 @@ function wireBuilder(){
   b.addEventListener("keydown",e=>{
     if(e.key==="Enter"||e.key===" "){const o=e.target.closest("[data-group]");if(o&&o.tagName!=="BUTTON"){e.preventDefault();chooseOption(o.dataset.group,+o.dataset.idx);}}
   });
-  b.addEventListener("input",e=>{const f=e.target.dataset.field;if(f){sel[f]=e.target.value;const pv=document.getElementById("preview");if(pv)pv.textContent=buildText();const pr=document.getElementById("progress");if(pr)pr.innerHTML=progressHTML();}});
+  b.addEventListener("input",e=>{const f=e.target.dataset.field;if(f){sel[f]=e.target.value;const pv=document.getElementById("preview");if(pv)pv.textContent=buildText();const pr=document.getElementById("progress");if(pr)pr.innerHTML=progressHTML();syncMobileBar();}});
 }
 function chooseOption(group,idx){
   if(group==="personalities"){
@@ -822,22 +860,55 @@ function reRender(){
   const sc=document.getElementById("builderScreen"),top=sc?sc.scrollTop:0;
   document.getElementById("builderBody").innerHTML=renderBuilderForm();
   if(sc) sc.scrollTop=top;
+  syncMobileBar();
 }
+function clearAll(){sel=blankSel();sel.archIndex=currentIndex;reRender();}
+
+/* ===================== 數據（衍生數值） ===================== */
+// 解析單筆敘述中的數據加成（最大生命/最大決心/肉搏傷害 +N）
+function statModsFromText(text){
+  const m={health:0,resolve:0,melee:0};
+  const grab=label=>{const re=new RegExp("`?"+label+"`?\\s*\\+\\s*(\\d+)","g");let mt,s=0;while((mt=re.exec(text)))s+=parseInt(mt[1],10);return s;};
+  m.health=grab("最大生命");m.resolve=grab("最大決心");m.melee=grab("肉搏傷害");
+  return m;
+}
+// 蒐集玩家所選天賦（職業天賦＋自選天賦）的數據加成
+function collectStatMods(){
+  const arc=ARCHETYPES[currentIndex],tot={health:0,resolve:0,melee:0};
+  const add=t=>{if(!t)return;const m=statModsFromText(t.desc||"");tot.health+=m.health;tot.resolve+=m.resolve;tot.melee+=m.melee;};
+  if(arc.professions&&sel.profession!=null&&sel.professionTalent!=null) add(arc.professions[sel.profession].talents[sel.professionTalent]);
+  if(arc.freeTalents&&sel.freeTalent!=null) add(arc.freeTalents[sel.freeTalent]);
+  return tot;
+}
+// 計算三項數據（含天賦加成）
+function derivedStats(){
+  const a=ARCHETYPES[currentIndex].attrs,ceil=Math.ceil,mod=collectStatMods();
+  return {
+    health:ceil((a.格鬥+a.敏捷+a.力量)/2)+mod.health,
+    resolve:ceil((a.理智+a.直覺+a.氣場)/2)+mod.resolve,
+    melee:ceil(a.力量/2)+mod.melee,
+    mod
+  };
+}
+
+// 匯出用的數據文字
+function buildStatsLine(){const d=derivedStats();return "生命 "+d.health+"　決心 "+d.resolve+"　肉搏傷害 "+d.melee;}
 
 /* ===================== 匯出 ===================== */
 function buildText(){
   const arc=ARCHETYPES[currentIndex];
-  const LINE="══════════════════════════════";
   const hero=sel.hero.trim()||"（未命名英雄）";
   let o="";
-  let head=LINE+"\n";
-  head+="  範　　型："+arc.name+(arc.role?"（"+arc.role+"）":"")+"\n";
-  head+="  代　　號："+hero+"\n";
-  if(sel.real.trim()) head+="  本　　名："+sel.real.trim()+"\n";
-  if(sel.look.trim()) head+="  外　　觀："+sel.look.trim()+"\n";
-  o+=head+LINE+"\n\n";
+  let head="範型："+arc.name+"\n";
+  if(arc.role) head+="定位："+arc.role+"\n";
+  head+="代號："+hero+"\n";
+  if(sel.real.trim()) head+="本名："+sel.real.trim()+"\n";
+  if(sel.look.trim()) head+="外觀："+sel.look.trim()+"\n";
+  o+=head+"\n";
   o+="【簡介】\n"+arc.intro+"\n\n";
-  o+="【屬性】"+ATTR_ORDER.map(a=>a+arc.attrs[a]).join("　")+"\n\n";
+  o+="【屬性】"+ATTR_ORDER.map(a=>a+" "+arc.attrs[a]).join("　")+"\n\n";
+  const ds=buildStatsLine();
+  o+="【數據】"+ds+"\n\n";
   if(arc.powerSource) o+="【異能來源】"+(sel.powerSource!=null?arc.powerSource.options[sel.powerSource]:"（尚未選擇）")+"\n\n";
   if(arc.powers){o+="【異能】\n"+arc.powers.map(p=>"◆ "+p.name+"\n"+indent(fmtTxt(p.desc))).join("\n\n")+"\n\n";}
   if(arc.professions){
@@ -890,6 +961,8 @@ function progressHTML(){
   const c=completion(),pct=c.total?Math.round(c.done/c.total*100):100,ok=c.done===c.total;
   return `<div class="progress-bar"><span style="width:${pct}%;background:${ok?'var(--green)':'var(--gold)'}"></span></div><div class="progress-text">${ok?'✓ 必選項目都完成了':'已完成 '+c.done+' / '+c.total+' 項'}</div>`;
 }
+function mbProgressHTML(){const c=completion();return c.done===c.total?'<span class="mb-done">✓ 必選項目已完成</span>':'已完成 '+c.done+' / '+c.total+' 項';}
+function syncMobileBar(){const m=document.getElementById("mbProgress");if(m)m.innerHTML=mbProgressHTML();}
 
 /* ---- 匯出（含完成度提醒） ---- */
 function guardExport(proceed){
@@ -914,11 +987,8 @@ async function doCopy(){
   catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast("已複製到剪貼簿");}catch(_){showToast("複製失敗，請手動選取");}document.body.removeChild(ta);}
 }
 
-/* ---- 分享連結（把選擇編碼進網址 #c=...） ---- */
+/* ---- 角色資料編碼（供存檔／讀取使用） ---- */
 function buildPayload(){const arc=ARCHETYPES[currentIndex];return {a:arc.name,h:sel.hero,r:sel.real,l:sel.look,n:sel.note,ps:sel.powerSource,pf:sel.profession,pt:sel.professionTalent,pts:sel.professionTalentSubject,ft:sel.freeTalent,fts:sel.freeTalentSubject,pe:sel.personalities,mo:sel.motivation,fl:sel.flaw};}
-function utf8ToB64(s){return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
-function b64ToUtf8(b){b=b.replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';return decodeURIComponent(escape(atob(b)));}
-function encodeBuild(){return utf8ToB64(JSON.stringify(buildPayload()));}
 function applyPayload(p){
   const idx=ARCHETYPES.findIndex(a=>a.name===p.a);if(idx<0)return false;
   currentIndex=idx;sel=blankSel();sel.archIndex=idx;
@@ -927,17 +997,6 @@ function applyPayload(p){
   sel.freeTalent=p.ft??null;sel.freeTalentSubject=p.fts??null;
   sel.personalities=Array.isArray(p.pe)?p.pe:[];sel.motivation=p.mo??null;sel.flaw=p.fl??null;
   return true;
-}
-async function copyShare(){
-  const url=location.href.split('#')[0]+"#c="+encodeBuild();
-  try{history.replaceState(null,"",url);}catch(e){}
-  try{await navigator.clipboard.writeText(url);showToast("已複製分享連結");}
-  catch(e){const ta=document.createElement("textarea");ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast("已複製分享連結");}catch(_){showToast("複製失敗，請手動複製網址");}document.body.removeChild(ta);}
-}
-function restoreFromHash(){
-  const h=location.hash||"";const k=h.indexOf("c=");if(k<0)return false;
-  try{const p=JSON.parse(b64ToUtf8(h.slice(k+2)));if(applyPayload(p)){document.getElementById("landing").style.display="none";document.getElementById("registry").style.display="";openBuilder();return true;}}catch(e){}
-  return false;
 }
 
 /* ---- 本機存檔（localStorage；需下載檔案後在瀏覽器開啟才能用） ---- */
@@ -971,8 +1030,9 @@ function hideModal(){document.getElementById("modal").classList.remove("on");_mo
 function showScreen(id){
   document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("on");s.scrollTop=0;});
   document.getElementById(id).classList.add("on");window.scrollTo(0,0);
+  document.documentElement.style.overflow="hidden";
 }
-function goHome(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));window.scrollTo(0,0);}
+function goHome(){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));document.documentElement.style.overflow="";window.scrollTo(0,0);}
 function showLanding(){document.getElementById("landing").style.display="";document.getElementById("registry").style.display="none";window.scrollTo(0,0);}
 function showRegistry(){document.getElementById("landing").style.display="none";document.getElementById("registry").style.display="";renderSaves();window.scrollTo(0,0);}
 let toastTimer;
@@ -994,7 +1054,6 @@ document.getElementById("savesSection").addEventListener("click",e=>{
 });
 document.getElementById("landArchetype").addEventListener("click",showRegistry);
 renderSaves();
-restoreFromHash();
 </script>
 </body>
 </html>
