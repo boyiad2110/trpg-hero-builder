@@ -125,6 +125,9 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .opt.sel .opt-mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--red)}
 .opt-name{display:block;font-weight:700;color:var(--paper);margin-bottom:3px}
 .opt-desc{display:block;font-size:.88rem;color:#b7bcd2;line-height:1.65}
+.opt.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.opt.disabled:hover{border-color:#2a3258}
+.opt-lock{display:block;font-size:.78rem;font-weight:600;color:var(--red);margin-bottom:3px}
 .opt-pills{display:flex;flex-wrap:wrap;gap:9px}
 .pill{background:#0f1530;border:1.5px solid #2a3258;color:#cfd4e6;padding:8px 16px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.95rem;transition:background .12s,border-color .12s,color .12s}
 .pill:hover{border-color:#46508a}
@@ -1276,15 +1279,46 @@ function openBuilder(){
 function secHead(title,hint,dice){
   return `<div class="sec-head"><div><span class="sec-title display">${title}</span>${hint?`<span class="sec-hint">${hint}</span>`:""}</div>${dice?`<button class="dice-btn" data-dice="${dice}">🎲 隨機</button>`:""}</div>`;
 }
-function optRow(group,idx,name,desc,selected){
-  return `<div class="opt${selected?" sel":""}" data-group="${group}" data-idx="${idx}" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">${name}</span>${desc?`<span class="opt-desc">${fmtHTML(desc)}</span>`:""}</div></div>`;
+function optRow(group,idx,name,desc,selected,disabled,note){
+  return `<div class="opt${selected?" sel":""}${disabled?" disabled":""}" data-group="${group}" data-idx="${idx}"${disabled?' aria-disabled="true"':' role="button" tabindex="0"'}><span class="opt-mark"></span><div>${note?`<span class="opt-lock">🔒 ${note}</span>`:""}<span class="opt-name">${name}</span>${desc?`<span class="opt-desc">${fmtHTML(desc)}</span>`:""}</div></div>`;
 }
 function pill(group,idx,label,selected){
   return `<button class="pill${selected?" sel":""}" data-group="${group}" data-idx="${idx}">${label}</button>`;
 }
+const REPEATABLE_TALENTS=["堅定決心","頑強生命"];
+function talentRepeatable(name){ return REPEATABLE_TALENTS.includes(name)||name.indexOf("學識淵博")===0; }
+// 回傳「另一來源已選、且不可重複」的天賦名稱（代表此來源不可再選同名天賦）
+function blockedTalentName(group){
+  const arc=ARCHETYPES[currentIndex];
+  if(group==="freeTalent"){
+    if(arc.professions&&sel.profession!=null&&sel.professionTalent!=null){
+      const n=arc.professions[sel.profession].talents[sel.professionTalent].name;
+      if(!talentRepeatable(n)) return n;
+    }
+  }else if(group==="professionTalent"){
+    if(arc.freeTalents&&sel.freeTalent!=null){
+      const n=arc.freeTalents[sel.freeTalent].name;
+      if(!talentRepeatable(n)) return n;
+    }
+  }
+  return null;
+}
+function isTalentBlocked(group,idx){
+  const arc=ARCHETYPES[currentIndex];
+  const blocked=blockedTalentName(group); if(blocked==null) return false;
+  const list=group==="freeTalent"?arc.freeTalents:arc.professions[sel.profession].talents;
+  return !!(list[idx]&&list[idx].name===blocked);
+}
+function rollTalent(list,blocked){
+  const ok=[]; for(let i=0;i<list.length;i++) if(blocked==null||list[i].name!==blocked) ok.push(i);
+  const pool=ok.length?ok:list.map((_,i)=>i);
+  return pool[rand(pool.length)];
+}
 function talentList(group,subjGroup,talents,selIdx,selSubjIdx){
+  const blocked=blockedTalentName(group);
   return talents.map((t,i)=>{
-    let html=optRow(group,i,t.name,t.desc,selIdx===i);
+    const dis=blocked!=null&&t.name===blocked&&selIdx!==i;
+    let html=optRow(group,i,t.name,t.desc,selIdx===i,dis,dis?"此天賦不可重複選取":"");
     if(selIdx===i&&t.subjects){
       html+=`<div class="subject-inline">${secHead("專精主題","1D"+t.subjects.length+" 或自選 1 個",subjGroup)}${t.subjects.map((s,j)=>optRow(subjGroup,j,s.name,s.desc,selSubjIdx===j)).join("")}</div>`;
     }
@@ -1360,8 +1394,8 @@ function chooseOption(group,idx){
     if(i>=0) sel.personalities.splice(i,1);
     else{ if(sel.personalities.length>=2) sel.personalities.shift(); sel.personalities.push(idx); }
   }else if(group==="profession"){ sel.profession=idx; sel.professionTalent=null; sel.professionTalentSubject=null; }
-  else if(group==="professionTalent"){ sel.professionTalent=idx; sel.professionTalentSubject=null; }
-  else if(group==="freeTalent"){ sel.freeTalent=idx; sel.freeTalentSubject=null; }
+  else if(group==="professionTalent"){ if(isTalentBlocked("professionTalent",idx)) return; sel.professionTalent=idx; sel.professionTalentSubject=null; }
+  else if(group==="freeTalent"){ if(isTalentBlocked("freeTalent",idx)) return; sel.freeTalent=idx; sel.freeTalentSubject=null; }
   else sel[group]=idx;
   reRender();
 }
@@ -1369,9 +1403,9 @@ function rollGroup(g){
   const arc=ARCHETYPES[currentIndex];
   if(g==="powerSource") sel.powerSource=rand(arc.powerSource.options.length);
   else if(g==="profession"){sel.profession=rand(arc.professions.length);sel.professionTalent=null;sel.professionTalentSubject=null;}
-  else if(g==="professionTalent"){if(sel.profession==null)sel.profession=rand(arc.professions.length);sel.professionTalent=rand(arc.professions[sel.profession].talents.length);sel.professionTalentSubject=null;}
+  else if(g==="professionTalent"){if(sel.profession==null)sel.profession=rand(arc.professions.length);sel.professionTalent=rollTalent(arc.professions[sel.profession].talents,blockedTalentName("professionTalent"));sel.professionTalentSubject=null;}
   else if(g==="professionTalentSubject"){const subs=arc.professions[sel.profession].talents[sel.professionTalent].subjects;sel.professionTalentSubject=rand(subs.length);}
-  else if(g==="freeTalent"){sel.freeTalent=rand(arc.freeTalents.length);sel.freeTalentSubject=null;}
+  else if(g==="freeTalent"){sel.freeTalent=rollTalent(arc.freeTalents,blockedTalentName("freeTalent"));sel.freeTalentSubject=null;}
   else if(g==="freeTalentSubject"){const subs=arc.freeTalents[sel.freeTalent].subjects;sel.freeTalentSubject=rand(subs.length);}
   else if(g==="personalities") sel.personalities=pick2(arc.personalities.length);
   else if(g==="motivation") sel.motivation=rand(arc.motivations.length);
@@ -1389,7 +1423,7 @@ function rollAll(){
     sel.professionTalentSubject=pt.subjects?rand(pt.subjects.length):null;
   }
   if(arc.freeTalents){
-    sel.freeTalent=rand(arc.freeTalents.length);
+    sel.freeTalent=rollTalent(arc.freeTalents,blockedTalentName("freeTalent"));
     const ft=arc.freeTalents[sel.freeTalent];
     sel.freeTalentSubject=ft.subjects?rand(ft.subjects.length):null;
   }
