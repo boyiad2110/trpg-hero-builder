@@ -128,6 +128,137 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .opt.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 .opt.disabled:hover{border-color:#2a3258}
 .opt-lock{display:block;font-size:.78rem;font-weight:600;color:var(--red);margin-bottom:3px}
+.land-card{position:relative}
+.land-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:var(--ink);font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
+.wip-banner{background:rgba(242,183,5,.12);border:1.5px solid var(--gold);color:#f6d77a;border-radius:6px;padding:14px 16px;margin:0 0 22px;font-weight:600;line-height:1.65}
+.step-intro{color:#b7bcd2;line-height:1.75;margin:6px 0 18px;font-size:.95rem}
+.tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.tier-card{position:relative;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:18px 18px 16px;cursor:pointer;transition:border-color .12s,background .12s;outline:none}
+.tier-card:hover{border-color:#46508a}
+.tier-card.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
+.tier-name{font-size:1.25rem;font-weight:800;color:var(--paper)}
+.tier-en{display:block;font-size:.8rem;color:#8b91ad;letter-spacing:.04em;margin-bottom:14px}
+.tier-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tier-stat{background:#0b1026;border:1px solid #232a4d;border-radius:5px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.tier-stat-num{font-size:1.3rem;color:var(--gold);line-height:1}
+.tier-stat-label{font-size:.72rem;color:#9aa0bd}
+@media(max-width:600px){.tier-grid{grid-template-columns:1fr}}
+.tier-hint{color:#9aa0bd;font-style:italic;padding:6px 0}
+.points-bar{display:inline-block;background:#0b1026;border:1.5px solid var(--gold);color:#f6d77a;border-radius:30px;padding:8px 18px;font-weight:700;margin-bottom:16px}
+.points-bar b{color:var(--gold);font-size:1.15rem}
+.attr-alloc{display:flex;flex-direction:column;gap:10px}
+.attr-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:12px 16px}
+.attr-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.attr-name{font-weight:800;color:var(--paper);font-size:1.05rem}
+.attr-desc{font-size:.8rem;color:#9aa0bd;line-height:1.5}
+.attr-stepper{display:flex;align-items:center;gap:10px;flex:none}
+.step-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid #46508a;background:#0b1026;color:var(--paper);font-size:1.3rem;line-height:1;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:border-color .12s,background .12s}
+.step-btn:hover:not(:disabled){border-color:var(--red)}
+.step-btn:disabled{opacity:.3;cursor:not-allowed}
+.attr-val{font-size:1.5rem;color:var(--gold);min-width:26px;text-align:center}
+.attr-word{font-size:.85rem;color:#b7bcd2;min-width:38px;text-align:center}
+.attr-legend{font-size:.8rem;color:#9aa0bd;line-height:1.8;margin-top:14px}
+@media(max-width:560px){.attr-row{flex-direction:column;align-items:stretch;gap:10px}.attr-stepper{justify-content:space-between}}
+.step-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.step-chip{min-width:42px;height:38px;padding:0 14px;border-radius:30px;border:1.5px solid #2a3258;background:#0f1530;color:#cfd4e6;font-family:inherit;font-weight:700;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
+.step-chip:hover{border-color:#46508a}
+.step-chip.cur{background:var(--red);border-color:var(--red);color:#fff}
+.step-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid #232a4d}
+.step-count{color:#9aa0bd;font-size:.9rem;white-space:nowrap}
+.step-foot .btn[disabled]{opacity:.35;cursor:not-allowed}
+.src-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.src-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:16px;cursor:pointer;transition:border-color .12s,background .12s;outline:none}
+.src-card:hover{border-color:#46508a}
+.src-card.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
+.src-card.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.src-name{font-weight:800;color:var(--paper);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.src-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px}
+.src-tag.free{background:var(--green);color:#04210f}
+.src-tag.cost{background:var(--gold);color:var(--ink)}
+.src-desc{font-size:.86rem;color:#b7bcd2;line-height:1.6}
+.src-summary{color:#d8dcec;margin-top:14px;line-height:1.7;font-weight:600}
+.src-note{color:#9aa0bd;font-size:.85rem;margin-top:6px;line-height:1.6}
+@media(max-width:600px){.src-grid{grid-template-columns:1fr}}
+.btn-sm{padding:6px 14px;font-size:.85rem;min-height:0}
+.pw-status{display:block;background:#0b1026;border-color:#46508a;color:#d8dcec;font-weight:600}
+.pw-status b{color:var(--gold)}
+.pw-type-sec{margin-bottom:22px}
+.pw-type-head{font-weight:800;color:var(--gold);letter-spacing:.06em;border-bottom:1.5px solid #2a3258;padding-bottom:6px;margin-bottom:12px}
+.pw-empty{color:#828aa8;font-style:italic;font-size:.88rem;padding:2px 0 6px}
+.pw-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:16px;margin-bottom:12px}
+.pw-card.added{border-color:var(--red)}
+.pw-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pw-name{font-weight:800;color:var(--paper);font-size:1.12rem}
+.pw-type-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;background:#232a4d;color:#aeb4d0}
+.pw-head .btn{margin-left:auto}
+.pw-examples{font-size:.8rem;color:#8b91ad;margin:8px 0 4px}
+.pw-desc{font-size:.9rem;color:#c7ccdf;line-height:1.65}
+.pw-block{margin-top:14px}
+.pw-block-label{font-size:.82rem;font-weight:700;color:#9aa0bd;margin-bottom:8px}
+.lvl-row{display:flex;flex-wrap:wrap;gap:8px}
+.lvl-btn{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;padding:8px 12px;border-radius:6px;border:1.5px solid #2a3258;background:#0b1026;color:#cfd4e6;font-family:inherit;font-weight:700;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
+.lvl-btn:hover:not(.disabled){border-color:#46508a}
+.lvl-btn.cur{background:var(--red);border-color:var(--red);color:#fff}
+.lvl-btn.disabled{opacity:.4;cursor:not-allowed}
+.lvl-na{font-size:.62rem;font-weight:600;opacity:.85}
+.lvl-desc{margin-top:10px;font-size:.86rem;color:#c7ccdf;line-height:1.6;background:#0b1026;border:1px solid #232a4d;border-radius:5px;padding:8px 12px}
+.pw-contrib{margin-top:14px;font-size:.9rem;color:#d8dcec;font-weight:600}
+.pw-contrib b{color:var(--gold)}
+.pw-contrib-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;background:#1a2440;color:#f2b705;border:1px solid #3a4673}
+.lim-tag{font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:20px;background:rgba(47,158,84,.18);color:var(--green);margin-left:6px}
+.slot-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.slot-empty{border:1.5px dashed #3a4673;border-radius:6px;padding:14px 16px;background:#0c1228;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.slot-empty-head{font-weight:700;color:#9aa0bd;font-size:.95rem}
+.slot-empty-acts{display:flex;gap:9px;flex-wrap:wrap}
+.slot-add-row{margin-top:12px}
+.store{margin-top:16px;border:1.5px solid var(--gold);border-radius:8px;background:#0b1026;overflow:hidden}
+.store-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:rgba(242,183,5,.10);border-bottom:1px solid #2a3258;flex-wrap:wrap}
+.store-title{font-weight:800;color:var(--gold);font-size:.95rem}
+.store-sec{padding:6px 16px 12px}
+.store-sec-head{font-size:.8rem;font-weight:700;color:#9aa0bd;margin:10px 0 6px}
+.store-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1.5px solid #2a3258;border-radius:6px;margin-bottom:8px;background:#0f1530}
+.store-item.taken{opacity:.55;border-style:dashed}
+.store-info{display:flex;flex-direction:column;gap:2px}
+.store-name{font-weight:700;color:var(--paper)}
+.store-ex{font-size:.78rem;color:#8b91ad}
+.choice-desc{color:#d7dbe8;font-size:.92rem;line-height:1.7;margin-bottom:10px}
+.choice-q{color:#9aa0bd;font-size:.86rem;font-weight:700;margin-bottom:2px}
+#choiceActions{flex-direction:column;align-items:stretch}
+#choiceActions .btn{width:100%}
+.bsec-sub{margin-top:22px}
+.resource-badge{font-weight:700;color:var(--gold);background:#1a2440;border:1px solid #3a4673;border-radius:20px;padding:4px 13px;font-size:.9rem;white-space:nowrap}
+.prof-desc{color:#c7ccdf;font-size:.92rem;line-height:1.7;margin-top:8px}
+.scene-list{margin:4px 0 0;padding-left:20px;color:#c7ccdf;font-size:.9rem;line-height:1.75}
+.scene-list li{margin-bottom:5px}
+.bond-input{width:100%;margin-top:10px;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;color:var(--paper);font-family:inherit;font-size:.92rem;padding:10px 12px;line-height:1.6;resize:vertical}
+.bond-input:focus{outline:none;border-color:var(--red)}
+.src-tag.sel{background:var(--red);color:#fff}
+.opt-name .src-tag{margin-left:8px;vertical-align:middle}
+.weak-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.weak-card{border:1.5px solid #2a3258;border-radius:6px;padding:14px 16px;background:#0f1530}
+.weak-card.on{border-color:var(--red);background:rgba(229,52,43,.07)}
+.weak-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.weak-name{font-weight:800;color:var(--paper)}
+.weak-name .src-tag{margin-left:8px;vertical-align:middle}
+.weak-desc{font-size:.88rem;color:#c7ccdf;line-height:1.65}
+.chosen-weak{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border:1.5px solid var(--red);border-radius:6px;background:rgba(229,52,43,.08);margin-bottom:8px}
+.cw-name{font-weight:700;color:var(--paper)}
+.tal-stepper{display:flex;align-items:center;gap:10px}
+.tal-count{min-width:22px;text-align:center;font-size:1.2rem;font-weight:900;color:var(--gold)}
+.tal-lock{font-size:.8rem;font-weight:600;color:var(--red)}
+.tal-subj-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tal-chip{background:#0b1026;border:1.5px solid #2a3258;color:#cfd4e6;padding:6px 13px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.85rem;transition:border-color .12s,background .12s,color .12s}
+.tal-chip:hover:not(.blocked){border-color:#46508a}
+.tal-chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.tal-chip.blocked{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.data-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:8px;padding:18px 16px;text-align:center}
+.data-val{font-size:2.6rem;font-weight:900;color:var(--gold);line-height:1}
+.data-label{font-weight:800;color:var(--paper);margin-top:6px}
+.data-formula{font-size:.8rem;color:#9aa0bd;margin-top:8px;line-height:1.5}
+.data-bonus{font-size:.78rem;color:var(--green);font-weight:700;margin-top:4px}
+.data-note{font-size:.82rem;color:#b7bcd2;line-height:1.6;margin-top:10px;text-align:left;border-top:1px solid #232a4d;padding-top:10px}
+@media(max-width:640px){.data-grid{grid-template-columns:1fr}}
 .opt-pills{display:flex;flex-wrap:wrap;gap:9px}
 .pill{background:#0f1530;border:1.5px solid #2a3258;color:#cfd4e6;padding:8px 16px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.95rem;transition:background .12s,border-color .12s,color .12s}
 .pill:hover{border-color:#46508a}
@@ -247,11 +378,11 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
         <span class="land-title display">選擇範型</span>
         <span class="land-cta display">快速創建角色 →</span>
       </button>
-      <button class="land-card land-card-disabled" id="landCustom" disabled>
+      <button class="land-card" id="landCustom">
+        <span class="land-badge">尚未完成</span>
         <span class="land-icon">✦</span>
         <span class="land-title display">自創英雄</span>
-        <span class="land-desc">打造原創英雄</span>
-        <span class="land-cta display">敬請期待</span>
+        <span class="land-cta display">打造原創英雄 →</span>
       </button>
     </div>
   </div>
@@ -284,6 +415,13 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
   </div>
 </section>
 
+<section class="screen" id="creatorScreen">
+  <div class="screen-inner">
+    <div class="topbar"><button class="btn btn-ghost" onclick="goHome()">← 返回</button></div>
+    <div id="creatorBody"></div>
+  </div>
+</section>
+
 <div class="toast" id="toast"></div>
 
 <div class="modal" id="modal"><div class="modal-box">
@@ -293,6 +431,12 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
     <button class="btn btn-ghost" id="modalCancel">返回填寫</button>
     <button class="btn btn-gold" id="modalOk">仍要繼續</button>
   </div>
+</div></div>
+
+<div class="modal" id="choiceModal"><div class="modal-box">
+  <h3 class="modal-title display" id="choiceTitle"></h3>
+  <div class="modal-body" id="choiceBody"></div>
+  <div class="modal-actions" id="choiceActions"></div>
 </div></div>
 
 <script>
@@ -1214,6 +1358,7 @@ function talentExport(t,subjIdx){
   return {name,body};
 }
 function rand(n){return Math.floor(Math.random()*n);}
+function escapeHTML(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function pick2(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,2).sort((x,y)=>x-y);}
 function peakAttr(attrs){let b=ATTR_ORDER[0];ATTR_ORDER.forEach(a=>{if(attrs[a]>attrs[b])b=a;});return b;}
 function tierColor(v){ if(v<=2)return"#d23b2f"; if(v<=4)return"#e8853a"; if(v<=6)return"#f2b705"; if(v<=8)return"#8fc23e"; return"#33c463"; }
@@ -1267,6 +1412,622 @@ let currentIndex=null;
 function blankSel(){return{archIndex:null,hero:"",real:"",look:"",note:"",powerSource:null,profession:null,professionTalent:null,professionTalentSubject:null,freeTalent:null,freeTalentSubject:null,personalities:[],motivation:null,flaw:null};}
 let sel=blankSel();
 let builderWired=false;
+
+/* ===================== 自創英雄（製作中） ===================== */
+const TIERS=[
+  {name:"少年菜鳥", en:"Teen Upstart",     points:20, attrCap:6,  powers:2, fame:0},
+  {name:"街頭悍將", en:"Street Defender",   points:26, attrCap:8,  powers:3, fame:1},
+  {name:"全球守衛", en:"Global Guardian",   points:32, attrCap:10, powers:4, fame:2},
+  {name:"宇宙勇者", en:"Cosmic Champion",   points:38, attrCap:12, powers:5, fame:3}
+];
+let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,storeOpen:false,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",identity:null,talents:[],weaknesses:[],step:0};
+let creatorWired=false;
+
+const CREATOR_ATTRS=[
+  {name:"格鬥",desc:"徒手搏擊的能力、技巧與熟練度"},
+  {name:"敏捷",desc:"協調性、速度、靈活度與精細動作控制"},
+  {name:"力量",desc:"肌肉蠻力、物理力道、韌性與耐力"},
+  {name:"理智",desc:"智商、理解力、知識與心理穩定度"},
+  {name:"直覺",desc:"本能反應、感官敏銳度、智慧與同理心"},
+  {name:"氣場",desc:"個人魅力、親和力與領袖風範"}
+];
+const ATTR_DESCRIPTORS=["","差勁","普通","良好","優秀","非凡","傑出","驚人","讚嘆","震撼","傳奇","神威","無敵"];
+// 異能來源（共 36 種，目前先收錄 6 種）
+const POWER_SOURCES=[
+  {name:"意外事故",desc:"你是一場危險事故的唯一倖存者，因為接觸到不穩定的物質而產生異變。"},
+  {name:"突變",desc:"你是變種人，在青少年時期突然覺醒了超能力。"},
+  {name:"超能力血統",desc:"你的父母是超級英雄，而你繼承了他們的能力。"},
+  {name:"武器精通",desc:"你接受過嚴格的訓練，精通各種武器的使用。"},
+  {name:"神祕遺物",desc:"你發現了一件古老遺物，在解讀其陌生的文字後獲得了神奇的力量。"},
+  {name:"外星裝置",desc:"一個外星物種贈予你非常先進的高科技裝置，這是其他人類無法觸及的技術。"}
+];
+
+// 異能類型、等級
+const POWER_TYPES=["攻擊類","控制類","防禦類","變化類","機動類","感知類"];
+const POWER_LEVELS=["基礎","強力","超級","終極"]; // 0..3
+// 所有異能共 96 個，目前先收錄 1 個（攻擊類·轟擊）做為測試
+const POWERS=[
+  {
+    name:"轟擊", type:"攻擊類", examples:"能量束、槍械、閃電、特技箭矢",
+    desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。",
+    levelDesc:{ "強力":"傷害 4、射程 0/4。", "超級":"傷害 5、射程 0/5。", "終極":"傷害 6、射程 0/6。" },
+    enh:[
+      {name:"爆發效果",desc:"發動此異能時，你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。"},
+      {name:"快速轟擊",desc:"當你成為射擊攻擊的目標時，你可以主動承受 1 點壓力，在對方的攻擊結算前，立刻使用反應動作進行 1 次射擊攻擊。你的這次攻擊仍會消耗你本輪的動作額度。"},
+      {name:"致命轟擊",desc:"此異能會造成撕裂傷害，代表你可以花費 1 顆額外的 :invincible-6: 來觸發「致命一擊」特技。"}
+    ],
+    lim:[
+      {name:"疲勞轟擊",desc:"只要發動此異能，你必定承受 1 點壓力（強推檢定所造成的壓力另計）。"},
+      {name:"縮短射程",desc:"無論等級為何，此異能的射程都是 0/1。"}
+    ]
+  }
+];
+
+// 職業（共 22 種，目前先收錄 1 種做測試）
+const CREATOR_PROFESSIONS=[
+  {
+    name:"學者",
+    desc:"你投身於學術世界，可能在學院、機構或大學擔任教師、講師、研究員、校長、圖書館員、教務長或院長。",
+    resource:5,
+    talents:[
+      {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
+      {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+      {name:"學識淵博",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰。隨機決定或自選以下 1 個主題（也可以自己發想）：",subjects:[
+        {name:"自然科學",desc:"你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。"},
+        {name:"社會科學",desc:"你能透過心理學、社會學、考古學、語言學與政治學來理解人類行為。"},
+        {name:"人文",desc:"你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義。"},
+        {name:"科技",desc:"你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械。"},
+        {name:"時事",desc:"你能掌握最新的新聞、娛樂、政治、體育與國際事務的脈動。"},
+        {name:"祕聞",desc:"你能理解通常不為人知的知識，例如魔法、靈性學、神祕學、超自然活動與祕術。"}
+      ]}
+    ],
+    bonds:[
+      {name:"有前途的學生",desc:"像海綿一樣吸收知識。"},
+      {name:"悠閒的行政人員",desc:"偶爾提供幫助，但品質普通。"},
+      {name:"仰慕你的助教",desc:"相信你無所不知。"}
+    ],
+    scenes:[
+      "你在知名的學府發表客座演講。",
+      "在辦公時間，你與一名需要幫助的學生會面。",
+      "你主持一場同行評審，討論最近在爭議性學術期刊上發表的文章。"
+    ]
+  }
+];
+
+// 天賦（共 51 個，目前先收錄 5 個做測試）
+const CREATOR_TALENTS=[
+  {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
+  {name:"巨獸剋星",desc:"對抗巨獸時，你的肉搏攻擊 +2 骰。"},
+  {name:"衝鋒陷陣",desc:"發動衝鋒攻擊時，你的`力量`檢定 +2 骰。"},
+  {name:"戰場老兵",desc:"在動作場景中，你可以主動承受 1 點壓力來保留上輪的先攻卡，而不需重新抽卡。"},
+  {name:"運籌帷幄",desc:"你可以使用快速動作進行`氣場`檢定來發號施令，而不是主要動作。"},
+  {name:"非凡魅力",desc:"你可以強推任何`氣場`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"靈活協調",desc:"你可以強推任何`敏捷`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"堅強防禦",desc:"當你受到攻擊時，你可以主動承受 1 點壓力來進行格擋或閃避，而不消耗該輪的動作額度。只要有足夠的`決心`，你就可以多次使用此天賦。"},
+  {name:"彈道偏斜",desc:"你可以格擋射擊攻擊，而且若你擲出的 :invincible-6: 超過格擋所需，你可以對攻擊者進行反擊。"},
+  {name:"堅定決心",desc:"你的`最大決心` +2。此天賦最多可以選擇 5 次。",max:5},
+  {name:"巧妙轉移",desc:"當你受到攻擊時，若你所處區塊內有其他盟友，你可以進行`氣場`檢定（無需動作）讓該盟友替你承受攻擊。你每次使用此天賦都會承受 1 點壓力。"},
+  {name:"輪擺閃躲",desc:"你不僅可以閃避射擊攻擊，也可以閃避肉搏攻擊。"},
+  {name:"頑強生命",desc:"你的`最大生命` +2。此天賦最多可以選擇 5 次。",max:5},
+  {name:"動如脫兔",desc:"當你進行閃避時，`敏捷`檢定 +2 骰。"},
+  {name:"極速反應",desc:"抽先攻卡時，你可以抽 2 張，而非 1 張。選擇你想保留哪一張，然後將另一張洗回牌堆。若有多名角色擁有此天賦，依喜好的順序處理，但英雄先於 NPC。"},
+  {name:"尋找破綻",desc:"作為肉搏攻擊的特技，你可以花費 1 個 :invincible-6: 來找出對手的防禦破綻，將`護甲`減半（無條件進位）。"},
+  {name:"無堅不摧",desc:"你可以強推任何`格鬥`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"忠誠護衛",desc:"若你所處區塊內有其他角色受到攻擊，你可以使用反應動作替他承受攻擊。若是肉搏攻擊則進行`格鬥`檢定；若是射擊攻擊則進行`敏捷`檢定。若你檢定成功，你會成功替對方承受攻擊。"},
+  {name:"強力重擊",desc:"若你捨棄本輪的快速動作，你的肉搏攻擊 +2 骰。"},
+  {name:"桀驁不馴",desc:"每場團務 1 次，你可以無視強推後所有的 :invincible-1:。"},
+  {name:"洞若觀火",desc:"你可以強推任何`直覺`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"激勵人心",desc:"以 1 個快速動作，你可以主動承受最多 5 點壓力，讓 1 名能夠與你溝通的盟友恢復等量的`決心`。"},
+  {name:"調查專家",desc:"若你待在某個區域數分鐘，你可以進行`直覺`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問以下其中 1 個問題：\n• 這裡發生了什麼事？\n• 這裡有隱藏什麼東西嗎？有的話，在哪裡？\n• 這裡有特別異常的細節嗎？\nGM 必須誠實回答，但可以含糊其辭。"},
+  {name:"專業殺手",desc:"當你造成重傷時，你可以擲 2 次重傷表，並選擇你想要的結果。"},
+  {name:"學識淵博",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰。隨機決定或自選以下 1 個主題（也可以自己發想）：",max:6,subjects:[
+    {name:"自然科學",desc:"你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。"},
+    {name:"社會科學",desc:"你能透過心理學、社會學、考古學、語言學與政治學來理解人類行為。"},
+    {name:"人文",desc:"你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義。"},
+    {name:"科技",desc:"你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械。"},
+    {name:"時事",desc:"你能掌握最新的新聞、娛樂、政治、體育與國際事務的脈動。"},
+    {name:"祕聞",desc:"你能理解通常不為人知的知識，例如魔法、靈性學、神祕學、超自然活動與祕術。"}
+  ]},
+  {name:"團隊領袖",desc:"以 1 個完整動作，你可以主動承受 1 點壓力並進行`氣場`檢定來激勵隊友。你每擲出 1 個 :invincible-6:，所有能夠與你溝通的隊友都會恢復 1 點`決心`（不包括你自己）。"},
+  {name:"獨行孤狼",desc:"你不需要參與社交場景，就可以在動作場景之間恢復`決心`。你休息數分鐘就能恢復等於`氣場`的`決心`，休息數小時就能恢復所有`決心`。不過你還是得描述一下你的「非社交場景」。"},
+  {name:"化險為夷",desc:"當你受到重傷時，你可以擲 2 次重傷表，並選擇你想要的結果。"},
+  {name:"搬弄是非",desc:"當你脅迫、敲詐或欺騙某人時，`氣場`檢定 +2 骰。"},
+  {name:"武術高手",desc:"你可以使用快速動作進行 -2 骰的徒手肉搏攻擊，而不是主要動作。"},
+  {name:"醫療專家",desc:"當你試圖穩定重傷時，`理智`檢定 +2 骰。此外，只要處於相同區塊，你可以使用`理智`來鼓舞崩潰的人，而不是`氣場`。"},
+  {name:"氣勢凌人",desc:"當你威脅他人服從你時，你可以進行 +2 骰的`力量`檢定，而不是`氣場`。"},
+  {name:"冷酷無情",desc:"你每次讓 1 名敵人陷入崩潰時，你就恢復 1 點`決心`。"}
+];
+
+// 弱點（非強制；每選 1 個 +1 創角點數，最多 2 個）
+const WEAKNESS_MAX=2;
+const WEAKNESSES=[
+  {name:"另類形態",desc:"你的其中 1 個異能來源需要你變身成另類形態。變身成另類形態需要 1 個完整動作並承受 1 點壓力。你只能維持另類形態數小時。在正常形態下，你會失去該異能來源的所有異能，而且你最高的 3 項屬性（若有相同則自行選擇）都會減半（無條件進位）。請在括號中記錄降低後的屬性值、最大生命、最大決心和肉搏傷害。"},
+  {name:"嗜血狂怒",desc:"你在激烈戰鬥中會失去控制，讓盟友陷入危險。在戰鬥期間，你必須持續戰鬥，直到你崩潰，或所有敵人逃跑或崩潰為止，不接受投降。處於相同區塊的盟友可以使用完整動作進行氣場檢定安撫你，讓你冷靜下來。若檢定失敗，你必須使用下個動作攻擊安撫你的角色。"},
+  {name:"詛咒",desc:"你被魔法、黑暗宿命或厄運所詛咒，具體內容在選擇此弱點時與 GM 一起討論。詛咒的細節可能差異很大，常見效果包括發動異能時承受更多壓力，或在特定情況下屬性檢定 -3 骰。詛咒範例：為了拯救愛人而與復仇靈魂立下契約，或每次從怪物形態變回正常後就變得更年輕。"},
+  {name:"駭人",desc:"你的外表或舉止會嚇到遇見你的人。你對陌生人進行的氣場檢定會 -3 骰（除非你試圖恐嚇對方）。當你首次與某人互動時，對方會對你抱持負面態度，並可能試圖避開你、逃跑，甚至攻擊你。"},
+  {name:"依賴裝備",desc:"你的其中 1 個異能來源是特殊的裝備。若該裝備遺失、失效或毀壞，你會失去該異能來源的所有異能。你的屬性不會受到影響。"},
+  {name:"手頭拮据",desc:"你的資源 -2（最低至 1）。此弱點可以多次選擇。",repeatable:true},
+  {name:"執迷不悟",desc:"你有 1 個全心全意追求的執迷目標（在選擇此弱點時決定）。當你面對執迷目標時，你會全神貫注，排除其他一切事物。此時，你在注意其他事物的直覺檢定會 -3 骰，跟執迷目標無關的其他檢定都 -1 骰（由 GM 判斷）。執迷目標範例：財富、復仇，或名聲。"},
+  {name:"自以為是",desc:"你相信自己無人能敵，直到情況急轉直下。若你當前的生命超過最大生命的一半（無條件進位），你不能強推檢定。"},
+  {name:"恐懼症",desc:"你對某個事物或特定類型的情況感到極度恐懼（在選擇此弱點時決定）。當你暴露於恐懼來源時，你必須在你每回合開始時進行氣場檢定（無需動作）。若檢定失敗，你會失去你的回合，而且在你下個回合開始前無法執行反應動作。"},
+  {name:"喪失異能",desc:"你在特定情況下會失去其中 1 個異能來源（具體條件在選擇此弱點時決定）。當條件生效時（由 GM 判斷），你無法使用該異能來源的任何異能。範例：暴露於特殊輻射或極低溫環境，或相同區塊內有來自你已毀母星的岩石。"},
+  {name:"依賴成癮",desc:"你有特定的依賴需求（在選擇此弱點時決定）。若你在數小時內沒有滿足依賴需求，你必須進行氣場檢定。若檢定失敗，你會承受 1 點壓力、無法恢復決心，而且所有屬性檢定 -1 骰。又經過數小時後，你必須再次進行檢定，若失敗則產生相同效果（屬性檢定的懲罰會疊加）。當你滿足需求或成功通過氣場檢定時，所有負面效果會立刻結束。範例：酒精、血液，或浸泡在海水中。"},
+  {name:"異鄉人",desc:"你來自遙遠的國度或完全不同的世界，或者失去了記憶。無論原因為何，你都不熟悉當地的風土民情。當你與陌生人互動時，所有氣場檢定都會 -3 骰。"},
+  {name:"超級戰衣",desc:"你的其中 1 個異能來源是高度先進的戰衣。穿上戰衣需要 1 個完整動作，而且戰衣只能維持數小時。在沒穿戰衣的情況下，你會失去該異能來源的所有異能，而且你的生理屬性（格鬥、敏捷、力量）會減半（無條件進位）。請在括號中記錄降低後的屬性值、最大生命、最大決心和肉搏傷害。此外，若你因傷害而崩潰，擲 1 顆骰子。若擲出 1，戰衣會損壞，必須修復才能再次使用（理智檢定，完整動作）。"},
+  {name:"通緝目標",desc:"你是某個危險敵人或組織的目標（在選擇此弱點時決定）。你甚至可能是逃避法律追捕的罪犯。你的對手應該是遊戲中的重要人物，GM 應該讓他在每次冒險中至少製造 1 次麻煩，或在戰役中每 3 場團務製造 1 次麻煩。"},
+  {name:"嚴重弱點",desc:"有某個特定的事物會對你造成傷害（在選擇此弱點時決定）。當你受到該來源的影響時，你受到的傷害會加倍，而且護甲無效。"}
+];
+
+function attrWord(v){ return ATTR_DESCRIPTORS[v]||""; }
+function resetCreatorAttrs(){ creator.attrs={}; CREATOR_ATTRS.forEach(a=>creator.attrs[a.name]=1); }
+function ensureCreatorAttrs(){ if(!creator.attrs) resetCreatorAttrs(); }
+function pointsTotal(){ return creator.tier!=null?TIERS[creator.tier].points:0; }
+function powerSourceCost(){ return Math.max(0,(creator.powerSources?creator.powerSources.length:0)-1); } // 第 1 種免費，其餘每種 1 點
+// ---- 異能欄位（容量）與花費 ----
+function ensureCreatorSlots(){ if(creator.slots==null) creator.slots=baseFreeSlots(); }
+function baseFreeSlots(){ return creator.tier!=null?TIERS[creator.tier].powers:0; }
+function totalSlots(){ ensureCreatorSlots(); return Math.max(1,creator.slots); }
+// 單一異能佔用的「異能欄位數」：基礎=1；每提升 1 級、每個強化各 +1；每個限制折抵 -1（最低 1）
+function powerContribution(p){ const extras=p.level+p.enh.length; return 1+Math.max(0,extras-p.lim.length); }
+function contribIfLevel(p,lv){ const extras=lv+p.enh.length; return 1+Math.max(0,extras-p.lim.length); }
+function contribIfEnhAdd(p){ const extras=p.level+p.enh.length+1; return 1+Math.max(0,extras-p.lim.length); }
+function powersUsed(){ return creator.powers.reduce((s,p)=>s+powerContribution(p),0); }
+function emptySlots(){ return totalSlots()-powersUsed(); }
+// 欄位相對免費額度的增減 → 點數：每多 1 格(額外購買) 花 2 點；每少 1 格(捨棄) 退 2 點
+function powerPointDelta(){ return (totalSlots()-baseFreeSlots())*2; }
+function maxLevelForTier(){ return creator.tier===3?2:1; } // 宇宙勇者可到超級(2)，其餘到強力(1)；終極(3)創角不可
+
+function findPower(id){ return creator.powers.find(p=>p.id===id); }
+function needSlot(msg){ showInfo("異能欄位不足", msg||"此操作需要 1 個空白異能欄位。請先騰出欄位，或在免費欄位用完後購買額外欄位。"); }
+function addPower(id){ if(findPower(id))return; if(emptySlots()<1){ needSlot(); return; } creator.powers.push({id,level:0,enh:[],lim:[]}); creator.storeOpen=false; renderCreator(); }
+function removePower(id){ creator.powers=creator.powers.filter(p=>p.id!==id); renderCreator(); }
+function setPowerLevel(id,lvl){ const p=findPower(id); if(!p)return; if(lvl<0||lvl>maxLevelForTier()||lvl===p.level)return;
+  if(powersUsed()-powerContribution(p)+contribIfLevel(p,lvl)>totalSlots()){ needSlot("提升等級需要 1 個空白異能欄位。"); return; }
+  p.level=lvl; renderCreator(); }
+function togglePwEnh(id,ei){ const p=findPower(id); if(!p)return; const i=p.enh.indexOf(ei);
+  if(i>=0){ p.enh.splice(i,1); renderCreator(); return; }
+  if(powersUsed()-powerContribution(p)+contribIfEnhAdd(p)>totalSlots()){ needSlot("新增強化需要 1 個空白異能欄位。"); return; }
+  p.enh.push(ei); renderCreator(); }
+// 限制：點選後跳出對話框，免費換取「升 1 級」或「1 個強化」（限制與其換得的項目皆免費，不佔欄位）
+function clickLimit(id,li){ const p=findPower(id); if(!p)return; const pw=POWERS[id];
+  if(p.lim.includes(li)){ const k=p.lim.indexOf(li); p.lim.splice(k,1);
+    if(powersUsed()>totalSlots()){ p.lim.push(li); needSlot("移除此限制會少 1 個折抵而超出欄位，請先騰出欄位或購買額外欄位。"); return; }
+    renderCreator(); return; }
+  const canLevel=p.level<maxLevelForTier();
+  const availEnh=pw.enh.map((e,ei)=>({e,ei})).filter(x=>!p.enh.includes(x.ei));
+  if(!canLevel&&availEnh.length===0){ showInfo("無可折抵項目","此異能已達本階級等級上限，且所有強化都已取得，沒有可用此限制免費換取的項目。"); return; }
+  const opts=[];
+  if(canLevel) opts.push({label:`免費升級至「${POWER_LEVELS[p.level+1]}」`,cls:"btn-gold",onClick:()=>{ p.lim.push(li); p.level++; renderCreator(); }});
+  availEnh.forEach(x=>opts.push({label:`免費換強化：${x.e.name}`,onClick:()=>{ p.lim.push(li); p.enh.push(x.ei); renderCreator(); }}));
+  opts.push({label:"取消",cls:"btn-ghost",onClick:null});
+  showChoice(`套用限制「${pw.lim[li].name}」`, `<p class="choice-desc">${fmtHTML(pw.lim[li].desc)}</p><p class="choice-q">此限制可免費換取以下其中 1 項：</p>`, opts);
+}
+// 欄位增減
+function discardSlot(){ if(emptySlots()<1)return; if(totalSlots()<=1){ showInfo("至少保留 1 格","你必須至少保留 1 個異能欄位。"); return; } creator.slots=totalSlots()-1; renderCreator(); }
+function addSlot(){ const base=baseFreeSlots(), cur=totalSlots(); const restoring=cur<base;
+  if(!restoring && emptySlots()>0) return; // 仍有空的免費欄位時不可購買額外
+  if(pointsLeft()<2){ showInfo("創角點數不足","新增異能欄位需要 2 點創角點數，但你的點數不足。"); return; }
+  creator.slots=cur+1; renderCreator(); }
+
+function pointsSpent(){ ensureCreatorAttrs(); ensureCreatorSlots(); return CREATOR_ATTRS.reduce((s,a)=>s+creator.attrs[a.name],0)+powerSourceCost()+powerPointDelta()+talentPointCost()+weaknessPointDelta(); }
+function pointsLeft(){ return pointsTotal()-pointsSpent(); }
+
+function adjustAttr(name,delta){
+  if(creator.tier==null) return;
+  ensureCreatorAttrs();
+  const cap=TIERS[creator.tier].attrCap, cur=creator.attrs[name];
+  let nv=cur+delta;
+  if(nv<1) nv=1; if(nv>cap) nv=cap;
+  if(delta>0 && nv>cur && pointsLeft()<=0) return;
+  creator.attrs[name]=nv; renderCreator();
+}
+function toggleSource(i){
+  if(creator.tier==null) return;
+  const arr=creator.powerSources, pos=arr.indexOf(i);
+  if(pos>=0){ arr.splice(pos,1); }
+  else { if(arr.length>=1 && pointsLeft()<1) return; arr.push(i); } // 額外來源需 1 點
+  renderCreator();
+}
+
+/* ---- 步驟定義（可自由前後切換、不鎖定） ---- */
+const CREATOR_STEPS=[
+  {chip:"1",   label:"1. 決定階級",      render:renderTierStep},
+  {chip:"2",   label:"2. 分配起始屬性",  render:renderAttrStep},
+  {chip:"3-A", label:"3-A 選擇異能來源", render:renderPowerSourceStep},
+  {chip:"3-B", label:"3-B 選擇異能",     render:renderPowerStep},
+  {chip:"4",   label:"4. 選擇職業",      render:renderProfessionStep},
+  {chip:"5",   label:"5. 選擇天賦",      render:renderTalentStep},
+  {chip:"6",   label:"6. 選擇弱點（非強制）", render:renderWeaknessStep},
+  {chip:"7",   label:"7. 計算數據",      render:renderDataStep}
+];
+
+function tierCard(t,i,selected){
+  const stat=(l,v)=>`<div class="tier-stat"><span class="tier-stat-num display">${v}</span><span class="tier-stat-label">${l}</span></div>`;
+  return `<div class="tier-card${selected?" sel":""}" data-tier="${i}" role="button" tabindex="0" aria-pressed="${selected?"true":"false"}">
+    <span class="tier-name display">${t.name}</span><span class="tier-en">${t.en}</span>
+    <div class="tier-stats">${stat("創角點數",t.points)}${stat("起始屬性上限",t.attrCap)}${stat("免費異能數量",t.powers)}${stat("起始聲望",t.fame)}</div>
+  </div>`;
+}
+function needTierHint(){ return `<p class="tier-hint">請先回到「決定階級」選擇英雄階級。</p>`; }
+
+function renderTierStep(){
+  return `<p class="step-intro">在遊戲正式開始前，跟 GM 一起討論決定英雄的階級。通常整支團隊的英雄階級都會一樣。GM 會根據英雄階級來安排遊戲風格，以及英雄會遇到的挑戰。</p>
+    <div class="tier-grid">${TIERS.map((t,i)=>tierCard(t,i,creator.tier===i)).join("")}</div>`;
+}
+function renderAttrStep(){
+  if(creator.tier==null) return needTierHint();
+  ensureCreatorAttrs();
+  const cap=TIERS[creator.tier].attrCap, left=pointsLeft();
+  const rows=CREATOR_ATTRS.map(a=>{
+    const v=creator.attrs[a.name];
+    return `<div class="attr-row">
+      <div class="attr-info"><span class="attr-name">${a.name}</span><span class="attr-desc">${a.desc}</span></div>
+      <div class="attr-stepper">
+        <button class="step-btn" data-attr="${a.name}" data-delta="-1"${v<=1?" disabled":""} aria-label="${a.name}減少">−</button>
+        <span class="attr-val display">${v}</span>
+        <span class="attr-word">${attrWord(v)}</span>
+        <button class="step-btn" data-attr="${a.name}" data-delta="1"${(v>=cap||left<=0)?" disabled":""} aria-label="${a.name}增加">＋</button>
+      </div>
+    </div>`;
+  }).join("");
+  return `<p class="step-intro">英雄擁有 6 項屬性，用來表示英雄的天生素質。每項屬性的數值範圍介於 1～12，普通人的屬性值為 2。將創角點數 1:1 自由分配到各項屬性：每項最低為 1（須先花 6 點作為保底），最高不超過此階級上限 <b>${cap}</b>。</p>
+    <div class="attr-alloc">${rows}</div>`;
+}
+function renderPowerSourceStep(){
+  if(creator.tier==null) return needTierHint();
+  const arr=creator.powerSources;
+  const cards=POWER_SOURCES.map((s,i)=>{
+    const selPos=arr.indexOf(i), isSel=selPos>=0;
+    const tag = isSel
+      ? (selPos===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">已付 1 點</span>`)
+      : (arr.length===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">需 1 點</span>`);
+    const disabled = !isSel && arr.length>=1 && pointsLeft()<1;
+    return `<div class="src-card${isSel?" sel":""}${disabled?" disabled":""}" data-source="${i}" role="button" tabindex="0" aria-pressed="${isSel?"true":"false"}">
+      <div class="src-name">${s.name}${tag}</div><div class="src-desc">${s.desc}</div>
+    </div>`;
+  }).join("");
+  const n=arr.length, cost=powerSourceCost();
+  const summary = n===0
+    ? `尚未選擇來源，至少需選 1 種。`
+    : `已選 ${n} 種異能來源（免費 1 種${cost>0?`，額外 ${cost} 種，共花費 ${cost} 點創角點數`:""}）。`;
+  const note = n>1 ? `<p class="src-note">擁有多種來源時，之後分配異能時須指定每個異能屬於哪一種來源。</p>` : "";
+  return `<p class="step-intro">所有英雄都擁有「異能」，也就是超越凡人的能力。每個異能都必須源自某種「異能來源」，說明此異能的來龍去脈，幫助你更好扮演角色。你可以免費挑選 1 種異能來源；通常你只會有 1 種，所有異能都源自它。你也可以花費 1 點創角點數額外購買 1 種來源。（異能來源共 36 種，目前先收錄 6 種。）</p>
+    <div class="src-grid">${cards}</div>
+    <p class="src-summary">${summary}</p>${note}`;
+}
+
+function powerCard(p){
+  const pw=POWERS[p.id], contrib=powerContribution(p), used=powersUsed(), total=totalSlots(), maxLvl=maxLevelForTier();
+  const lvlBtns=POWER_LEVELS.map((nm,li)=>{
+    const cur=p.level===li; let dis=false, reason="";
+    if(li>maxLvl){ dis=true; reason=li===3?"創角不可":"僅宇宙勇者"; }
+    else if(li>p.level && used-contrib+contribIfLevel(p,li)>total){ dis=true; reason="需空欄位"; }
+    return `<button class="lvl-btn${cur?" cur":""}${dis?" disabled":""}" data-pw-level="${p.id}:${li}"${dis?' aria-disabled="true"':''}>${nm}${reason?`<span class="lvl-na">${reason}</span>`:""}</button>`;
+  }).join("");
+  const lvlDescNow = p.level>0 ? `<div class="lvl-desc"><b>${POWER_LEVELS[p.level]}</b>：${fmtHTML(pw.levelDesc[POWER_LEVELS[p.level]]||"")}</div>` : "";
+  const enhRows=pw.enh.map((e,ei)=>{
+    const on=p.enh.includes(ei);
+    const dis = !on && used-contrib+contribIfEnhAdd(p)>total;
+    return `<div class="opt${on?" sel":""}${dis?" disabled":""}" ${dis?'aria-disabled="true"':'role="button" tabindex="0"'} data-pw-enh="${p.id}:${ei}"><span class="opt-mark"></span><div><span class="opt-name">${e.name}${dis?' <span class="lvl-na">需空欄位</span>':''}</span><span class="opt-desc">${fmtHTML(e.desc)}</span></div></div>`;
+  }).join("");
+  const limRows=pw.lim.map((l,li)=>{
+    const on=p.lim.includes(li);
+    return `<div class="opt${on?" sel":""}" role="button" tabindex="0" data-pw-lim="${p.id}:${li}"><span class="opt-mark"></span><div><span class="opt-name">${l.name}${on?' <span class="lim-tag">已折抵</span>':''}</span><span class="opt-desc">${fmtHTML(l.desc)}</span></div></div>`;
+  }).join("");
+  return `<div class="pw-card added">
+    <div class="pw-head"><span class="pw-name">${pw.name}</span><span class="pw-type-tag">${pw.type}</span><span class="pw-contrib-tag">佔用 ${contrib} 格</span><button class="btn btn-ghost btn-sm" data-pw-remove="${p.id}">移除</button></div>
+    <div class="pw-examples">範例：${pw.examples}</div>
+    <div class="pw-desc">${fmtHTML(pw.desc)}</div>
+    <div class="pw-block"><div class="pw-block-label">等級（每升 1 級佔用 +1 格；終極不可、超級僅宇宙勇者）</div><div class="lvl-row">${lvlBtns}</div>${lvlDescNow}</div>
+    <div class="pw-block"><div class="pw-block-label">強化（每項佔用 +1 格）</div>${enhRows}</div>
+    <div class="pw-block"><div class="pw-block-label">限制（免費；點選後選擇免費升級或免費換 1 個強化）</div>${limRows}</div>
+  </div>`;
+}
+
+function renderPowerStep(){
+  if(creator.tier==null) return needTierHint();
+  ensureCreatorSlots();
+  const base=baseFreeSlots(), total=totalSlots(), used=powersUsed(), empty=emptySlots(), maxLvl=maxLevelForTier(), delta=total-base;
+  const slotInfo = delta===0 ? `共 ${total} 格，皆為免費額度`
+    : delta<0 ? `共 ${total} 格（免費額度 ${base}，已捨棄 ${-delta} 格／退還 ${-delta*2} 點）`
+    : `共 ${total} 格（免費額度 ${base}，已額外購買 ${delta} 格／花費 ${delta*2} 點）`;
+  const status=`已使用 <b>${used}</b> / ${total} 格異能欄位（${slotInfo}）。`;
+
+  const powerCards=creator.powers.map(p=>powerCard(p)).join("");
+  let emptyCards="";
+  for(let s=0;s<empty;s++){
+    emptyCards+=`<div class="slot-empty">
+      <div class="slot-empty-head">空白異能欄位</div>
+      <div class="slot-empty-acts">
+        <button class="btn btn-sm" data-slot-acquire="1">＋ 獲得異能</button>
+        <button class="btn btn-ghost btn-sm" data-slot-discard="1"${total<=1?" disabled":""}>✕ 捨棄此欄位（+2 點）</button>
+      </div>
+    </div>`;
+  }
+  let addBtn="";
+  if(total<base) addBtn=`<button class="btn btn-ghost" data-add-slot="1"${pointsLeft()<2?" disabled":""}>↩ 還原 1 個免費欄位（−2 點）</button>`;
+  else if(empty===0) addBtn=`<button class="btn btn-ghost" data-add-slot="1"${pointsLeft()<2?" disabled":""}>＋ 購買額外異能欄位（−2 點）</button>`;
+
+  let store="";
+  if(creator.storeOpen){
+    const secs=POWER_TYPES.map(tp=>{
+      const avail=POWERS.map((pw,id)=>({pw,id})).filter(x=>x.pw.type===tp&&!findPower(x.id));
+      const taken=POWERS.map((pw,id)=>({pw,id})).filter(x=>x.pw.type===tp&&findPower(x.id));
+      let inner;
+      if(!avail.length&&!taken.length) inner=`<p class="pw-empty">此類型的異能陸續收錄中。</p>`;
+      else inner=avail.map(x=>`<div class="store-item"><div class="store-info"><span class="store-name">${x.pw.name}</span><span class="store-ex">範例：${x.pw.examples}</span></div><button class="btn btn-sm" data-pw-add="${x.id}">選擇</button></div>`).join("")
+        + taken.map(x=>`<div class="store-item taken"><div class="store-info"><span class="store-name">${x.pw.name}</span><span class="store-ex">已加入你的異能</span></div></div>`).join("");
+      return `<div class="store-sec"><div class="store-sec-head">${tp}</div>${inner}</div>`;
+    }).join("");
+    store=`<div class="store"><div class="store-bar"><span class="store-title">異能清單（共 96 個，目前先收錄 1 個做測試）</span><button class="btn btn-ghost btn-sm" data-store-close="1">關閉清單</button></div>${secs}</div>`;
+  }
+
+  return `<p class="step-intro">所有英雄都擁有「異能」。本階級提供 <b>${base}</b> 個免費異能欄位：在每個欄位上「獲得異能」從清單挑選，或「捨棄」用不到的欄位換取創角點數（每捨棄 1 格退 2 點，至少保留 1 格）。提升等級或加上強化會佔用更多欄位；免費欄位用完後，可花 2 點購買額外欄位。<b>限制免費折抵</b>──點選某個限制即可選擇免費升 1 級，或免費換取 1 個強化。創角時最高可升到 <b>${POWER_LEVELS[maxLvl]}</b>（終極不可，超級僅限宇宙勇者）。</p>
+    <div class="points-bar pw-status">${status}</div>
+    <div class="slot-list">${powerCards}${emptyCards}</div>
+    ${addBtn?`<div class="slot-add-row">${addBtn}</div>`:""}
+    ${store}`;
+}
+function profSecHead(title,hint,rollKind){
+  return `<div class="sec-head"><div><span class="sec-title display">${title}</span>${hint?`<span class="sec-hint">${hint}</span>`:""}</div>${rollKind?`<button class="dice-btn" data-prof-roll="${rollKind}">🎲 隨機</button>`:""}</div>`;
+}
+function selectProfession(i){ if(creator.profession!==i){ creator.profession=i; creator.professionTalent=null; creator.professionTalentSubject=null; creator.bondMode=null; creator.bondIdx=null; creator.bondCustom=""; } renderCreator(); }
+function selectProfTalent(i){ creator.professionTalent=i; creator.professionTalentSubject=null; renderCreator(); }
+function selectProfSubj(i){ creator.professionTalentSubject=i; renderCreator(); }
+function selectBondPreset(i){ creator.bondMode="preset"; creator.bondIdx=i; renderCreator(); }
+function chooseBondCustom(){ creator.bondMode="custom"; creator.bondIdx=null; renderCreator(); }
+function selectIdentity(v){ creator.identity=v; renderCreator(); }
+function rollProfTalent(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; creator.professionTalent=rand(p.talents.length); const t=p.talents[creator.professionTalent]; creator.professionTalentSubject=t.subjects?rand(t.subjects.length):null; renderCreator(); }
+function rollProfSubj(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p||creator.professionTalent==null)return; const t=p.talents[creator.professionTalent]; if(!t.subjects)return; creator.professionTalentSubject=rand(t.subjects.length); renderCreator(); }
+function rollBond(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; creator.bondMode="preset"; creator.bondIdx=rand(p.bonds.length); renderCreator(); }
+
+function renderProfessionStep(){
+  const intro=`<p class="step-intro">職業代表你的背景、平民生活或日常工作。選擇 1 個職業，並決定你的真實身分要保密還是公開。每個職業提供：免費的職業天賦（自選或擲骰）、起始資源值、1 段關鍵羈絆（可自選／自創／擲骰，細節於後續步驟完成），以及社交場景靈感。（職業共 22 種，目前先收錄 1 種做測試。）</p>`;
+  const profCards=CREATOR_PROFESSIONS.map((p,i)=>`<div class="src-card${creator.profession===i?" sel":""}" data-prof="${i}" role="button" tabindex="0" aria-pressed="${creator.profession===i?"true":"false"}"><div class="src-name">${p.name}</div><div class="src-desc">${p.desc}</div></div>`).join("");
+  const picker=`<div class="src-grid">${profCards}</div>`;
+  const idRow=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">真實身分</span><span class="sec-hint">保密或公開</span></div></div>
+    <div class="opt-pills">
+      <button class="pill${creator.identity==="secret"?" sel":""}" data-identity="secret">保密</button>
+      <button class="pill${creator.identity==="public"?" sel":""}" data-identity="public">公開</button>
+    </div></div>`;
+  if(creator.profession==null) return intro+picker+idRow;
+  const p=CREATOR_PROFESSIONS[creator.profession];
+  const talHTML=p.talents.map((t,i)=>{
+    let h=optRow("profTalent",i,t.name,t.desc,creator.professionTalent===i);
+    if(creator.professionTalent===i&&t.subjects){
+      h+=`<div class="subject-inline">${profSecHead("專精主題","1D"+t.subjects.length+" 或自選 1 個","subject")}${t.subjects.map((s,j)=>optRow("profSubj",j,s.name,s.desc,creator.professionTalentSubject===j)).join("")}</div>`;
+    }
+    return h;
+  }).join("");
+  const bondHTML=p.bonds.map((b,i)=>optRow("bond",i,b.name,b.desc,creator.bondMode==="preset"&&creator.bondIdx===i)).join("")
+    +`<div class="opt${creator.bondMode==="custom"?" sel":""}" data-bond-custom-pick="1" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">自創關鍵羈絆</span><span class="opt-desc">自行描述 1 段與職業有關的重要人際關係。</span></div></div>`
+    +(creator.bondMode==="custom"?`<textarea class="bond-input" data-bond-custom="1" rows="2" placeholder="描述你的關鍵羈絆（例如：栽培你的恩師，總在關鍵時刻給你指引…）">${escapeHTML(creator.bondCustom)}</textarea>`:"");
+  const sceneHTML=`<ul class="scene-list">${p.scenes.map(s=>`<li>${s}</li>`).join("")}</ul>`;
+  return intro+picker+idRow
+    +`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">職業：${p.name}</span></div><span class="resource-badge">資源 ${p.resource}</span></div><p class="prof-desc">${p.desc}</p></div>`
+    +`<div class="bsec-sub">${profSecHead("職業天賦","1D"+p.talents.length+" 或自選 1 個（免費）","talent")}${talHTML}</div>`
+    +`<div class="bsec-sub">${profSecHead("關鍵羈絆","1D"+p.bonds.length+"、自選或自創","bond")}${bondHTML}</div>`
+    +`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">社交場景靈感</span></div></div>${sceneHTML}</div>`;
+}
+const CREATOR_FREE_TALENTS=1; // 自選天賦免費額度（職業天賦另計於步驟 4）
+function talentPointCost(){ return Math.max(0,(creator.talents?creator.talents.length:0)-CREATOR_FREE_TALENTS); }
+function talentMaxCount(i){ return CREATOR_TALENTS[i].max||1; }
+function countTalent(i){ return creator.talents.filter(t=>t.id===i).length; }
+function hasTalentSubject(i,subj){ return creator.talents.some(t=>t.id===i&&t.subject===subj); }
+function professionTalentName(){ if(creator.profession==null||creator.professionTalent==null) return null; return CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent].name; }
+function isCreatorTalentBlocked(i){ const t=CREATOR_TALENTS[i], pn=professionTalentName(); return pn!=null && t.name===pn && !talentRepeatable(t.name); }
+// 學識淵博：若職業天賦也是學識淵博，其主題不可在此重複選取
+function isLoreSubjectBlocked(subj){ return professionTalentName()==="學識淵博" && creator.professionTalentSubject===subj; }
+function addTalentInstance(i,subject){
+  subject = (subject===undefined?null:subject);
+  if(isCreatorTalentBlocked(i)) return;
+  const t=CREATOR_TALENTS[i], max=talentMaxCount(i);
+  if(countTalent(i)>=max){ showInfo("已達上限",`「${t.name}」最多可選擇 ${max} 次。`); return; }
+  if(t.subjects){ if(subject==null) return; if(isLoreSubjectBlocked(subject)) return; if(hasTalentSubject(i,subject)) return; }
+  if(creator.talents.length>=CREATOR_FREE_TALENTS && pointsLeft()<1){ showInfo("創角點數不足","2 個免費天賦（職業天賦＋自選天賦）已用完，再多選 1 個天賦需要 1 點創角點數，但你的點數不足。"); return; }
+  creator.talents.push({id:i,subject}); renderCreator();
+}
+function removeTalentInstance(i,subject){
+  subject = (subject===undefined?null:subject);
+  for(let k=0;k<creator.talents.length;k++){ const t=creator.talents[k]; if(t.id===i && (subject==null||t.subject===subject)){ creator.talents.splice(k,1); renderCreator(); return; } }
+}
+function toggleTalentSubject(i,subj){ if(hasTalentSubject(i,subj)) removeTalentInstance(i,subj); else addTalentInstance(i,subj); }
+function talentCard(i){
+  const t=CREATOR_TALENTS[i], count=countTalent(i), max=talentMaxCount(i), hasSub=!!t.subjects, blocked=isCreatorTalentBlocked(i);
+  const nextFree = creator.talents.length<CREATOR_FREE_TALENTS, costLabel = nextFree?"免費":"1 點";
+  let tags="";
+  if(blocked){ tags=""; }
+  else { if(count>0) tags+=`<span class="src-tag sel">已選${(max>1||hasSub)?` ×${count}`:""}</span>`; if(max>1) tags+=`<span class="src-tag free">可選 ${max} 次</span>`; }
+  let control="";
+  if(blocked){ control=`<span class="tal-lock">🔒 已作為職業天賦取得，天賦不可重複</span>`; }
+  else if(hasSub){
+    control=`<div class="tal-subj-row">${t.subjects.map((s,j)=>{
+      const on=hasTalentSubject(i,j), sb=isLoreSubjectBlocked(j);
+      return `<button class="tal-chip${on?" on":""}${sb?" blocked":""}" data-tal-subj="${i}:${j}"${sb?" disabled":""}>${s.name}${on?" ✓":""}</button>`;
+    }).join("")}</div>`;
+  }
+  else if(max>1){
+    control=`<div class="tal-stepper"><button class="btn btn-ghost btn-sm" data-tal-remove="${i}"${count<=0?" disabled":""}>−</button><span class="tal-count display">${count}</span><button class="btn btn-sm" data-tal-add="${i}"${count>=max?" disabled":""}>＋ 選擇（${costLabel}）</button></div>`;
+  }
+  else {
+    control = count>0 ? `<button class="btn btn-ghost btn-sm" data-tal-remove="${i}">✓ 已選（移除）</button>`
+                      : `<button class="btn btn-sm" data-tal-add="${i}">＋ 選擇（${costLabel}）</button>`;
+  }
+  return `<div class="weak-card${count>0?" on":""}"><div class="weak-head"><span class="weak-name">${t.name}${tags}</span>${hasSub?"":control}</div><div class="weak-desc">${fmtHTML(t.desc)}</div>${hasSub?control:""}</div>`;
+}
+function renderTalentStep(){
+  const pn=professionTalentName(), chosen=creator.talents.length;
+  const paid=talentPointCost(), free=Math.min(chosen,CREATOR_FREE_TALENTS);
+  const profLine = pn ? `已獲得職業天賦：<b>${pn}</b>（步驟 4），視為 2 個免費天賦中的 1 個。` : `尚未於步驟 4 選擇職業天賦──那會是你 2 個免費天賦中的第 1 個。`;
+  const rows=CREATOR_TALENTS.map((t,i)=>talentCard(i)).join("");
+  const status=`自選天賦：已選 <b>${chosen}</b> 個（免費 ${free} / ${CREATOR_FREE_TALENTS}${paid>0?`，額外 ${paid} 個，花費 ${paid} 點創角點數`:""}）。`;
+  return `<p class="step-intro">「天賦」是讓英雄取得優勢的各種技巧、招式與次要能力。創角時免費獲得 <b>2 個天賦</b>：1 個職業天賦（已於上一步選定）＋1 個自選天賦。用完這 2 個免費天賦後，每多選 1 個天賦花費 <b>1 點</b>創角點數。部分天賦可重複選取（如堅定決心、頑強生命最多 5 次；學識淵博每個主題各 1 次），每多 1 份照樣計入點數與數據加成。（天賦共 51 個，目前先收錄 ${CREATOR_TALENTS.length} 個做測試。）</p>
+    <p class="src-note">${profLine}</p>
+    <div class="talent-list">${rows}</div>
+    <p class="src-summary">${status}</p>`;
+}
+function weaknessPointDelta(){ return -(creator.weaknesses?creator.weaknesses.length:0); } // 每個弱點 +1 創角點數（降低 spent）
+function addWeakness(i){
+  if(creator.weaknesses.length>=WEAKNESS_MAX){ showInfo("已達上限",`創角時最多只能選擇 ${WEAKNESS_MAX} 個弱點。`); return; }
+  if(!WEAKNESSES[i].repeatable && creator.weaknesses.includes(i)) return;
+  creator.weaknesses.push(i); renderCreator();
+}
+function removeWeaknessAt(pos){
+  if(pos<0||pos>=creator.weaknesses.length) return;
+  if(pointsLeft()<1){ showInfo("點數不足，無法移除","移除此弱點會少 1 點創角點數，但你已花用該點數。請先調整屬性、異能或天賦，再移除弱點。"); return; }
+  creator.weaknesses.splice(pos,1); renderCreator();
+}
+function removeWeaknessId(i){ const pos=creator.weaknesses.indexOf(i); if(pos>=0) removeWeaknessAt(pos); }
+function renderWeaknessStep(){
+  const cnt=creator.weaknesses.length;
+  const intro=`<p class="step-intro">「弱點」是讓英雄生活更複雜的限制或缺陷。選擇弱點並非必要，但<b>每選 1 個弱點可額外獲得 1 點創角點數</b>。創角時最多選擇 <b>${WEAKNESS_MAX}</b> 個弱點。（「手頭拮据」可重複選擇，但仍受 ${WEAKNESS_MAX} 個上限限制。）</p>`;
+  const status=`已選 <b>${cnt}</b> / ${WEAKNESS_MAX} 個弱點${cnt>0?`，獲得 <b>${cnt}</b> 點創角點數`:""}。`;
+  let chosen="";
+  if(cnt>0){
+    chosen=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">已選弱點</span></div></div>`
+      +creator.weaknesses.map((wi,pos)=>`<div class="chosen-weak"><span class="cw-name">${WEAKNESSES[wi].name}</span><button class="btn btn-ghost btn-sm" data-weak-remove="${pos}">移除（−1 點）</button></div>`).join("")
+      +`</div>`;
+  }
+  const full=cnt>=WEAKNESS_MAX;
+  const rows=WEAKNESSES.map((w,i)=>{
+    const count=creator.weaknesses.filter(x=>x===i).length;
+    let btn;
+    if(count>0&&!w.repeatable){ btn=`<button class="btn btn-ghost btn-sm" data-weak-remove-id="${i}">✓ 已選（移除）</button>`; }
+    else if(full){ btn=`<button class="btn btn-sm" disabled>已達上限</button>`; }
+    else { btn=`<button class="btn btn-sm" data-weak-add="${i}">＋ 選擇${w.repeatable&&count>0?"（再選 1 次）":""}</button>`; }
+    const tags=`${count>0?`<span class="src-tag sel">已選${w.repeatable&&count>1?` ×${count}`:""}</span>`:""}${w.repeatable?`<span class="src-tag free">可重複</span>`:""}`;
+    return `<div class="weak-card${count>0?" on":""}"><div class="weak-head"><span class="weak-name">${w.name}${tags}</span>${btn}</div><div class="weak-desc">${fmtHTML(w.desc)}</div></div>`;
+  }).join("");
+  return intro+`<div class="points-bar">${status}</div>`+chosen+`<div class="weak-list">${rows}</div>`;
+}
+// 創角數據計算（沿用 statModsFromText 解析天賦／異能的數據加成）
+function creatorStatMods(){
+  const tot={health:0,resolve:0,melee:0};
+  const addStat=s=>{if(!s)return;tot.health+=s.health||0;tot.resolve+=s.resolve||0;tot.melee+=s.melee||0;};
+  const addEntry=o=>{if(!o)return;if(o.stat)addStat(o.stat);else addStat(statModsFromText(o.desc||""));};
+  (creator.powers||[]).forEach(p=>{const pw=POWERS[p.id];if(pw&&pw.stat)addStat(pw.stat);});
+  if(creator.profession!=null&&creator.professionTalent!=null) addEntry(CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent]);
+  (creator.talents||[]).forEach(t=>addEntry(CREATOR_TALENTS[t.id]));
+  return tot;
+}
+function creatorDerived(){
+  ensureCreatorAttrs(); const a=creator.attrs, ceil=Math.ceil, mod=creatorStatMods();
+  return {
+    health:ceil((a.格鬥+a.敏捷+a.力量)/2)+mod.health,
+    resolve:ceil((a.理智+a.直覺+a.氣場)/2)+mod.resolve,
+    melee:ceil(a.力量/2)+mod.melee,
+    mod
+  };
+}
+function renderDataStep(){
+  if(creator.tier==null) return needTierHint();
+  ensureCreatorAttrs();
+  const a=creator.attrs, d=creatorDerived();
+  const card=(label,val,formula,note,bonus)=>`<div class="data-card"><div class="data-val display">${val}</div><div class="data-label">${label}</div><div class="data-formula">${formula}</div>${bonus>0?`<div class="data-bonus">（含天賦／異能加成 +${bonus}）</div>`:""}<div class="data-note">${note}</div></div>`;
+  return `<p class="step-intro">根據你分配的屬性，自動計算英雄的三項衍生數據。數值會隨屬性與所選天賦／異能即時更新。</p>
+    <div class="data-grid">
+      ${card("最大生命",d.health,`⌈(格鬥 ${a.格鬥} ＋ 敏捷 ${a.敏捷} ＋ 力量 ${a.力量}) ÷ 2⌉`,"承受「傷害」會減少生命。當生命歸零時，你會因傷害而崩潰。",d.mod.health)}
+      ${card("最大決心",d.resolve,`⌈(理智 ${a.理智} ＋ 直覺 ${a.直覺} ＋ 氣場 ${a.氣場}) ÷ 2⌉`,"承受「壓力」會減少決心。當決心歸零時，你會因壓力而崩潰。",d.mod.resolve)}
+      ${card("基礎肉搏傷害",d.melee,`⌈力量 ${a.力量} ÷ 2⌉`,"近身肉搏攻擊命中時造成的基礎傷害。",d.mod.melee)}
+    </div>`;
+}
+function renderCreator(){
+  const step=CREATOR_STEPS[creator.step];
+  const nav=`<div class="step-nav">${CREATOR_STEPS.map((s,i)=>`<button class="step-chip${i===creator.step?" cur":""}" data-step="${i}">${s.chip}</button>`).join("")}</div>`;
+  const pbar=(creator.step>=1&&creator.tier!=null)?`<div class="points-bar">剩餘創角點數 <b>${pointsLeft()}</b> / ${pointsTotal()}</div>`:"";
+  const content=`<section class="bsec"><div class="sec-head"><span class="sec-title display">${step.label}</span></div>${pbar}${step.render()}</section>`;
+  const foot=`<div class="step-foot">
+      <button class="btn btn-ghost" data-nav="prev"${creator.step===0?" disabled":""}>← 上一步</button>
+      <span class="step-count">步驟 ${creator.step+1} / ${CREATOR_STEPS.length}</span>
+      <button class="btn" data-nav="next"${creator.step===CREATOR_STEPS.length-1?" disabled":""}>下一步 →</button>
+    </div>`;
+  document.getElementById("creatorBody").innerHTML=`<div class="builder-intro">
+      <div class="builder-head"><span class="display">自創英雄</span></div>
+      <p class="builder-sub">打造完全原創的超級英雄。步驟之間可自由切換、隨時回頭修改。</p>
+    </div>
+    <div class="wip-banner">🚧 此功能尚未完成。目前開放到「7. 計算數據」，後續步驟陸續製作中。</div>
+    ${nav}${content}${foot}`;
+}
+function gotoStep(i){ if(i<0||i>=CREATOR_STEPS.length) return; creator.step=i; renderCreator(); window.scrollTo(0,0); }
+function selectTier(ti){
+  if(creator.tier!==ti){ creator.tier=ti; resetCreatorAttrs(); creator.powerSources=[]; creator.powers=[]; creator.slots=TIERS[ti].powers; creator.storeOpen=false; creator.talents=[]; creator.weaknesses=[]; }
+  renderCreator();
+}
+function wireCreator(){
+  if(creatorWired) return; creatorWired=true;
+  const body=document.getElementById("creatorBody");
+  body.addEventListener("click",e=>{
+    const nav=e.target.closest("[data-nav]");
+    if(nav){ gotoStep(creator.step+(nav.dataset.nav==="next"?1:-1)); return; }
+    const chip=e.target.closest("[data-step]");
+    if(chip){ gotoStep(+chip.dataset.step); return; }
+    const st=e.target.closest("[data-attr]");
+    if(st){ adjustAttr(st.dataset.attr,+st.dataset.delta); return; }
+    const src=e.target.closest("[data-source]");
+    if(src){ if(!src.classList.contains("disabled")) toggleSource(+src.dataset.source); return; }
+    const pwAdd=e.target.closest("[data-pw-add]");
+    if(pwAdd){ addPower(+pwAdd.dataset.pwAdd); return; }
+    const slotAcq=e.target.closest("[data-slot-acquire]");
+    if(slotAcq){ creator.storeOpen=true; renderCreator(); return; }
+    const slotDis=e.target.closest("[data-slot-discard]");
+    if(slotDis){ if(!slotDis.disabled) discardSlot(); return; }
+    const addSlotBtn=e.target.closest("[data-add-slot]");
+    if(addSlotBtn){ if(!addSlotBtn.disabled) addSlot(); return; }
+    const storeClose=e.target.closest("[data-store-close]");
+    if(storeClose){ creator.storeOpen=false; renderCreator(); return; }
+    const pwRem=e.target.closest("[data-pw-remove]");
+    if(pwRem){ removePower(+pwRem.dataset.pwRemove); return; }
+    const pwLv=e.target.closest("[data-pw-level]");
+    if(pwLv){ if(!pwLv.classList.contains("disabled")){ const [id,li]=pwLv.dataset.pwLevel.split(":").map(Number); setPowerLevel(id,li); } return; }
+    const pwEnh=e.target.closest("[data-pw-enh]");
+    if(pwEnh){ if(!pwEnh.classList.contains("disabled")){ const [id,ei]=pwEnh.dataset.pwEnh.split(":").map(Number); togglePwEnh(id,ei); } return; }
+    const pwLim=e.target.closest("[data-pw-lim]");
+    if(pwLim){ const [id,li]=pwLim.dataset.pwLim.split(":").map(Number); clickLimit(id,li); return; }
+    const prof=e.target.closest("[data-prof]");
+    if(prof){ selectProfession(+prof.dataset.prof); return; }
+    const profRoll=e.target.closest("[data-prof-roll]");
+    if(profRoll){ const k=profRoll.dataset.profRoll; if(k==="talent")rollProfTalent(); else if(k==="subject")rollProfSubj(); else if(k==="bond")rollBond(); return; }
+    const bondPick=e.target.closest("[data-bond-custom-pick]");
+    if(bondPick){ chooseBondCustom(); return; }
+    const ident=e.target.closest("[data-identity]");
+    if(ident){ selectIdentity(ident.dataset.identity); return; }
+    const weakAdd=e.target.closest("[data-weak-add]");
+    if(weakAdd){ if(!weakAdd.disabled) addWeakness(+weakAdd.dataset.weakAdd); return; }
+    const weakRem=e.target.closest("[data-weak-remove]");
+    if(weakRem){ removeWeaknessAt(+weakRem.dataset.weakRemove); return; }
+    const weakRemId=e.target.closest("[data-weak-remove-id]");
+    if(weakRemId){ removeWeaknessId(+weakRemId.dataset.weakRemoveId); return; }
+    const opt=e.target.closest("[data-group]");
+    if(opt&&!opt.classList.contains("disabled")){
+      const g=opt.dataset.group, idx=+opt.dataset.idx;
+      if(g==="profTalent"){ selectProfTalent(idx); return; }
+      if(g==="profSubj"){ selectProfSubj(idx); return; }
+      if(g==="bond"){ selectBondPreset(idx); return; }
+    }
+    const talAdd=e.target.closest("[data-tal-add]");
+    if(talAdd){ if(!talAdd.disabled) addTalentInstance(+talAdd.dataset.talAdd); return; }
+    const talRem=e.target.closest("[data-tal-remove]");
+    if(talRem){ if(!talRem.disabled) removeTalentInstance(+talRem.dataset.talRemove); return; }
+    const talSubj=e.target.closest("[data-tal-subj]");
+    if(talSubj){ if(!talSubj.disabled){ const [i,j]=talSubj.dataset.talSubj.split(":").map(Number); toggleTalentSubject(i,j); } return; }
+    const tier=e.target.closest("[data-tier]");
+    if(tier){ selectTier(+tier.dataset.tier); return; }
+  });
+  body.addEventListener("keydown",e=>{
+    if(e.key!=="Enter"&&e.key!==" ") return;
+    const fwd=e.target.closest("[data-prof],[data-bond-custom-pick],[data-group]");
+    if(fwd){ e.preventDefault(); fwd.click(); return; }
+    const tier=e.target.closest("[data-tier]"), src=e.target.closest("[data-source]");
+    if(tier){ e.preventDefault(); selectTier(+tier.dataset.tier); }
+    else if(src){ e.preventDefault(); if(!src.classList.contains("disabled")) toggleSource(+src.dataset.source); }
+  });
+  body.addEventListener("input",e=>{
+    const bc=e.target.closest("[data-bond-custom]");
+    if(bc){ creator.bondCustom=bc.value; }
+  });
+}
+function openCreator(){ renderCreator(); wireCreator(); showScreen("creatorScreen"); }
 
 function openBuilder(){
   if(sel.archIndex!==currentIndex){sel=blankSel();sel.archIndex=currentIndex;}
@@ -1606,6 +2367,17 @@ let _modalOk=null;
 function showConfirm(msg,onOk){_modalOk=onOk;document.getElementById("modalBody").textContent=msg;document.getElementById("modal").classList.add("on");}
 function hideModal(){document.getElementById("modal").classList.remove("on");_modalOk=null;}
 
+let _choiceHandlers=[];
+function showChoice(title,bodyHTML,options){
+  document.getElementById("choiceTitle").textContent=title;
+  document.getElementById("choiceBody").innerHTML=bodyHTML;
+  _choiceHandlers=options.map(o=>o.onClick||null);
+  document.getElementById("choiceActions").innerHTML=options.map((o,i)=>`<button class="btn ${o.cls||"btn-ghost"}" data-choice="${i}">${o.label}</button>`).join("");
+  document.getElementById("choiceModal").classList.add("on");
+}
+function hideChoice(){document.getElementById("choiceModal").classList.remove("on");_choiceHandlers=[];}
+function showInfo(title,msg){ showChoice(title,`<div class="choice-desc">${msg}</div>`,[{label:"知道了",cls:"btn-gold",onClick:null}]); }
+
 /* ===================== 共用 ===================== */
 function showScreen(id){
   document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("on");s.scrollTop=0;});
@@ -1619,20 +2391,24 @@ let toastTimer;
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2200);}
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){
-    if(document.getElementById("modal").classList.contains("on")) hideModal();
-    else if(document.getElementById("builderScreen").classList.contains("on")) goHome();
+    if(document.getElementById("choiceModal").classList.contains("on")) hideChoice();
+    else if(document.getElementById("modal").classList.contains("on")) hideModal();
+    else if(document.getElementById("builderScreen").classList.contains("on")||document.getElementById("creatorScreen").classList.contains("on")) goHome();
   }
 });
 
 document.getElementById("modalOk").addEventListener("click",()=>{const f=_modalOk;hideModal();if(f)f();});
 document.getElementById("modalCancel").addEventListener("click",hideModal);
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")hideModal();});
+document.getElementById("choiceActions").addEventListener("click",e=>{const b=e.target.closest("[data-choice]");if(!b)return;const f=_choiceHandlers[+b.dataset.choice];hideChoice();if(f)f();});
+document.getElementById("choiceModal").addEventListener("click",e=>{if(e.target.id==="choiceModal")hideChoice();});
 document.getElementById("savesSection").addEventListener("click",e=>{
   const load=e.target.closest(".save-load"),del=e.target.closest(".save-del");
   if(load){const b=storageGet().find(x=>x.id===load.dataset.id);if(b)loadBuild(b.data);}
   else if(del){storageSet(storageGet().filter(x=>x.id!==del.dataset.id));renderSaves();}
 });
 document.getElementById("landArchetype").addEventListener("click",showRegistry);
+document.getElementById("landCustom").addEventListener("click",openCreator);
 renderSaves();
 </script>
 </body>
