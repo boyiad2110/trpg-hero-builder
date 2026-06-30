@@ -216,8 +216,22 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .store-title{font-weight:800;color:var(--gold);font-size:.95rem}
 .store-sec{padding:6px 16px 12px}
 .store-sec-head{font-size:.8rem;font-weight:700;color:#9aa0bd;margin:10px 0 6px}
-.store-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1.5px solid #2a3258;border-radius:6px;margin-bottom:8px;background:#0f1530}
-.store-item.taken{opacity:.55;border-style:dashed}
+.store-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1.5px solid #2a3258;border-radius:6px;margin-bottom:8px;background:#0f1530;cursor:pointer;transition:border-color .12s,background .12s}
+.store-item:hover{border-color:#5b67a8;background:#131a38}
+.store-item.taken{opacity:.55;border-style:dashed;cursor:not-allowed}
+.store-item.taken:hover{border-color:#2a3258;background:#0f1530}
+.cat-head{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:8px 0 8px;border:1.5px solid #2a3258;border-radius:6px;background:#11183244;cursor:pointer;user-select:none;transition:border-color .12s,background .12s}
+.cat-head:hover{border-color:#5b67a8;background:#151d3a}
+.cat-arrow{color:var(--gold);font-size:.85rem;width:14px;text-align:center}
+.cat-name{font-weight:800;color:var(--paper);font-size:.95rem;flex:1}
+.cat-count{font-size:.78rem;font-weight:700;color:#9aa0bd;background:#1a2440;border:1px solid #3a4673;border-radius:20px;padding:1px 10px}
+.pw-search-wrap{margin-top:10px}
+.pw-search{width:100%;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;color:var(--paper);font-family:inherit;font-size:.92rem;padding:9px 12px}
+.pw-search:focus{outline:none;border-color:var(--gold)}
+.pw-search::placeholder{color:#7a8099}
+.pw-inline-config{border:1.5px solid var(--red);border-top:none;border-radius:0 0 6px 6px;background:rgba(229,52,43,.05);padding:14px 16px 8px;margin:-6px 0 12px}
+.pw-inline-top{margin-bottom:8px}
+.pw-inline-acts{margin-top:8px}
 .store-info{display:flex;flex-direction:column;gap:2px}
 .store-name{font-weight:700;color:var(--paper)}
 .store-ex{font-size:.78rem;color:#8b91ad}
@@ -312,6 +326,33 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .modal-title{font-weight:900;font-size:1.3rem;color:var(--gold);margin-bottom:12px}
 .modal-body{white-space:pre-line;color:#d7dbe8;font-size:.95rem;line-height:1.75;margin-bottom:20px}
 .modal-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+#choiceModal{z-index:120}
+.modal-box-wide{max-width:640px;max-height:88vh;display:flex;flex-direction:column;padding:0}
+.modal-box-wide #powerModalContent{display:flex;flex-direction:column;min-height:0;flex:1}
+.pw-modal-head{padding:18px 22px 12px;border-bottom:1.5px solid #2a3258}
+.pw-modal-head .modal-title{margin-bottom:8px}
+.pw-modal-stats{display:flex;gap:18px;flex-wrap:wrap;font-size:.86rem;color:#aeb4cf}
+.pw-modal-stats b{color:var(--gold)}
+.pw-modal-list{overflow-y:auto;padding:8px 22px 4px;flex:1;min-height:80px}
+.pw-modal-list .store-title{font-weight:800;color:var(--gold);font-size:.92rem;margin:8px 0 4px}
+.store-item.sel{border-color:var(--red);background:rgba(229,52,43,.10);border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:0}
+.store-item.sel:hover{border-color:var(--red)}
+.store-pick{font-size:.78rem;color:#8b91ad;white-space:nowrap}
+.store-pick-tag{font-size:.72rem;font-weight:700;color:var(--red);white-space:nowrap}
+.pw-modal-config{border-top:1.5px solid #2a3258;padding:14px 22px 4px;overflow-y:auto;max-height:42vh}
+.pw-modal-config-name{font-weight:800;color:var(--paper);font-size:1.02rem;margin-bottom:6px}
+.pw-modal-hint{padding:14px 22px;color:#8b91ad;font-size:.88rem;border-top:1.5px solid #2a3258}
+.pw-modal-foot{padding:14px 22px;border-top:1.5px solid #2a3258;justify-content:space-between}
+.pw-card-acts{display:inline-flex;gap:8px;margin-left:auto}
+.pw-cfg-sum{margin-top:8px;font-size:.84rem;font-weight:700;color:#f2b705}
+.pw-cfg-sum.muted{color:#8b91ad;font-weight:600}
+.pw-sum{margin-top:10px;display:flex;flex-direction:column;gap:5px;border-top:1px solid #2a3258;padding-top:10px}
+.pw-sum-row{display:flex;gap:10px;font-size:.86rem;line-height:1.5}
+.pw-sum-k{flex:0 0 40px;color:#9aa0bd;font-weight:700}
+.pw-sum-v{color:var(--paper)}
+.pw-modal-titlebar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pw-modal-titlebar .modal-title{margin-bottom:0}
+.pw-buy-slot{white-space:nowrap}
 
 .landing-options{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:10px 0 70px;max-width:780px;margin:0 auto}
 .land-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;font:inherit;background:var(--paper);color:var(--ink);border:var(--line);border-radius:6px;padding:32px 28px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease}
@@ -431,6 +472,10 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
     <button class="btn btn-ghost" id="modalCancel">返回填寫</button>
     <button class="btn btn-gold" id="modalOk">仍要繼續</button>
   </div>
+</div></div>
+
+<div class="modal" id="powerModal"><div class="modal-box modal-box-wide">
+  <div id="powerModalContent"></div>
 </div></div>
 
 <div class="modal" id="choiceModal"><div class="modal-box">
@@ -566,7 +611,7 @@ const ARCHETYPES=[
       {name:"偵測",desc:"你會自動感知你所處區塊內的無形能量，包括磁場、輻射、靈能、暗影力場、星界能量和魔法。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有這類能量存在。"},
       {name:"飛行",desc:"你可以使用 1 個快速動作或完整動作來飛行最多 2 個區塊。若你主動承受 1 點壓力，則可以飛行最多 4 個區塊。"},
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
-      {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要使用完整動作進行 -2 骰的`力量`檢定。此異能對巨獸無效。使用此異能時，你無法使用射擊攻擊的任何特技。"},
+      {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行 -2 骰的`力量`檢定（完整動作）。此異能對巨獸無效。使用此異能時，你無法觸發射擊攻擊的任何特技。"},
       {name:"科技控制",desc:"以 1 個完整動作，你可以連接你所處區塊或 1 個相鄰區塊內的任何科技或機械，並將其啟動、關閉、組裝或操作。你可以執行該科技或機械的所有功能，如同正常操作一樣。若要存取受限的操作，或以非常規方式使用科技，需要進行`理智`檢定。若你控制武器，你可以在同個回合內進行`敏捷`檢定來進行攻擊。控制效果會持續數分鐘，或直到你崩潰為止。"}
     ],
     professions:[
@@ -784,7 +829,7 @@ const ARCHETYPES=[
       {name:"跳躍",desc:"你可以使用 1 個快速動作或完整動作來跳躍最多 2 個區塊。若你主動承受 1 點壓力，則可以跳躍最多 4 個區塊。你可以跳過建築物和其他高處區塊，但必須在地面或屋頂結束移動。若你使用此異能對目標發動衝鋒，你的檢定會 +2 骰。你甚至可以對高處的目標發動衝鋒。"},
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
       {name:"再生",desc:"你的治癒速度比正常人更快。在動作場景中，你每回合開始時會自動恢復 1 點`生命`。場景結束後，你會在數分鐘內恢復所有`生命`。此外，你重傷的痊癒時間單位會縮短 2 階。"},
-      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲效果減半（無條件進位）。",stat:{melee:1}}
+      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",stat:{melee:1}}
     ],
     professions:[
       {name:"學者",desc:"你投身於學術界，可能在學院、機構或大學擔任教師、講師、研究員、校長、圖書館員、教務長或院長。",
@@ -892,7 +937,7 @@ const ARCHETYPES=[
     attrs:{格鬥:5,敏捷:6,力量:6,理智:4,直覺:5,氣場:4},
     powerSource:{options:["動力裝甲","先進科技戰鬥服","附魔胸甲"]},
     powers:[
-      {name:"轟擊",desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 3 的射擊攻擊。"},
+      {name:"轟擊",desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。"},
       {name:"偵測",desc:"你會自動感應你所處區塊內是否有無形能量存在，包括磁場、輻射、靈能、暗影力場、星界能量和魔法。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有這類能量存在。"},
       {name:"飛行",desc:"你可以使用 1 個快速動作或完整動作來飛行最多 2 個區塊。若你主動承受 1 點壓力，則可以飛行最多 4 個區塊。"},
       {name:"強力防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 3。"}
@@ -1138,7 +1183,7 @@ const ARCHETYPES=[
     powers:[
       {name:"迅捷",desc:"你擁有閃電般的反應速度、敏銳的判斷力，或增強的反應時間。每輪 1 次，在自己的回合或使用反應動作，你可以主動承受 1 點壓力來額外獲得 1 個快速動作或完整動作。"},
       {name:"超高速",desc:"你可以使用 1 個快速動作或完整動作來奔跑最多 2 個區塊。若你主動承受 1 點壓力，則可以奔跑最多 4 個區塊。你可以跑過建築物和其他高處區塊，甚至是水面，但必須在地面或屋頂結束移動。\n• 強化：快速行動。你可以使用此異能在 1 輪內完成至少需要數分鐘的事情，例如讀書、拆解裝置或洗碗。"},
-      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲效果減半（無條件進位）。\n• 強化：瞬間打擊。當你成為肉搏攻擊的目標時，你可以主動承受 1 點壓力，在對方的攻擊結算前，立刻使用反應動作進行 1 次肉搏攻擊。你的這次攻擊仍會消耗你本輪的動作額度。",stat:{melee:1}}
+      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。\n• 強化：瞬間打擊。當你成為肉搏攻擊的目標時，你可以主動承受 1 點壓力，在對方的攻擊結算前，立刻使用反應動作進行 1 次肉搏攻擊。你的這次攻擊仍會消耗你本輪的動作額度。",stat:{melee:1}}
     ],
     professions:[
       {name:"藍領",desc:"你從事體力勞動或技術性工作。你可能是建築工人、工廠員工、承包商、農夫、技工、服務業員工、水電工或清潔工。",
@@ -1188,8 +1233,8 @@ const ARCHETYPES=[
     powerSource:{options:["忍術","萬能腰帶","怨靈附身"]},
     powers:[
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
-      {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要使用完整動作進行 -2 骰的`力量`檢定。此異能對巨獸無效。使用此異能時，你無法使用射擊攻擊的任何特技。"},
-      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲效果減半（無條件進位）。",stat:{melee:1}},
+      {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行 -2 骰的`力量`檢定（完整動作）。此異能對巨獸無效。使用此異能時，你無法觸發射擊攻擊的任何特技。"},
+      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",stat:{melee:1}},
       {name:"擺盪",desc:"透過繩索、纜線、鎖鏈或觸手，你可以使用 1 個快速動作或完整動作來擺盪最多 2 個區塊。若你主動承受 1 點壓力，則可以擺盪最多 4 個區塊。\n你只能移動到高處區塊（例如屋頂）、有高大特徵物的區塊（例如樹木或建築起重機），或相鄰於高處區塊的區塊。你可以選擇在高處區塊結束移動、在相鄰於高處的區塊中以高處位置結束移動（抓著繩索懸掛），或在地面結束移動。\n你也可以使用此異能來抓住 1 個相鄰區塊內的 1 個目標，並將他拉進你所處的區塊（完整動作）。若是非自願目標，你必須進行射擊攻擊（不會造成傷害）。目標的重量等級不能超過你的`力量`。"}
     ],
     professions:[
@@ -1242,7 +1287,7 @@ const ARCHETYPES=[
       {name:"跳躍",desc:"你可以使用 1 個快速動作或完整動作來跳躍最多 2 個區塊。若你主動承受 1 點壓力，則可以跳躍最多 4 個區塊。你可以跳過建築物和其他高處區塊，但必須在地面或屋頂結束移動。若你使用此異能對目標發動衝鋒，你的檢定會 +2 骰。你甚至可以對高處的目標發動衝鋒。"},
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
       {name:"招牌道具",desc:"你擁有 1 件可以增強你能力的特殊道具。選擇 1 項屬性，當你使用招牌道具時，該屬性的所有檢定都會 +2 骰。但是，若你的招牌道具遺失、失效、毀壞，或出於任何原因而無法運作，你會失去該屬性檢定的獎勵骰，也無法使用與招牌道具相同異能來源的所有能力，直到招牌道具重新可以使用為止。"},
-      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲效果減半（無條件進位）。",stat:{melee:1}}
+      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",stat:{melee:1}}
     ],
     professions:[
       {name:"冒險家",desc:"你渴望冒險的刺激與風險。這個職業包括極限運動員、探險家、遺跡獵人、戶外活動愛好者或全職超級英雄。",
@@ -1292,8 +1337,8 @@ const ARCHETYPES=[
     powerSource:{options:["政府實驗","尖酸機智","詭異魔法"]},
     powers:[
       {name:"抗性",desc:"你擁有某種防禦形式，可以抵抗影響心智的效果。當你受到會造成壓力的攻擊時，此異能會提供`護甲` 3；當你抵抗【震盪】、【心靈控制】和【心靈感應】時，你的檢定會 +3 骰。此異能不會幫你抵抗因為發動異能或強推屬性檢定而承受的壓力。"},
-      {name:"焦慮",desc:"你可以攻擊對手的心靈或意志力。這是傷害 3、射程 0/3 的射擊攻擊。若攻擊穿透護甲，你造成的傷害會 1:1 轉為壓力。你無法使用這次攻擊的任何特技，除了「雙倍傷害」（一樣轉為壓力）。"},
-      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲效果減半（無條件進位）。",stat:{melee:1}},
+      {name:"焦慮",desc:"你可以攻擊對手的心靈或意志力。這是傷害 3、射程 0/3 的射擊攻擊。若攻擊穿透護甲，你造成的傷害會 1:1 轉化為壓力。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（一樣轉化為壓力）。"},
+      {name:"打擊",desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",stat:{melee:1}},
       {name:"擺盪",desc:"透過繩索、纜線、鎖鏈或觸手，你可以使用 1 個快速動作或完整動作來擺盪最多 2 個區塊。若你主動承受 1 點壓力，則可以擺盪最多 4 個區塊。\n你只能移動到高處區塊（例如屋頂）、有高大特徵物的區塊（例如樹木或建築起重機），或相鄰於高處區塊的區塊。你可以選擇在高處區塊結束移動、在相鄰於高處的區塊中以高處位置結束移動（抓著繩索懸掛），或在地面結束移動。\n你也可以使用此異能來抓住 1 個相鄰區塊內的 1 個目標，並將他拉進你所處的區塊（完整動作）。若是非自願目標，你必須進行射擊攻擊（不會造成傷害）。目標的重量等級不能超過你的`力量`。"}
     ],
     professions:[
@@ -1420,7 +1465,7 @@ const TIERS=[
   {name:"全球守衛", en:"Global Guardian",   points:32, attrCap:10, powers:4, fame:2},
   {name:"宇宙勇者", en:"Cosmic Champion",   points:38, attrCap:12, powers:5, fame:3}
 ];
-let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,storeOpen:false,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",identity:null,talents:[],weaknesses:[],step:0};
+let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,powerModal:null,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",identity:null,talents:[],weaknesses:[],step:0};
 let creatorWired=false;
 
 const CREATOR_ATTRS=[
@@ -1448,6 +1493,17 @@ const POWER_LEVELS=["基礎","強力","超級","終極"]; // 0..3
 // 所有異能共 96 個，目前先收錄 1 個（攻擊類·轟擊）做為測試
 const POWERS=[
   {
+    name:"苦難", type:"攻擊類", examples:"致盲之光、腐化之握、恐懼氣體、劇毒啃咬",
+    desc:"你可以對附近的對手施加有害效果。這是傷害 3、射程 0/1 的射擊攻擊，但不會造成實際傷害。若攻擊穿透護甲，目標的所有屬性檢定都會 -3 骰，而且移動需要完整動作，直到成功通過`氣場`檢定（一樣有懲罰）解除效果為止。`氣場`檢定無需動作，但每輪只能嘗試 1 次，而且只能在受害者自己的回合進行。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（用來判斷攻擊是否穿透護甲）。",
+    enh:[
+      {name:"心靈苦難",desc:"發動此異能時，你可以使用任何心理屬性來進行檢定（代替`敏捷`）。此外，`護甲`無效。"},
+      {name:"強效苦難",desc:"目標的所有屬性檢定都會 -4 骰，而非 -3。"}
+    ],
+    lim:[
+      {name:"需要接觸",desc:"發動此異能時，你必須進行肉搏攻擊，而非射擊攻擊。"}
+    ]
+  },
+  {
     name:"轟擊", type:"攻擊類", examples:"能量束、槍械、閃電、特技箭矢",
     desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。",
     levelDesc:{ "強力":"傷害 4、射程 0/4。", "超級":"傷害 5、射程 0/5。", "終極":"傷害 6、射程 0/6。" },
@@ -1459,6 +1515,65 @@ const POWERS=[
     lim:[
       {name:"疲勞轟擊",desc:"只要發動此異能，你必定承受 1 點壓力（強推檢定所造成的壓力另計）。"},
       {name:"縮短射程",desc:"無論等級為何，此異能的射程都是 0/1。"}
+    ]
+  },
+  {
+    name:"焦慮", type:"攻擊類", examples:"戰吼、心靈尖嘯、神經毒素飛鏢、尖酸侮辱",
+    desc:"你可以攻擊對手的心靈或意志力。這是傷害 3、射程 0/3 的射擊攻擊。若攻擊穿透護甲，你造成的傷害會 1:1 轉化為壓力。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（一樣轉化為壓力）。",
+    levelDesc:{ "強力":"傷害 4、射程 0/4。", "超級":"傷害 5、射程 0/5。", "終極":"傷害 6、射程 0/6。" },
+    enh:[
+      {name:"爆發效果",desc:"發動此異能時，你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。"},
+      {name:"心靈焦慮",desc:"發動此異能時，你可以使用任何心理屬性來進行檢定（代替`敏捷`）。此外，`護甲`無效。"}
+    ],
+    lim:[
+      {name:"疲勞焦慮",desc:"只要發動此異能，你必定承受 1 點壓力（強推檢定所造成的壓力另計）。"},
+      {name:"縮短射程",desc:"無論等級為何，此異能的射程都是 0/1。"}
+    ]
+  },
+  {
+    name:"發散", type:"攻擊類", examples:"火焰靈光、強酸皮膚、守護靈、蟲群",
+    desc:"你可以用傷害性靈光包覆自己。你可以使用 1 個快速動作（或作為反應動作）發動此異能。發動後，你的`肉搏傷害` +2（無法與【打擊】或【體型變化】的加成疊加）。此外，任何觸碰你的人（包括肉搏攻擊）都會承受 3 點傷害（每回合僅生效 1 次）。此效果會持續到你的下個回合開始。",
+    enh:[
+      {name:"強效發散",desc:"此異能會讓你的`肉搏傷害` +3；讓觸碰你的人承受 4 點傷害。"}
+    ],
+    lim:[
+      {name:"持續發散",desc:"此異能會保持啟動而無法關閉，未受保護的生物和物體若觸碰你都會受到傷害。"}
+    ]
+  },
+  {
+    name:"捕縛", type:"攻擊類", examples:"套索、心靈束縛、電漿網、蛛網",
+    desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行 -2 骰的`力量`檢定（完整動作）。此異能對巨獸無效。使用此異能時，你無法觸發射擊攻擊的任何特技。",
+    levelDesc:{ "強力":"目標的掙脫檢定 -3 骰。", "超級":"掙脫檢定 -4 骰。", "終極":"掙脫檢定 -5 骰。" },
+    enh:[
+      {name:"多重捕縛",desc:"發動此異能時，你可以使用 1 個動作同時攻擊最多 3 個對手。你只進行 1 次攻擊檢定，但每個目標都可以個別進行閃避。"}
+    ],
+    lim:[
+      {name:"僅限定身",desc:"被此異能命中的對手可以正常執行動作，但在掙脫前無法移動。"}
+    ]
+  },
+  {
+    name:"打擊", type:"攻擊類", examples:"徒手格鬥、劍刃武器、伸縮爪、電擊拳套",
+    desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",
+    levelDesc:{ "強力":"`肉搏傷害` +2。", "超級":"`肉搏傷害` +3。", "終極":"`肉搏傷害` +4。" },
+    enh:[
+      {name:"穿刺打擊",desc:"當你的肉搏攻擊命中目標時，你可以主動承受 1 點壓力來完全無視任何`護甲`。此效果不適用於「擊退」特技的傷害。"},
+      {name:"瞬間打擊",desc:"當你成為肉搏攻擊的目標時，你可以主動承受 1 點壓力，在對方的攻擊結算前，立刻使用反應動作進行 1 次肉搏攻擊。你的這次攻擊仍會消耗你本輪的動作額度。"},
+      {name:"致命打擊",desc:"你的肉搏攻擊會造成撕裂傷害，代表你可以花費 1 顆額外的 :invincible-6: 來觸發「致命一擊」特技。"},
+      {name:"劇毒打擊",desc:"若你的肉搏攻擊造成傷害，目標必須在他每回合開始時進行`力量`檢定（無需動作），失敗會額外受到 1 點傷害（無視`護甲`）。此效果會持續到目標的`力量`檢定成功或陷入崩潰為止。"}
+    ],
+    lim:[
+      {name:"蓄力打擊",desc:"發動肉搏攻擊前，你必須在同個回合內先使用 1 個快速動作蓄力，才能獲得此異能的效果。"}
+    ]
+  },
+  {
+    name:"震盪", type:"攻擊類", examples:"催眠射線、化學噴霧、腦波干擾器、奈米電擊器",
+    desc:"你可以暫時讓對手失能或陷入混亂。這是傷害 3、射程 0/3 的射擊攻擊，但不會造成實際傷害。若攻擊穿透護甲，目標必須立刻進行並通過`氣場`檢定（無需動作），否則會失去他的下個回合，而且在那之前無法執行反應動作。此異能對巨獸無效。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（用來判斷攻擊是否穿透護甲）。",
+    enh:[
+      {name:"心靈震盪",desc:"發動此異能時，你可以使用任何心理屬性來進行檢定（代替`敏捷`）。此外，`護甲`無效。"},
+      {name:"強效震盪",desc:"目標抵抗此異能的`氣場`檢定 -2 骰。"}
+    ],
+    lim:[
+      {name:"需要接觸",desc:"發動此異能時，你必須進行肉搏攻擊，而非射擊攻擊。"}
     ]
   }
 ];
@@ -1494,7 +1609,7 @@ const CREATOR_PROFESSIONS=[
   }
 ];
 
-// 天賦（共 51 個，目前先收錄 5 個做測試）
+// 天賦（共 51 個，已全部收錄）
 const CREATOR_TALENTS=[
   {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
   {name:"巨獸剋星",desc:"對抗巨獸時，你的肉搏攻擊 +2 骰。"},
@@ -1536,7 +1651,24 @@ const CREATOR_TALENTS=[
   {name:"武術高手",desc:"你可以使用快速動作進行 -2 骰的徒手肉搏攻擊，而不是主要動作。"},
   {name:"醫療專家",desc:"當你試圖穩定重傷時，`理智`檢定 +2 骰。此外，只要處於相同區塊，你可以使用`理智`來鼓舞崩潰的人，而不是`氣場`。"},
   {name:"氣勢凌人",desc:"當你威脅他人服從你時，你可以進行 +2 骰的`力量`檢定，而不是`氣場`。"},
-  {name:"冷酷無情",desc:"你每次讓 1 名敵人陷入崩潰時，你就恢復 1 點`決心`。"}
+  {name:"冷酷無情",desc:"你每次讓 1 名敵人陷入崩潰時，你就恢復 1 點`決心`。"},
+  {name:"力大無窮",desc:"你可以強推任何`力量`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
+  {name:"勵志大師",desc:"你可以使用快速動作鼓舞其他崩潰的角色（不包括自己），而且檢定 +2 骰。"},
+  {name:"駕駛高手",desc:"當你駕駛任何載具時，`敏捷`檢定 +2 骰。"},
+  {name:"快速開火",desc:"你可以使用快速動作進行 -2 骰的射擊攻擊，而不是主要動作。"},
+  {name:"聲名遠播",desc:"你的`聲望` +3。"},
+  {name:"不屈不撓",desc:"每當你的`生命`即將受到傷害時，你可以將傷害 1:1 轉為壓力（每 1 點壓力抵消 1 點傷害）。你無法在`決心`為 0 的情況下使用此天賦。"},
+  {name:"重振活力",desc:"若你處於崩潰，你可以進行 +2 骰的`力量`檢定來鼓舞自己，而非`氣場`。"},
+  {name:"脣槍舌劍",desc:"當你嘴砲時，`氣場`檢定 +2 骰。"},
+  {name:"狙擊高手",desc:"若你在同個回合內先使用快速動作進行瞄準再發動射擊攻擊，攻擊檢定 +2 骰。"},
+  {name:"潛行高手",desc:"若你試圖偷偷接近敵人發動偷襲，對方發現你的`直覺`檢定 -2 骰。注意，你必須單獨行動（或與其他同樣擁有此天賦的人一起行動），此天賦才會生效。"},
+  {name:"識途老馬",desc:"當你試圖打聽街頭巷尾的祕密情報時，`氣場`檢定 +2 骰。此外，你發現偷襲的`直覺`檢定 +2 骰。"},
+  {name:"壓制高手",desc:"當你試圖擒抱對手時，你的肉搏攻擊 +2 骰。你試圖抵抗對手掙脫的檢定也會 +2 骰。"},
+  {name:"得力助手",desc:"當你協助他人時，對方的檢定會 +2 骰（而非 +1）。"},
+  {name:"戰術支援",desc:"在動作場景中，作為任何檢定的特技，你可以為你所處區塊或 1 個相鄰區塊內的 1 個盟友提供戰術支援。你每花費 1 個 :invincible-6:，盟友下次的屬性檢定就 +2 骰。若你額外擲出多個 :invincible-6:，你可以自由分配給多個盟友。"},
+  {name:"獨到見解",desc:"當你首次發現或遭遇敵人、組織或危害時，你可以進行`直覺`檢定（無需動作）。每擲出 1 個 :invincible-6:，GM 必須告訴你 1 個關於對方的有用資訊（組成、狀況或目標等）。"},
+  {name:"及時警告",desc:"當聽覺範圍內的其他角色被攻擊時，你可以使用反應動作大聲警告對方。目標可以進行 +2 骰的格擋或閃避，而不會消耗他該輪的動作額度。"},
+  {name:"意外之財",desc:"你的`資源` +2。此天賦可以多次選擇。"}
 ];
 
 // 弱點（非強制；每選 1 個 +1 創角點數，最多 2 個）
@@ -1568,47 +1700,75 @@ function powerSourceCost(){ return Math.max(0,(creator.powerSources?creator.powe
 function ensureCreatorSlots(){ if(creator.slots==null) creator.slots=baseFreeSlots(); }
 function baseFreeSlots(){ return creator.tier!=null?TIERS[creator.tier].powers:0; }
 function totalSlots(){ ensureCreatorSlots(); return Math.max(1,creator.slots); }
-// 單一異能佔用的「異能欄位數」：基礎=1；每提升 1 級、每個強化各 +1；每個限制折抵 -1（最低 1）
+// 單一異能占用的「異能欄位數」：基礎=1；每提升 1 級、每個強化各 +1；每個限制折抵 -1（最低 1）
 function powerContribution(p){ const extras=p.level+p.enh.length; return 1+Math.max(0,extras-p.lim.length); }
 function contribIfLevel(p,lv){ const extras=lv+p.enh.length; return 1+Math.max(0,extras-p.lim.length); }
 function contribIfEnhAdd(p){ const extras=p.level+p.enh.length+1; return 1+Math.max(0,extras-p.lim.length); }
 function powersUsed(){ return creator.powers.reduce((s,p)=>s+powerContribution(p),0); }
 function emptySlots(){ return totalSlots()-powersUsed(); }
-// 欄位相對免費額度的增減 → 點數：每多 1 格(額外購買) 花 2 點；每少 1 格(捨棄) 退 2 點
+// 免費／額外欄位拆分：超出免費額度的為額外欄位；異能優先占用免費欄位
+function extraSlotsCount(){ return Math.max(0, totalSlots()-baseFreeSlots()); }
+function freeSlotsCount(){ return totalSlots()-extraSlotsCount(); }
+function freeSlotsUsed(){ return Math.min(powersUsed(), freeSlotsCount()); }
+function extraSlotsUsed(){ return Math.max(0, powersUsed()-freeSlotsCount()); }
+// 欄位相對免費額度的增減 → 點數：每多 1 個欄位(額外購買) 花 2 點；每少 1 個欄位(捨棄) 退 2 點
 function powerPointDelta(){ return (totalSlots()-baseFreeSlots())*2; }
 function maxLevelForTier(){ return creator.tier===3?2:1; } // 宇宙勇者可到超級(2)，其餘到強力(1)；終極(3)創角不可
 
 function findPower(id){ return creator.powers.find(p=>p.id===id); }
 function needSlot(msg){ showInfo("異能欄位不足", msg||"此操作需要 1 個空白異能欄位。請先騰出欄位，或在免費欄位用完後購買額外欄位。"); }
-function addPower(id){ if(findPower(id))return; if(emptySlots()<1){ needSlot(); return; } creator.powers.push({id,level:0,enh:[],lim:[]}); creator.storeOpen=false; renderCreator(); }
+function addPower(id){ if(findPower(id))return; if(emptySlots()<1){ needSlot(); return; } creator.powers.push({id,level:0,enh:[],lim:[]}); renderCreator(); }
 function removePower(id){ creator.powers=creator.powers.filter(p=>p.id!==id); renderCreator(); }
+// 限制以物件儲存並綁定其換得的項目：{li, bind:{kind:'level'} | {kind:'enh', ei}}
+function limEntry(p,li){ return p.lim.find(x=>x.li===li); }
+function hasLim(p,li){ return p.lim.some(x=>x.li===li); }
+function enhBoundLimIdx(p,ei){ return p.lim.findIndex(x=>x.bind&&x.bind.kind==="enh"&&x.bind.ei===ei); }
+function levelBoundCount(p){ return p.lim.filter(x=>x.bind&&x.bind.kind==="level").length; }
 function setPowerLevel(id,lvl){ const p=findPower(id); if(!p)return; if(lvl<0||lvl>maxLevelForTier()||lvl===p.level)return;
-  if(powersUsed()-powerContribution(p)+contribIfLevel(p,lvl)>totalSlots()){ needSlot("提升等級需要 1 個空白異能欄位。"); return; }
-  p.level=lvl; renderCreator(); }
+  if(lvl>p.level){ // 升級：需要容量
+    if(powersUsed()-powerContribution(p)+contribIfLevel(p,lvl)>totalSlots()){ needSlot("提升等級需要 1 個空白異能欄位。"); return; }
+    p.level=lvl;
+  } else { // 降級：若被取消的等級是某個限制換來的，連帶取消該限制
+    p.level=lvl;
+    let lvlLims=p.lim.filter(x=>x.bind&&x.bind.kind==="level");
+    while(lvlLims.length>p.level){ const last=lvlLims.pop(); const k=p.lim.indexOf(last); if(k>=0)p.lim.splice(k,1); }
+  }
+  afterPowerChange(); }
 function togglePwEnh(id,ei){ const p=findPower(id); if(!p)return; const i=p.enh.indexOf(ei);
-  if(i>=0){ p.enh.splice(i,1); renderCreator(); return; }
+  if(i>=0){ // 移除強化：若此強化是某個限制換來的，連帶取消該限制
+    p.enh.splice(i,1);
+    const lk=enhBoundLimIdx(p,ei); if(lk>=0) p.lim.splice(lk,1);
+    afterPowerChange(); return; }
   if(powersUsed()-powerContribution(p)+contribIfEnhAdd(p)>totalSlots()){ needSlot("新增強化需要 1 個空白異能欄位。"); return; }
-  p.enh.push(ei); renderCreator(); }
-// 限制：點選後跳出對話框，免費換取「升 1 級」或「1 個強化」（限制與其換得的項目皆免費，不佔欄位）
+  p.enh.push(ei); afterPowerChange(); }
+// 限制：點選後跳出對話框，免費換取「升 1 級」或「1 個強化」；限制與其換得的項目雙向綁定（取消任一方，另一方同時取消）
 function clickLimit(id,li){ const p=findPower(id); if(!p)return; const pw=POWERS[id];
-  if(p.lim.includes(li)){ const k=p.lim.indexOf(li); p.lim.splice(k,1);
-    if(powersUsed()>totalSlots()){ p.lim.push(li); needSlot("移除此限制會少 1 個折抵而超出欄位，請先騰出欄位或購買額外欄位。"); return; }
-    renderCreator(); return; }
-  const canLevel=p.level<maxLevelForTier();
+  const entry=limEntry(p,li);
+  if(entry){ // 取消限制 → 連帶取消其換得的升級或強化
+    p.lim.splice(p.lim.indexOf(entry),1);
+    if(entry.bind){ if(entry.bind.kind==="level"){ p.level=Math.max(0,p.level-1); } else if(entry.bind.kind==="enh"){ const ei=p.enh.indexOf(entry.bind.ei); if(ei>=0)p.enh.splice(ei,1); } }
+    afterPowerChange(); return; }
+  const canLevel=p.level<Math.min(maxLevelForTier(),powerOwnMaxLevel(pw)); // 沒有等級的異能不提供免費升級
   const availEnh=pw.enh.map((e,ei)=>({e,ei})).filter(x=>!p.enh.includes(x.ei));
-  if(!canLevel&&availEnh.length===0){ showInfo("無可折抵項目","此異能已達本階級等級上限，且所有強化都已取得，沒有可用此限制免費換取的項目。"); return; }
+  if(!canLevel&&availEnh.length===0){ showInfo("無可折抵項目","沒有可以免費換取的項目，可能已達等級上限或沒有等級，而且強化項目已全選。"); return; }
   const opts=[];
-  if(canLevel) opts.push({label:`免費升級至「${POWER_LEVELS[p.level+1]}」`,cls:"btn-gold",onClick:()=>{ p.lim.push(li); p.level++; renderCreator(); }});
-  availEnh.forEach(x=>opts.push({label:`免費換強化：${x.e.name}`,onClick:()=>{ p.lim.push(li); p.enh.push(x.ei); renderCreator(); }}));
+  if(canLevel) opts.push({label:`免費升級至「${POWER_LEVELS[p.level+1]}」`,cls:"btn-gold",onClick:()=>{ p.level++; p.lim.push({li,bind:{kind:"level"}}); afterPowerChange(); }});
+  availEnh.forEach(x=>opts.push({label:`免費換強化：${x.e.name}`,onClick:()=>{ p.enh.push(x.ei); p.lim.push({li,bind:{kind:"enh",ei:x.ei}}); afterPowerChange(); }}));
   opts.push({label:"取消",cls:"btn-ghost",onClick:null});
   showChoice(`套用限制「${pw.lim[li].name}」`, `<p class="choice-desc">${fmtHTML(pw.lim[li].desc)}</p><p class="choice-q">此限制可免費換取以下其中 1 項：</p>`, opts);
 }
 // 欄位增減
-function discardSlot(){ if(emptySlots()<1)return; if(totalSlots()<=1){ showInfo("至少保留 1 格","你必須至少保留 1 個異能欄位。"); return; } creator.slots=totalSlots()-1; renderCreator(); }
+function discardSlot(){ if(emptySlots()<1)return; if(totalSlots()<=1){ showInfo("至少保留 1 個欄位","你必須至少保留 1 個異能欄位。"); return; } creator.slots=totalSlots()-1; afterPowerChange(); }
 function addSlot(){ const base=baseFreeSlots(), cur=totalSlots(); const restoring=cur<base;
   if(!restoring && emptySlots()>0) return; // 仍有空的免費欄位時不可購買額外
   if(pointsLeft()<2){ showInfo("創角點數不足","新增異能欄位需要 2 點創角點數，但你的點數不足。"); return; }
-  creator.slots=cur+1; renderCreator(); }
+  creator.slots=cur+1; afterPowerChange(); }
+function powerBuySlotHTML(){
+  const base=baseFreeSlots(), total=totalSlots(), restoring=total<base;
+  const can = pointsLeft()>=2 && (restoring || emptySlots()===0);
+  const label = restoring ? "↩ 還原免費欄位（−2 點）" : "＋ 購買額外異能欄位（−2 點）";
+  return `<button class="btn btn-sm pw-buy-slot" data-add-slot="1"${can?"":" disabled"}>${label}</button>`;
+}
 
 function pointsSpent(){ ensureCreatorAttrs(); ensureCreatorSlots(); return CREATOR_ATTRS.reduce((s,a)=>s+creator.attrs[a.name],0)+powerSourceCost()+powerPointDelta()+talentPointCost()+weaknessPointDelta(); }
 function pointsLeft(){ return pointsTotal()-pointsSpent(); }
@@ -1697,42 +1857,130 @@ function renderPowerSourceStep(){
     <p class="src-summary">${summary}</p>${note}`;
 }
 
+// 已確定的異能：在欄位頁顯示等級、強化項目、限制項目
 function powerCard(p){
-  const pw=POWERS[p.id], contrib=powerContribution(p), used=powersUsed(), total=totalSlots(), maxLvl=maxLevelForTier();
-  const lvlBtns=POWER_LEVELS.map((nm,li)=>{
-    const cur=p.level===li; let dis=false, reason="";
-    if(li>maxLvl){ dis=true; reason=li===3?"創角不可":"僅宇宙勇者"; }
-    else if(li>p.level && used-contrib+contribIfLevel(p,li)>total){ dis=true; reason="需空欄位"; }
-    return `<button class="lvl-btn${cur?" cur":""}${dis?" disabled":""}" data-pw-level="${p.id}:${li}"${dis?' aria-disabled="true"':''}>${nm}${reason?`<span class="lvl-na">${reason}</span>`:""}</button>`;
-  }).join("");
-  const lvlDescNow = p.level>0 ? `<div class="lvl-desc"><b>${POWER_LEVELS[p.level]}</b>：${fmtHTML(pw.levelDesc[POWER_LEVELS[p.level]]||"")}</div>` : "";
+  const pw=POWERS[p.id], contrib=powerContribution(p);
+  const rows=[`<div class="pw-sum-row"><span class="pw-sum-k">等級</span><span class="pw-sum-v">${p.level>0?POWER_LEVELS[p.level]:"基礎"}</span></div>`];
+  if(p.enh.length) rows.push(`<div class="pw-sum-row"><span class="pw-sum-k">強化</span><span class="pw-sum-v">${p.enh.map(ei=>pw.enh[ei]?pw.enh[ei].name:"").filter(Boolean).join("、")}</span></div>`);
+  if(p.lim.length) rows.push(`<div class="pw-sum-row"><span class="pw-sum-k">限制</span><span class="pw-sum-v">${p.lim.map(x=>pw.lim[x.li]?pw.lim[x.li].name:"").filter(Boolean).join("、")}</span></div>`);
+  return `<div class="pw-card added">
+    <div class="pw-head"><span class="pw-name">${pw.name}</span><span class="pw-type-tag">${pw.type}</span><span class="pw-contrib-tag">占 ${contrib} 欄位</span>
+      <span class="pw-card-acts"><button class="btn btn-sm" data-pw-edit="${p.id}">編輯異能</button><button class="btn btn-ghost btn-sm" data-pw-remove="${p.id}">移除</button></span></div>
+    <div class="pw-desc">${fmtHTML(pw.desc)}</div>
+    <div class="pw-sum">${rows.join("")}</div>
+  </div>`;
+}
+// 彈出視窗中的等級／強化／限制設定區塊
+function powerOwnMaxLevel(pw){ if(!pw.levelDesc) return 0; let m=0; POWER_LEVELS.forEach((nm,i)=>{ if(pw.levelDesc[nm]!=null) m=Math.max(m,i); }); return m; }
+function powerConfigBlocks(p){
+  const pw=POWERS[p.id], contrib=powerContribution(p), used=powersUsed(), total=totalSlots();
+  const tierMax=maxLevelForTier(), ownMax=powerOwnMaxLevel(pw), maxLvl=Math.min(tierMax,ownMax);
+  let levelBlock="";
+  if(ownMax>0){
+    const lvlBtns=POWER_LEVELS.map((nm,li)=>{
+      const cur=p.level===li; let dis=false, reason="";
+      if(li>ownMax){ dis=true; reason="無此等級"; }
+      else if(li>tierMax){ dis=true; reason=li===3?"創角不可選":"僅宇宙勇者"; }
+      else if(li>p.level && used-contrib+contribIfLevel(p,li)>total){ dis=true; }
+      return `<button class="lvl-btn${cur?" cur":""}${dis?" disabled":""}" data-pw-level="${p.id}:${li}"${dis?' aria-disabled="true"':''}>${nm}${reason?`<span class="lvl-na">${reason}</span>`:""}</button>`;
+    }).join("");
+    const lvlDescNow = p.level>0 ? `<div class="lvl-desc"><b>${POWER_LEVELS[p.level]}</b>：${fmtHTML(pw.levelDesc[POWER_LEVELS[p.level]]||"")}</div>` : "";
+    levelBlock=`<div class="pw-block"><div class="pw-block-label">等級（每升 1 級占 1 欄位）</div><div class="lvl-row">${lvlBtns}</div>${lvlDescNow}</div>`;
+  }
   const enhRows=pw.enh.map((e,ei)=>{
     const on=p.enh.includes(ei);
     const dis = !on && used-contrib+contribIfEnhAdd(p)>total;
-    return `<div class="opt${on?" sel":""}${dis?" disabled":""}" ${dis?'aria-disabled="true"':'role="button" tabindex="0"'} data-pw-enh="${p.id}:${ei}"><span class="opt-mark"></span><div><span class="opt-name">${e.name}${dis?' <span class="lvl-na">需空欄位</span>':''}</span><span class="opt-desc">${fmtHTML(e.desc)}</span></div></div>`;
+    const bound = on && enhBoundLimIdx(p,ei)>=0;
+    return `<div class="opt${on?" sel":""}${dis?" disabled":""}" ${dis?'aria-disabled="true"':'role="button" tabindex="0"'} data-pw-enh="${p.id}:${ei}"><span class="opt-mark"></span><div><span class="opt-name">${e.name}${bound?' <span class="lim-tag">限制折抵</span>':''}</span><span class="opt-desc">${fmtHTML(e.desc)}</span></div></div>`;
   }).join("");
   const limRows=pw.lim.map((l,li)=>{
-    const on=p.lim.includes(li);
-    return `<div class="opt${on?" sel":""}" role="button" tabindex="0" data-pw-lim="${p.id}:${li}"><span class="opt-mark"></span><div><span class="opt-name">${l.name}${on?' <span class="lim-tag">已折抵</span>':''}</span><span class="opt-desc">${fmtHTML(l.desc)}</span></div></div>`;
+    const entry=limEntry(p,li), on=!!entry;
+    let tag="";
+    if(on){ const b=entry.bind; tag = b ? (b.kind==="level" ? "已折抵（升級）" : `已折抵（強化：${pw.enh[b.ei]?pw.enh[b.ei].name:""}）`) : "已折抵"; }
+    return `<div class="opt${on?" sel":""}" role="button" tabindex="0" data-pw-lim="${p.id}:${li}"><span class="opt-mark"></span><div><span class="opt-name">${l.name}${on?` <span class="lim-tag">${tag}</span>`:''}</span><span class="opt-desc">${fmtHTML(l.desc)}</span></div></div>`;
   }).join("");
-  return `<div class="pw-card added">
-    <div class="pw-head"><span class="pw-name">${pw.name}</span><span class="pw-type-tag">${pw.type}</span><span class="pw-contrib-tag">佔用 ${contrib} 格</span><button class="btn btn-ghost btn-sm" data-pw-remove="${p.id}">移除</button></div>
-    <div class="pw-examples">範例：${pw.examples}</div>
-    <div class="pw-desc">${fmtHTML(pw.desc)}</div>
-    <div class="pw-block"><div class="pw-block-label">等級（每升 1 級佔用 +1 格；終極不可、超級僅宇宙勇者）</div><div class="lvl-row">${lvlBtns}</div>${lvlDescNow}</div>
-    <div class="pw-block"><div class="pw-block-label">強化（每項佔用 +1 格）</div>${enhRows}</div>
-    <div class="pw-block"><div class="pw-block-label">限制（免費；點選後選擇免費升級或免費換 1 個強化）</div>${limRows}</div>
+  return `${levelBlock}
+    <div class="pw-block"><div class="pw-block-label">強化（每項占 1 欄位）</div>${enhRows}</div>
+    <div class="pw-block"><div class="pw-block-label">限制（免費；點選後選擇免費升級或免費換 1 個強化，兩者會綁定連動）</div>${limRows}</div>`;
+}
+// ---- 異能彈出視窗 ----
+function openPowerModalAdd(){ if(emptySlots()<1){ needSlot(); return; } creator.powerModal={editPid:null}; renderCreator(); }
+function openPowerModalEdit(id){ if(!findPower(id))return; creator.powerModal={editPid:id}; renderCreator(); }
+function closePowerModal(){ creator.powerModal=null; renderCreator(); }
+function pickPowerInModal(id){
+  const m=creator.powerModal; if(!m) return;
+  if(m.editPid===id){ creator.powers=creator.powers.filter(p=>p.id!==id); m.editPid=null; afterPowerChange(); return; } // 再點一次 → 取消選擇
+  if(m.editPid!=null) creator.powers=creator.powers.filter(p=>p.id!==m.editPid); // 換異能：先移除舊的
+  if(findPower(id)) return;            // 已在其他欄位（清單會停用，保險）
+  if(emptySlots()<1){ needSlot(); return; }
+  creator.powers.push({id,level:0,enh:[],lim:[]});
+  m.editPid=id; afterPowerChange();
+}
+function removePowerFromModal(){ const m=creator.powerModal; if(!m)return; if(m.editPid!=null) creator.powers=creator.powers.filter(p=>p.id!==m.editPid); m.editPid=null; afterPowerChange(); }
+function powerModalStatsHTML(){ return `<span>創角點數 <b>${pointsLeft()}</b> / ${pointsTotal()}</span><span>免費欄位 <b>${freeSlotsUsed()}</b> / ${freeSlotsCount()}</span><span>額外欄位 <b>${extraSlotsUsed()}</b> / ${extraSlotsCount()}</span>`; }
+function refreshPowerModal(){ const inner=document.getElementById("pwModalListInner"); if(inner) inner.innerHTML=renderPowerListInner(); const st=document.getElementById("pwModalStats"); if(st) st.innerHTML=powerModalStatsHTML(); const buy=document.getElementById("pwBuySlotWrap"); if(buy) buy.innerHTML=powerBuySlotHTML(); }
+function afterPowerChange(){ if(creator.powerModal) refreshPowerModal(); else renderCreator(); } // 開窗時只局部更新，畫面不跳頂
+function matchPower(pw,q){
+  const hay=[pw.name,pw.examples,pw.desc].concat((pw.enh||[]).map(e=>e.name+e.desc),(pw.lim||[]).map(l=>l.name+l.desc)).join(" ").toLowerCase();
+  return hay.indexOf(q)>=0;
+}
+function powerListItem(pw,id){
+  const m=creator.powerModal, sel=m.editPid===id, owned=!sel&&!!findPower(id);
+  const head=`<div class="store-item${sel?" sel":""}${owned?" taken":""}" ${owned?'aria-disabled="true"':`data-pw-pick="${id}" role="button" tabindex="0"`}>
+    <div class="store-info"><span class="store-name">${pw.name}</span><span class="store-ex">範例：${pw.examples}</span></div>
+    ${owned?'<span class="store-ex">已選擇</span>':''}
   </div>`;
+  if(!sel) return head;
+  const p=findPower(id);
+  return head+`<div class="pw-inline-config">
+    <div class="pw-inline-top"><span class="pw-contrib-tag">占 ${powerContribution(p)} 欄位</span></div>
+    <div class="pw-desc">${fmtHTML(pw.desc)}</div>
+    ${powerConfigBlocks(p)}
+    <div class="pw-inline-acts"><button class="btn btn-ghost btn-sm" data-pw-modal-remove="1">移除此異能</button></div>
+  </div>`;
+}
+function renderPowerListInner(){
+  const m=creator.powerModal; if(!m) return "";
+  const q=(m.search||"").trim().toLowerCase();
+  const editCat = m.editPid!=null ? POWERS[m.editPid].type : null;
+  const secs=POWER_TYPES.map(tp=>{
+    const all=POWERS.map((pw,id)=>({pw,id})).filter(x=>x.pw.type===tp);
+    const items = q ? all.filter(x=>matchPower(x.pw,q)) : all;
+    if(q && !items.length) return "";                       // 搜尋時隱藏沒有符合項目的分類
+    const forceOpen = q!=="" || editCat===tp;               // 搜尋中、或正在編輯該分類異能 → 強制展開
+    const collapsed = forceOpen ? false : (m.collapsed[tp] !== false); // 預設摺疊，僅在使用者展開(=false)時打開
+    const header=`<div class="cat-head" data-cat="${tp}" role="button" tabindex="0"><span class="cat-arrow">${collapsed?"▸":"▾"}</span><span class="cat-name">${tp}</span><span class="cat-count">${q?items.length:all.length}</span></div>`;
+    let body="";
+    if(!collapsed) body = items.length ? items.map(x=>powerListItem(x.pw,x.id)).join("") : `<p class="pw-empty">${q?"查無符合的異能。":"此類型的異能陸續收錄中。"}</p>`;
+    return `<div class="cat-sec${collapsed?" collapsed":""}">${header}${body}</div>`;
+  }).join("");
+  return secs || `<p class="pw-empty">查無符合的異能。</p>`;
+}
+function renderPowerModal(){
+  const m=creator.powerModal; if(!m) return "";
+  if(!m.collapsed) m.collapsed={};
+  if(m.search==null) m.search="";
+  const used=powersUsed(), total=totalSlots();
+  const head=`<div class="pw-modal-head">
+    <div class="pw-modal-titlebar"><h3 class="modal-title display">${m.editPid!=null?"編輯異能":"獲得異能"}</h3><span id="pwBuySlotWrap">${powerBuySlotHTML()}</span></div>
+    <div class="pw-modal-stats" id="pwModalStats">${powerModalStatsHTML()}</div>
+    <div class="pw-search-wrap"><input class="pw-search" data-pw-search value="${escapeHTML(m.search)}" placeholder="🔍 搜尋異能名稱、範例或效果…" autocomplete="off"></div>
+  </div>`;
+  const list=`<div class="pw-modal-list"><div class="store-title">異能清單（共 96 個，目前先收錄 7 個攻擊類做測試）</div><div id="pwModalListInner">${renderPowerListInner()}</div></div>`;
+  const footer=`<div class="modal-actions pw-modal-foot"><button class="btn btn-gold" data-pw-modal-close="1">確定異能</button></div>`;
+  return head+list+footer;
+}
+function syncPowerModal(){
+  const el=document.getElementById("powerModal"); if(!el) return;
+  if(creator.powerModal){ document.getElementById("powerModalContent").innerHTML=renderPowerModal(); el.classList.add("on"); }
+  else el.classList.remove("on");
 }
 
 function renderPowerStep(){
   if(creator.tier==null) return needTierHint();
   ensureCreatorSlots();
-  const base=baseFreeSlots(), total=totalSlots(), used=powersUsed(), empty=emptySlots(), maxLvl=maxLevelForTier(), delta=total-base;
-  const slotInfo = delta===0 ? `共 ${total} 格，皆為免費額度`
-    : delta<0 ? `共 ${total} 格（免費額度 ${base}，已捨棄 ${-delta} 格／退還 ${-delta*2} 點）`
-    : `共 ${total} 格（免費額度 ${base}，已額外購買 ${delta} 格／花費 ${delta*2} 點）`;
-  const status=`已使用 <b>${used}</b> / ${total} 格異能欄位（${slotInfo}）。`;
+  const base=baseFreeSlots(), total=totalSlots(), used=powersUsed(), empty=emptySlots(), maxLvl=maxLevelForTier();
+  const status=`免費欄位 <b>${freeSlotsUsed()}</b> / ${freeSlotsCount()}，額外欄位 <b>${extraSlotsUsed()}</b> / ${extraSlotsCount()}。`;
 
   const powerCards=creator.powers.map(p=>powerCard(p)).join("");
   let emptyCards="";
@@ -1749,25 +1997,10 @@ function renderPowerStep(){
   if(total<base) addBtn=`<button class="btn btn-ghost" data-add-slot="1"${pointsLeft()<2?" disabled":""}>↩ 還原 1 個免費欄位（−2 點）</button>`;
   else if(empty===0) addBtn=`<button class="btn btn-ghost" data-add-slot="1"${pointsLeft()<2?" disabled":""}>＋ 購買額外異能欄位（−2 點）</button>`;
 
-  let store="";
-  if(creator.storeOpen){
-    const secs=POWER_TYPES.map(tp=>{
-      const avail=POWERS.map((pw,id)=>({pw,id})).filter(x=>x.pw.type===tp&&!findPower(x.id));
-      const taken=POWERS.map((pw,id)=>({pw,id})).filter(x=>x.pw.type===tp&&findPower(x.id));
-      let inner;
-      if(!avail.length&&!taken.length) inner=`<p class="pw-empty">此類型的異能陸續收錄中。</p>`;
-      else inner=avail.map(x=>`<div class="store-item"><div class="store-info"><span class="store-name">${x.pw.name}</span><span class="store-ex">範例：${x.pw.examples}</span></div><button class="btn btn-sm" data-pw-add="${x.id}">選擇</button></div>`).join("")
-        + taken.map(x=>`<div class="store-item taken"><div class="store-info"><span class="store-name">${x.pw.name}</span><span class="store-ex">已加入你的異能</span></div></div>`).join("");
-      return `<div class="store-sec"><div class="store-sec-head">${tp}</div>${inner}</div>`;
-    }).join("");
-    store=`<div class="store"><div class="store-bar"><span class="store-title">異能清單（共 96 個，目前先收錄 1 個做測試）</span><button class="btn btn-ghost btn-sm" data-store-close="1">關閉清單</button></div>${secs}</div>`;
-  }
-
-  return `<p class="step-intro">所有英雄都擁有「異能」。本階級提供 <b>${base}</b> 個免費異能欄位：在每個欄位上「獲得異能」從清單挑選，或「捨棄」用不到的欄位換取創角點數（每捨棄 1 格退 2 點，至少保留 1 格）。提升等級或加上強化會佔用更多欄位；免費欄位用完後，可花 2 點購買額外欄位。<b>限制免費折抵</b>──點選某個限制即可選擇免費升 1 級，或免費換取 1 個強化。創角時最高可升到 <b>${POWER_LEVELS[maxLvl]}</b>（終極不可，超級僅限宇宙勇者）。</p>
+  return `<p class="step-intro">所有英雄都擁有「異能」。本階級提供 <b>${base}</b> 個免費異能欄位：在每個欄位上「獲得異能」會彈出異能清單供你挑選，或「捨棄」用不到的欄位換取創角點數（每捨棄 1 個欄位退 2 點，至少保留 1 個欄位）。提升等級或加上強化會占用更多欄位；免費欄位用完後，可花 2 點購買額外欄位。<b>限制免費折抵</b>──點選某個限制即可選擇免費升 1 級，或免費換取 1 個強化。創角時最高可升到 <b>${POWER_LEVELS[maxLvl]}</b>（終極不可，超級僅限宇宙勇者）。</p>
     <div class="points-bar pw-status">${status}</div>
     <div class="slot-list">${powerCards}${emptyCards}</div>
-    ${addBtn?`<div class="slot-add-row">${addBtn}</div>`:""}
-    ${store}`;
+    ${addBtn?`<div class="slot-add-row">${addBtn}</div>`:""}`;
 }
 function profSecHead(title,hint,rollKind){
   return `<div class="sec-head"><div><span class="sec-title display">${title}</span>${hint?`<span class="sec-hint">${hint}</span>`:""}</div>${rollKind?`<button class="dice-btn" data-prof-roll="${rollKind}">🎲 隨機</button>`:""}</div>`;
@@ -1946,12 +2179,13 @@ function renderCreator(){
       <div class="builder-head"><span class="display">自創英雄</span></div>
       <p class="builder-sub">打造完全原創的超級英雄。步驟之間可自由切換、隨時回頭修改。</p>
     </div>
-    <div class="wip-banner">🚧 此功能尚未完成。目前開放到「7. 計算數據」，後續步驟陸續製作中。</div>
+    <div class="wip-banner">🚧 此功能尚未完成。</div>
     ${nav}${content}${foot}`;
+  syncPowerModal();
 }
 function gotoStep(i){ if(i<0||i>=CREATOR_STEPS.length) return; creator.step=i; renderCreator(); window.scrollTo(0,0); }
 function selectTier(ti){
-  if(creator.tier!==ti){ creator.tier=ti; resetCreatorAttrs(); creator.powerSources=[]; creator.powers=[]; creator.slots=TIERS[ti].powers; creator.storeOpen=false; creator.talents=[]; creator.weaknesses=[]; }
+  if(creator.tier!==ti){ creator.tier=ti; resetCreatorAttrs(); creator.powerSources=[]; creator.powers=[]; creator.slots=TIERS[ti].powers; creator.powerModal=null; creator.talents=[]; creator.weaknesses=[]; }
   renderCreator();
 }
 function wireCreator(){
@@ -1966,24 +2200,16 @@ function wireCreator(){
     if(st){ adjustAttr(st.dataset.attr,+st.dataset.delta); return; }
     const src=e.target.closest("[data-source]");
     if(src){ if(!src.classList.contains("disabled")) toggleSource(+src.dataset.source); return; }
-    const pwAdd=e.target.closest("[data-pw-add]");
-    if(pwAdd){ addPower(+pwAdd.dataset.pwAdd); return; }
     const slotAcq=e.target.closest("[data-slot-acquire]");
-    if(slotAcq){ creator.storeOpen=true; renderCreator(); return; }
+    if(slotAcq){ openPowerModalAdd(); return; }
     const slotDis=e.target.closest("[data-slot-discard]");
     if(slotDis){ if(!slotDis.disabled) discardSlot(); return; }
     const addSlotBtn=e.target.closest("[data-add-slot]");
     if(addSlotBtn){ if(!addSlotBtn.disabled) addSlot(); return; }
-    const storeClose=e.target.closest("[data-store-close]");
-    if(storeClose){ creator.storeOpen=false; renderCreator(); return; }
+    const pwEdit=e.target.closest("[data-pw-edit]");
+    if(pwEdit){ openPowerModalEdit(+pwEdit.dataset.pwEdit); return; }
     const pwRem=e.target.closest("[data-pw-remove]");
     if(pwRem){ removePower(+pwRem.dataset.pwRemove); return; }
-    const pwLv=e.target.closest("[data-pw-level]");
-    if(pwLv){ if(!pwLv.classList.contains("disabled")){ const [id,li]=pwLv.dataset.pwLevel.split(":").map(Number); setPowerLevel(id,li); } return; }
-    const pwEnh=e.target.closest("[data-pw-enh]");
-    if(pwEnh){ if(!pwEnh.classList.contains("disabled")){ const [id,ei]=pwEnh.dataset.pwEnh.split(":").map(Number); togglePwEnh(id,ei); } return; }
-    const pwLim=e.target.closest("[data-pw-lim]");
-    if(pwLim){ const [id,li]=pwLim.dataset.pwLim.split(":").map(Number); clickLimit(id,li); return; }
     const prof=e.target.closest("[data-prof]");
     if(prof){ selectProfession(+prof.dataset.prof); return; }
     const profRoll=e.target.closest("[data-prof-roll]");
@@ -2392,6 +2618,7 @@ function showToast(msg){const t=document.getElementById("toast");t.textContent=m
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){
     if(document.getElementById("choiceModal").classList.contains("on")) hideChoice();
+    else if(document.getElementById("powerModal").classList.contains("on")) closePowerModal();
     else if(document.getElementById("modal").classList.contains("on")) hideModal();
     else if(document.getElementById("builderScreen").classList.contains("on")||document.getElementById("creatorScreen").classList.contains("on")) goHome();
   }
@@ -2402,6 +2629,34 @@ document.getElementById("modalCancel").addEventListener("click",hideModal);
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")hideModal();});
 document.getElementById("choiceActions").addEventListener("click",e=>{const b=e.target.closest("[data-choice]");if(!b)return;const f=_choiceHandlers[+b.dataset.choice];hideChoice();if(f)f();});
 document.getElementById("choiceModal").addEventListener("click",e=>{if(e.target.id==="choiceModal")hideChoice();});
+
+document.getElementById("powerModal").addEventListener("click",e=>{
+  if(e.target.id==="powerModal"){ closePowerModal(); return; }
+  if(e.target.closest("[data-pw-modal-close]")){ closePowerModal(); return; }
+  if(e.target.closest("[data-pw-modal-remove]")){ removePowerFromModal(); return; }
+  const buy=e.target.closest("[data-add-slot]");
+  if(buy){ if(!buy.disabled) addSlot(); return; }
+  const cat=e.target.closest("[data-cat]");
+  if(cat){ const t=cat.dataset.cat; creator.powerModal.collapsed[t]=(creator.powerModal.collapsed[t]===false); const inner=document.getElementById("pwModalListInner"); if(inner) inner.innerHTML=renderPowerListInner(); return; }
+  const pick=e.target.closest("[data-pw-pick]");
+  if(pick&&!pick.classList.contains("taken")){ pickPowerInModal(+pick.dataset.pwPick); return; }
+  const lv=e.target.closest("[data-pw-level]");
+  if(lv){ if(!lv.classList.contains("disabled")){ const [id,li]=lv.dataset.pwLevel.split(":").map(Number); setPowerLevel(id,li); } return; }
+  const enh=e.target.closest("[data-pw-enh]");
+  if(enh){ if(!enh.classList.contains("disabled")){ const [id,ei]=enh.dataset.pwEnh.split(":").map(Number); togglePwEnh(id,ei); } return; }
+  const lim=e.target.closest("[data-pw-lim]");
+  if(lim){ const [id,li]=lim.dataset.pwLim.split(":").map(Number); clickLimit(id,li); return; }
+});
+document.getElementById("powerModal").addEventListener("input",e=>{
+  const se=e.target.closest("[data-pw-search]");
+  if(se){ creator.powerModal.search=se.value; const inner=document.getElementById("pwModalListInner"); if(inner) inner.innerHTML=renderPowerListInner(); }
+});
+document.getElementById("powerModal").addEventListener("keydown",e=>{
+  if(e.key!=="Enter"&&e.key!==" ") return;
+  if(e.target.closest("[data-pw-search]")) return;          // 搜尋框照常輸入
+  const t=e.target.closest("[data-cat],[data-pw-pick],[data-pw-enh],[data-pw-lim]");
+  if(t&&!t.classList.contains("disabled")&&!t.classList.contains("taken")){ e.preventDefault(); t.click(); }
+});
 document.getElementById("savesSection").addEventListener("click",e=>{
   const load=e.target.closest(".save-load"),del=e.target.closest(".save-del");
   if(load){const b=storageGet().find(x=>x.id===load.dataset.id);if(b)loadBuild(b.data);}
