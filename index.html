@@ -132,20 +132,20 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .land-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:var(--ink);font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
 .wip-banner{background:rgba(242,183,5,.12);border:1.5px solid var(--gold);color:#f6d77a;border-radius:6px;padding:14px 16px;margin:0 0 22px;font-weight:600;line-height:1.65}
 .step-intro{color:#b7bcd2;line-height:1.75;margin:6px 0 18px;font-size:.95rem}
-.tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.tier-card{position:relative;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:18px 18px 16px;cursor:pointer;transition:border-color .12s,background .12s;outline:none}
-.tier-card:hover{border-color:#46508a}
-.tier-card.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
-.tier-name{font-size:1.25rem;font-weight:800;color:var(--paper)}
-.tier-en{display:block;font-size:.8rem;color:#8b91ad;letter-spacing:.04em;margin-bottom:14px}
-.tier-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.tier-stat{background:#0b1026;border:1px solid #232a4d;border-radius:5px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
-.tier-stat-num{font-size:1.3rem;color:var(--gold);line-height:1}
-.tier-stat-label{font-size:.72rem;color:#9aa0bd}
+.tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;padding:4px 0 6px}
+.tier-card-paper{padding:20px 20px 18px}
+.tier-card-paper .card-name{font-size:1.7rem;margin:4px 0 2px}
+.tier-sel-badge{font-family:"Oswald",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#fff;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.tier-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 4px}
+.tier-stat{background:rgba(25,25,34,.05);border:1px solid rgba(25,25,34,.12);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.tier-stat-num{font-size:1.4rem;color:var(--red);line-height:1;font-weight:900}
+.tier-stat-label{font-size:.72rem;color:var(--ink-soft)}
 @media(max-width:600px){.tier-grid{grid-template-columns:1fr}}
 .tier-hint{color:#9aa0bd;font-style:italic;padding:6px 0}
 .points-bar{display:inline-block;background:#0b1026;border:1.5px solid var(--gold);color:#f6d77a;border-radius:30px;padding:8px 18px;font-weight:700;margin-bottom:16px}
 .points-bar b{color:var(--gold);font-size:1.15rem}
+.points-sticky{position:sticky;top:0;z-index:30;padding:10px 0 8px;margin-bottom:6px;background:linear-gradient(var(--night) 70%,rgba(14,19,38,0));backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.points-sticky .points-bar{margin-bottom:0;box-shadow:0 6px 18px rgba(0,0,0,.45)}
 .attr-alloc{display:flex;flex-direction:column;gap:10px}
 .attr-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:12px 16px}
 .attr-info{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -175,6 +175,7 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .src-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px}
 .src-tag.free{background:var(--green);color:#04210f}
 .src-tag.cost{background:var(--gold);color:var(--ink)}
+.src-tag.paid{background:var(--red);color:#fff}
 .src-desc{font-size:.86rem;color:#b7bcd2;line-height:1.6}
 .src-summary{color:#d8dcec;margin-top:14px;line-height:1.7;font-weight:600}
 .src-note{color:#9aa0bd;font-size:.85rem;margin-top:6px;line-height:1.6}
@@ -189,6 +190,7 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .pw-card.added{border-color:var(--red)}
 .pw-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pw-name{font-weight:800;color:var(--paper);font-size:1.12rem}
+.pw-en{font-family:'Oswald',system-ui,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.04em;color:#8b91ad;margin-left:8px;text-transform:uppercase;vertical-align:middle}
 .pw-type-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;background:#232a4d;color:#aeb4d0}
 .pw-head .btn{margin-left:auto}
 .pw-examples{font-size:.8rem;color:#8b91ad;margin:8px 0 4px}
@@ -383,6 +385,9 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
   .card:hover .card-cta::after{transform:translateX(4px)}
   .land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
 }
+.card.sel{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--green)}
+.card.sel .card-cta{color:var(--green)}
+.card.sel .card-cta::after{content:"✓";transform:none}
 
 /* 手機底部動作列（常駐匯出/複製＋完成度），桌機隱藏 */
 .mobile-bar{display:none}
@@ -1484,7 +1489,37 @@ const POWER_SOURCES=[
   {name:"超能力血統",desc:"你的父母是超級英雄，而你繼承了他們的能力。"},
   {name:"武器精通",desc:"你接受過嚴格的訓練，精通各種武器的使用。"},
   {name:"神祕遺物",desc:"你發現了一件古老遺物，在解讀其陌生的文字後獲得了神奇的力量。"},
-  {name:"外星裝置",desc:"一個外星物種贈予你非常先進的高科技裝置，這是其他人類無法觸及的技術。"}
+  {name:"外星裝置",desc:"一個外星物種贈予你非常先進的高科技裝置，這是其他人類無法觸及的技術。"},
+  {name:"魔法",desc:"你探索了晦澀的神祕奧術，在經過多年的學習與練習後，你能夠施展強大的法術。"},
+  {name:"人造生命",desc:"你是被創造出來的合成生命體，你的力量源自於你的程式碼與身體結構。"},
+  {name:"火星人生理",desc:"你被放逐離開火星，但發現自己能做到地球人類無法辦到的事情。"},
+  {name:"強化複製人生理",desc:"你是經過基因工程強化的複製人，能力比本尊更優秀。"},
+  {name:"詭異詛咒",desc:"一個詛咒降臨在你身上，摧毀了你的生活，但也讓你獲得了超能力。"},
+  {name:"宇宙隕石",desc:"你曾身處一顆奇異隕石墜落地球的現場附近，因此獲得了超能力。"},
+  {name:"天界賜福",desc:"超自然的存在曾拜訪你，並賦予你一部分的力量。"},
+  {name:"輻射之血",desc:"在一場高度不穩定的實驗中，你的血液遭到 α 粒子轟擊，因此獲得超能力。"},
+  {name:"天才造物",desc:"你是由超級天才為了特定目的所創造的，但他要麼拋棄了你，要麼被迫離開你。"},
+  {name:"星體轉化",desc:"宇宙實體將你轉化成新的存在，以執行祂那令人難以理解的目的。"},
+  {name:"科技有機體",desc:"你由人工與有機材料組成，兩者完美地融合運作，賦予你超人的能力。"},
+  {name:"外星寄生體",desc:"你與外星寄生體建立了共生連結，只要你協助它達成目的，它就會賦予你力量。"},
+  {name:"暗影之力",desc:"長期暴露在暗影宇宙的幽影能量後，你發展出超人類的能力。"},
+  {name:"神祕強化",desc:"你在醫院醒來，對過去的一切毫無記憶，卻發現自己擁有超能力。"},
+  {name:"外星生理",desc:"你是生物能力超越人類極限的物種。"},
+  {name:"神聖化身",desc:"你是古老神祇的最新化身。"},
+  {name:"科學天才",desc:"你擁有非凡的科學天賦，並經過多年的訓練，能將所學知識付諸實行。"},
+  {name:"尖端發明",desc:"你創造了客製化的工具與裝置，讓你成為超級英雄。"},
+  {name:"異界契約",desc:"你與一個難以理解的存在達成了協議。祂賦予你力量，但代價是什麼？"},
+  {name:"實驗配方",desc:"你服下了一種會改變基因組成的藥劑。"},
+  {name:"亞特蘭提斯生理",desc:"你來自海底王國亞特蘭提斯，能力超越了大多數的族人。"},
+  {name:"地脈連結",desc:"你與遍布世界的魔法能量網路有著某種連結。"},
+  {name:"半威燦人生理",desc:"你擁有一半的威燦人 DNA，所以你具備所有威燦人共有的超能力。"},
+  {name:"無雙技藝",desc:"你曾在精英導師門下學習獨特的知識或技巧，經過多年的刻苦鍛鍊，你已將技藝磨練至臻。"},
+  {name:"神話傳承",desc:"你的祖先是傳奇人物，但你是數個世代以來第一個顯現超能力的人。"},
+  {name:"基因重組",desc:"你曾被外星人綁架並失去了數年的生命，回來時已經徹底改變。"},
+  {name:"吸血鬼化",desc:"你被轉化成不朽的嗜血夜行生物。"},
+  {name:"氣功頓悟",desc:"你透過紀律與進階訓練，解鎖了比其他人更強大的生命潛能。"},
+  {name:"魔法傳承",desc:"你的祖先曾是隱姓埋名的強大的巫師，而你繼承了他們的知識與祕密。"},
+  {name:"惡魔生理",desc:"你是逃離地獄的惡魔，擁有你族人特有的超自然能力。"}
 ];
 
 // 異能類型、等級
@@ -1493,7 +1528,7 @@ const POWER_LEVELS=["基礎","強力","超級","終極"]; // 0..3
 // 所有異能共 96 個，目前先收錄 1 個（攻擊類·轟擊）做為測試
 const POWERS=[
   {
-    name:"苦難", type:"攻擊類", examples:"致盲之光、腐化之握、恐懼氣體、劇毒啃咬",
+    name:"苦難", en:"Affliction", type:"攻擊類", examples:"致盲之光、腐化之握、恐懼氣體、劇毒啃咬",
     desc:"你可以對附近的對手施加有害效果。這是傷害 3、射程 0/1 的射擊攻擊，但不會造成實際傷害。若攻擊穿透護甲，目標的所有屬性檢定都會 -3 骰，而且移動需要完整動作，直到成功通過`氣場`檢定（一樣有懲罰）解除效果為止。`氣場`檢定無需動作，但每輪只能嘗試 1 次，而且只能在受害者自己的回合進行。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（用來判斷攻擊是否穿透護甲）。",
     enh:[
       {name:"心靈苦難",desc:"發動此異能時，你可以使用任何心理屬性來進行檢定（代替`敏捷`）。此外，`護甲`無效。"},
@@ -1504,7 +1539,7 @@ const POWERS=[
     ]
   },
   {
-    name:"轟擊", type:"攻擊類", examples:"能量束、槍械、閃電、特技箭矢",
+    name:"轟擊", en:"Blast", type:"攻擊類", examples:"能量束、槍械、閃電、特技箭矢",
     desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。",
     levelDesc:{ "強力":"傷害 4、射程 0/4。", "超級":"傷害 5、射程 0/5。", "終極":"傷害 6、射程 0/6。" },
     enh:[
@@ -1518,7 +1553,7 @@ const POWERS=[
     ]
   },
   {
-    name:"焦慮", type:"攻擊類", examples:"戰吼、心靈尖嘯、神經毒素飛鏢、尖酸侮辱",
+    name:"焦慮", en:"Distress", type:"攻擊類", examples:"戰吼、心靈尖嘯、神經毒素飛鏢、尖酸侮辱",
     desc:"你可以攻擊對手的心靈或意志力。這是傷害 3、射程 0/3 的射擊攻擊。若攻擊穿透護甲，你造成的傷害會 1:1 轉化為壓力。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（一樣轉化為壓力）。",
     levelDesc:{ "強力":"傷害 4、射程 0/4。", "超級":"傷害 5、射程 0/5。", "終極":"傷害 6、射程 0/6。" },
     enh:[
@@ -1531,7 +1566,7 @@ const POWERS=[
     ]
   },
   {
-    name:"發散", type:"攻擊類", examples:"火焰靈光、強酸皮膚、守護靈、蟲群",
+    name:"發散", en:"Emanation", type:"攻擊類", examples:"火焰靈光、強酸皮膚、守護靈、蟲群",
     desc:"你可以用傷害性靈光包覆自己。你可以使用 1 個快速動作（或作為反應動作）發動此異能。發動後，你的`肉搏傷害` +2（無法與【打擊】或【體型變化】的加成疊加）。此外，任何觸碰你的人（包括肉搏攻擊）都會承受 3 點傷害（每回合僅生效 1 次）。此效果會持續到你的下個回合開始。",
     enh:[
       {name:"強效發散",desc:"此異能會讓你的`肉搏傷害` +3；讓觸碰你的人承受 4 點傷害。"}
@@ -1541,7 +1576,7 @@ const POWERS=[
     ]
   },
   {
-    name:"捕縛", type:"攻擊類", examples:"套索、心靈束縛、電漿網、蛛網",
+    name:"捕縛", en:"Snare", type:"攻擊類", examples:"套索、心靈束縛、電漿網、蛛網",
     desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行 -2 骰的`力量`檢定（完整動作）。此異能對巨獸無效。使用此異能時，你無法觸發射擊攻擊的任何特技。",
     levelDesc:{ "強力":"目標的掙脫檢定 -3 骰。", "超級":"掙脫檢定 -4 骰。", "終極":"掙脫檢定 -5 骰。" },
     enh:[
@@ -1552,7 +1587,7 @@ const POWERS=[
     ]
   },
   {
-    name:"打擊", type:"攻擊類", examples:"徒手格鬥、劍刃武器、伸縮爪、電擊拳套",
+    name:"打擊", en:"Strike", type:"攻擊類", examples:"徒手格鬥、劍刃武器、伸縮爪、電擊拳套",
     desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",
     levelDesc:{ "強力":"`肉搏傷害` +2。", "超級":"`肉搏傷害` +3。", "終極":"`肉搏傷害` +4。" },
     enh:[
@@ -1566,7 +1601,7 @@ const POWERS=[
     ]
   },
   {
-    name:"震盪", type:"攻擊類", examples:"催眠射線、化學噴霧、腦波干擾器、奈米電擊器",
+    name:"震盪", en:"Stun", type:"攻擊類", examples:"催眠射線、化學噴霧、腦波干擾器、奈米電擊器",
     desc:"你可以暫時讓對手失能或陷入混亂。這是傷害 3、射程 0/3 的射擊攻擊，但不會造成實際傷害。若攻擊穿透護甲，目標必須立刻進行並通過`氣場`檢定（無需動作），否則會失去他的下個回合，而且在那之前無法執行反應動作。此異能對巨獸無效。你無法觸發這次攻擊的任何特技，除了「雙倍傷害」（用來判斷攻擊是否穿透護甲）。",
     enh:[
       {name:"心靈震盪",desc:"發動此異能時，你可以使用任何心理屬性來進行檢定（代替`敏捷`）。此外，`護甲`無效。"},
@@ -1574,6 +1609,250 @@ const POWERS=[
     ],
     lim:[
       {name:"需要接觸",desc:"發動此異能時，你必須進行肉搏攻擊，而非射擊攻擊。"}
+    ]
+  },
+  {
+    name:"行動計畫", en:"Action Plan", type:"控制類", examples:"天才戰術、超認知即興發揮、應變計畫、極致準備",
+    desc:"以 1 個完整動作，你可以進行`理智`檢定來制定絕妙的行動計畫。選擇「攻擊」、「防禦」或「指揮」其中 1 項。若檢定成功，你每擲出 1 個 :invincible-6:，團隊中所有聽得見你的其他 PC（包括透過通訊設備或異能）只要按照你的計畫行動，屬性檢定就會 +1 骰。攻擊計畫用於攻擊檢定；防禦計畫用於閃避和格擋；指揮計畫用於所有其他檢定。",
+    enh:[],
+    lim:[]
+  },
+  {
+    name:"動物控制", en:"Animal Control", type:"控制類", examples:"動物交談、獸魂附身、動物感應、馴獸大師",
+    desc:"以 1 個完整動作，你可以控制你所處區塊或 1 個相鄰區塊內 1 隻動物的行動。該動物會對你保持友善態度，並執行牠通常會做的行動（例如狼群會守護領地）。若要命令動物做出異常行為，你必須進行`氣場`檢定（快速動作）。該動物與你共享先攻順序，而且可以在剛被控制的回合就行動。若目標區塊內有多隻動物，你可以將牠們全部視為雜魚來控制。此異能對巨獸無效。",
+    enh:[
+      {name:"動物傳心",desc:"你可以跟你所處區塊內的 1 隻動物進行溝通。動物的思維簡單且順從本能，但能傳達牠所見所聞的基本資訊。"}
+    ],
+    lim:[
+      {name:"僅限特定動物",desc:"發動此異能時，你只能影響 1 種特定類型的動物，例如鳥類、爬蟲類、哺乳類或水生動物。"}
+    ]
+  },
+  {
+    name:"冰寒控制", en:"Cold Control", type:"控制類", examples:"御霜念力、冷凍槍、冰霜吟唱、寒霜魔杖",
+    desc:"你可以降低溫度來冰凍環境並操控冰霜。以 1 個完整動作，你可以將你所處區塊或 1 個相鄰區塊內的溫度降至冰點以下，創造出霜雪與冰塊。\n你可以使用此異能進行傷害 3、射程 0/1 的射擊攻擊。若你願意，你可以改為讓目標定身（而非造成傷害），讓他無法執行任何需要身體活動的動作，直到掙脫為止。掙脫需要進行`力量`檢定（完整動作）。\n以 1 個快速動作（或作為反應動作），你可以為自己或你所處區塊內的 1 個目標創造`護甲` 3 的冰霜屏障。該屏障會持續到你或目標離開該區塊、被突破，或被你解除為止。你最多可以同時維持 3 個屏障。",
+    levelDesc:{ "強力":"你可以在 2 個相鄰區塊內創造霜雪與冰塊，其中 1 個必須是你所處或相鄰的區塊；此異能的攻擊具有傷害 4、射程 0/2。", "超級":"3 個相鄰區塊；傷害 5、射程 0/3。", "終極":"4 個相鄰區塊；傷害 6、射程 0/4。" },
+    enh:[
+      {name:"冰霜護甲",desc:"以 1 個快速動作（或作為反應動作），你可以發動此異能將自己包覆於冰霜中，獲得`護甲` 2，持續整個動作場景（數分鐘）。"},
+      {name:"冰霜滑行",desc:"以 1 個快速動作或完整動作，你可以發動此異能來移動最多 2 個區塊。若你主動承受 1 點壓力，則可以移動最多 4 個區塊。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"黑暗控制", en:"Darkness Control", type:"控制類", examples:"陰影操控、虛空魔法、御影念力、光線抑制裝置",
+    desc:"你可以召喚並操控黑暗與陰影。以 1 個完整動作，你可以在你所處區塊或 1 個相鄰區塊內創造完全的黑暗。試圖離開黑暗的生物必須進行`敏捷`檢定（無需動作）。處於黑暗中的生物對相同區塊內的目標進行肉搏攻擊或射擊攻擊會 -2 骰，而且無法攻擊相鄰或更遠區塊的目標。你永遠不會受到自己創造的黑暗影響。黑暗會持續數分鐘、直到你因傷害而崩潰，或離開該場景為止。",
+    levelDesc:{ "強力":"你可以在 2 個相鄰區塊內創造黑暗，其中 1 個必須是你所處或相鄰的區塊。", "超級":"3 個相鄰區塊。", "終極":"4 個相鄰區塊。" },
+    enh:[
+      {name:"恐怖黑暗",desc:"任何被困在你黑暗中的生物在他每回合開始時都會承受 2 點壓力，但可以進行`直覺`檢定來抵抗此效果（無需動作），每擲出 1 個 :invincible-6: 就抵消 1 點壓力。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"次元穿梭", en:"Dimensional Travel", type:"控制類", examples:"平行宇宙轉移、暗影宇宙旅行、彼界墜飾、蟲洞滑行裝置",
+    desc:"以 1 個快速動作，你可以從這個次元瞬間移動到另一個次元。若目的地是平行次元，你會抵達與起點對應的相同位置；若是其他次元，你會抵達隨機的位置。其他次元的細節由冒險情境或 GM 決定。",
+    enh:[
+      {name:"額外旅伴",desc:"你可以攜帶 1 個自願的目標一起穿梭次元。你每主動承受 1 點壓力（最多 3 點），額外旅伴的數量可以再增加 1 個。所有額外旅伴都必須位於相同區塊。"},
+      {name:"快速旅行",desc:"你可以使用反應動作主動承受 1 點壓力，並立刻發動此異能（即使攜帶旅伴也可以）。若你在即將受到攻擊時穿梭到另一個次元，該次攻擊會自動失手。"},
+      {name:"創造傳送門",desc:"以 1 個完整動作，你可以開啟 1 道能讓其他人穿越的雙向傳送門，持續數分鐘。"}
+    ],
+    lim:[
+      {name:"僅限平行次元",desc:"你只能穿梭到平行次元（與主物質位面並存的替代宇宙）。"},
+      {name:"特定次元",desc:"你只能傳送到特定的次元。選擇此限制選項時，你必須指定目的地，例如暗影宇宙、弗拉森次元或彼界。"}
+    ]
+  },
+  {
+    name:"地震", en:"Earthquake", type:"控制類", examples:"地殼重鎚、大地重擊、震波拳套、珀耳塞斯詛咒",
+    desc:"你可以在你所處區塊內引發局部地震。這是傷害 2、+2 骰，並具有範圍效果的射擊攻擊。你不會受到自己【地震】的傷害。此異能會自動摧毀目標區塊。若區塊已被摧毀，則無法進行攻擊；若區塊無法被摧毀（例如空中），則無法發動此異能。",
+    levelDesc:{ "強力":"你可以在 2 個相鄰區塊內引發地震，其中 1 個必須是你所處或相鄰的區塊；此異能具有傷害 3。", "超級":"3 個相鄰區塊；傷害 4。", "終極":"4 個相鄰區塊；傷害 5。" },
+    enh:[
+      {name:"震波",desc:"你可以將此異能導向 1 個特定目標，而非整個區塊。此異能的基礎傷害 +1。震波不會摧毀任何區塊，但你與目標之間的所有區塊都必須是可被摧毀的區塊。"},
+      {name:"大地漂移",desc:"以 1 個快速動作或完整動作，你可以發動此異能來移動最多 2 個區塊。若你主動承受 1 點壓力，則可以移動最多 4 個區塊。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"電能控制", en:"Electricity Control", type:"控制類", examples:"電擊裝甲、御電念力、充能原生粒子、電湧護盾",
+    desc:"以 1 個完整動作，你可以移動並控制你所處區塊或 1 個相鄰區塊內的任何電流，例如轉移機器之間的電流，或完全切斷電流來關閉電子設備。\n只要你所處區塊或相鄰區塊內有電能存在，你就可以使用此異能進行傷害 3、射程 0/1 的射擊攻擊。任何`護甲`在對抗此攻擊時都會減半（無條件進位）。若目標是由導電材料構成（例如金屬），此攻擊會 +2 骰。\n電流攻擊也可以用來震暈對手，而非造成傷害。若攻擊穿透`護甲`，目標必須立刻進行並通過`氣場`檢定（無需動作），否則會失去他的下個回合，而且在那之前無法執行反應動作。",
+    levelDesc:{ "強力":"你可以控制 2 個相鄰區塊內的電流，其中 1 個必須是你所處或相鄰的區塊；此異能攻擊具有傷害 4、射程 0/2。", "超級":"3 個相鄰區塊；傷害 5、射程 0/3。", "終極":"4 個相鄰區塊；傷害 6、射程 0/4。" },
+    enh:[
+      {name:"放電",desc:"當電流攻擊命中目標時，你可以主動承受最多 10 點壓力來額外造成等量傷害（在觸發「雙倍傷害」特技後才增傷）。"},
+      {name:"人體電池",desc:"若你所處區塊內有電能存在，你可以使用任何心理屬性進行檢定（完整動作），每擲出 1 個 :invincible-6: 會獲得 3 點`決心`。你透過這種方式獲得的`決心`甚至可以超過`最大決心`，但溢出的`決心`會在數分鐘後消失。在每個動作場景中，你在 1 個區塊內只能以此方式補充`決心` 1 次。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"火焰控制", en:"Fire Control", type:"控制類", examples:"御火念力、惡魔血統、烈焰魔法、煉獄法杖",
+    desc:"你可以操控火焰與熱能。以 1 個完整動作，你可以熄滅你所處區塊或 1 個相鄰區塊內的火焰、將火焰的強度提升最多 3 點，或讓火焰蔓延至 1 個相鄰區塊。\n只要你所處區塊或相鄰區塊內有火焰存在，你就可以使用此異能進行傷害 3、射程 0/1 的射擊攻擊。目標若受到傷害就會著火（火焰強度等於攻擊的基礎傷害）。你也可以主動承受 1 點壓力，在目標所處區塊內點燃強度 6 的烈焰。\n你自己完全免疫火焰傷害。",
+    levelDesc:{ "強力":"你可以控制 2 個相鄰區塊內的火焰，其中 1 個必須是你所處或相鄰的區塊；你可以將火焰強度提升最多 4 點；此異能的攻擊具有傷害 4、射程 0/2。", "超級":"3 個相鄰區塊；強度最多 +5；傷害 5、射程 0/3。", "終極":"4 個相鄰區塊；強度最多 +6；傷害 6、射程 0/4。" },
+    enh:[
+      {name:"烈焰燎原",desc:"當你使用此異能進行射擊攻擊時，你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。"},
+      {name:"點燃火焰",desc:"你可以自行產生火焰來進行射擊攻擊，或在你所處區塊或 1 個相鄰區塊內點燃強度 6 的烈焰。"}
+    ],
+    lim:[
+      {name:"毀滅烈焰",desc:"發動此異能時，你只能提升火焰強度，無法熄滅火焰。"}
+    ]
+  },
+  {
+    name:"重力控制", en:"Gravity Control", type:"控制類", examples:"奈米牽引槍、平衡念力、地面傾斜、個人反重力裝置",
+    desc:"以 1 個完整動作，你可以減輕或增強你所處區塊或 1 個相鄰區塊內的重力效果，同時影響地面區塊與其上方的高處區塊。\n若你減輕重力，所有未固定的角色與物體都會立刻移動到高處，漂浮在空中。想要降落到地面需要進行`敏捷`檢定，或發動【飛行】或【擺盪】異能（快速動作），但在受影響的區塊內執行任何動作前，必須先進行並通過`敏捷`檢定（無需動作），否則該動作會自動失敗。\n若你增強重力，區塊內所有物體的重量等級都會提高 3 級。所有位於高處的角色都會立刻墜落到地面，承受墜落傷害。此外，該區塊內無法進行空中移動，而地面移動會變成需要進行`力量`檢定的完整動作。",
+    enh:[
+      {name:"精準控制",desc:"當你減輕或增強重力時，你可以選擇區塊內哪些物體或目標會受到影響。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"指引", en:"Guidance", type:"控制類", examples:"天生領導力、精神支持、祖先指引、過人魅力",
+    desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 個能與你溝通的其他 PC，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不消耗他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 個 PC 格擋或閃避襲來的攻擊，而不消耗他自己的動作。",
+    enh:[],
+    lim:[]
+  },
+  {
+    name:"幻象", en:"Illusion", type:"控制類", examples:"靈異投影、全像術、心靈幻影、障眼魔法",
+    desc:"以 1 個完整動作，你可以讓你所處區塊或 1 個相鄰區塊內的 1 個目標看見或聽見實際上不存在的事物，或對他隱藏原本可見的事物。幻象最大可達人類尺寸，而且只能影響 1 個目標。目標可以進行被動`直覺`檢定來揭穿幻象（無需動作，不能強推）。若檢定失敗，目標會認為該幻象真實存在。幻象會持續數分鐘，但任何命中幻象的攻擊都會揭露其虛假的本質，並解除幻象效果。此異能對巨獸無效。",
+    levelDesc:{ "強力":"幻象最大可達汽車尺寸；目標抵抗幻象的`直覺`檢定 -1 骰。", "超級":"可達公車尺寸；`直覺`檢定 -2 骰。", "終極":"可達房屋尺寸；`直覺`檢定 -3 骰。" },
+    enh:[
+      {name:"範圍投影",desc:"若你主動承受 1 點壓力，此異能可以影響你所處區塊或 1 個相鄰區塊內任意數量的目標。"},
+      {name:"恐怖幻象",desc:"幻象的目標承受 3 點壓力，`直覺`檢定每擲出 1 個 :invincible-6: 可以抵消 1 點。若沒有擲出任何 :invincible-6:，目標會失去他的下個回合，而且在那之前無法執行反應動作。"},
+      {name:"遠程投影",desc:"若你主動承受 1 點壓力，你可以將此異能投射到任何你能察覺到的目標身上（可透過通訊設備），無視距離限制。"},
+      {name:"夢境投影",desc:"你可以將此異能投射到熟睡目標的意識中，他會清楚記住這些投影內容。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"光能控制", en:"Light Control", type:"控制類", examples:"御光念力、色彩調控、紫外線增幅、稜鏡面具",
+    desc:"你可以操控可見光譜。以 1 個完整動作，你可以在你所處區塊或 1 個相鄰區塊內創造並控制光能，增強光線亮度或將其完全調暗。\n你可以將光線聚焦成集中光束，暫時致盲並癱瘓對手。這是射程 0/1 的射擊攻擊。此攻擊不會造成實際傷害，但若命中，目標必須立刻進行並通過`氣場`檢定（無需動作），否則會失去他的下個回合，而且在那之前無法執行反應動作。`護甲`無效。此異能對巨獸和不依賴視覺的角色無效。",
+    enh:[
+      {name:"爆發效果",desc:"你可以主動承受 1 點壓力，讓致盲攻擊獲得範圍效果。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"運氣控制", en:"Luck Control", type:"控制類", examples:"黑暗祝福、守護天使、命運法術、機率矩陣裝置",
+    desc:"你可以改變你所處區塊或 1 個相鄰區塊內的隨機機率結果。以 1 個反應動作，你可以主動承受 1 點壓力，讓目標即將進行的動作檢定 -1 或 +1 骰。同樣以 1 個反應動作，你可以強制讓自己或另 1 個角色重新擲重傷表，並選擇你偏好的結果。",
+    levelDesc:{ "強力":"讓目標的檢定 -2 或 +2 骰。", "超級":"-3 或 +3 骰。", "終極":"-4 或 +4 骰。" },
+    enh:[],
+    lim:[
+      {name:"僅限好運",desc:"你只能讓檢定增加骰子。重新擲重傷表時，必須選擇較低的結果。"},
+      {name:"僅限厄運",desc:"你只能讓檢定減少骰子。重新擲重傷表時，必須選擇較高的結果。"}
+    ]
+  },
+  {
+    name:"磁力控制", en:"Magnetism Control", type:"控制類", examples:"魔法磁石、磁場產生器、電磁通量、符文杖劍",
+    desc:"你可以操控磁場來控制金屬。以 1 個完整動作，你可以移動並控制你所處區塊或 1 個相鄰區塊內的任何磁性金屬（例如鐵與鋼），重量等級最高為 4（200 公斤）。你可以將此異能的重量等級上限提升最多 2 級，但必須主動承受等量壓力。\n只要你所處區塊或相鄰區塊內有磁性金屬物體，你就可以使用此異能進行傷害 3、射程 0/2 的射擊攻擊。若你願意，你可以改為讓目標定身（而非造成傷害），讓他無法執行任何需要身體活動的動作，直到掙脫為止。掙脫需要進行`力量`檢定（完整動作）。\n若對抗由金屬構成（全部或部分）的對手，即使周圍沒有其他金屬，你也可以使用此異能進行攻擊。此外，你可以使用此異能格擋任何使用金屬的攻擊（包括射擊攻擊），而且你的反擊具有傷害 3。",
+    levelDesc:{ "強力":"你可以控制重量等級最高為 6（1 噸）的金屬；此異能的攻擊具有傷害 4、射程 0/3。", "超級":"重量等級最高為 8（10 噸）；傷害 5、射程 0/4。", "終極":"重量等級最高為 10（100 噸）；傷害 6、射程 0/5。" },
+    enh:[],
+    lim:[]
+  },
+  {
+    name:"物質控制", en:"Matter Control", type:"控制類", examples:"次原子操控、天界神靈、質量波動裝置、原始魔法",
+    desc:"你可以操控宇宙的基本物質。以 1 個完整動作，你可以控制所處區塊或 1 個相鄰區塊內的 1 個無生命物質，重量等級最高為 4（200 公斤），並將其在該區塊內移動或移至相鄰區塊。你可以將此異能的重量等級上限提升最多 2 級，但必須主動承受等量壓力。\n你可以使用此異能並利用你所處區塊或相鄰區塊內的物質進行傷害 3、射程 0/1 的射擊攻擊。你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。你也可以摧毀物質來源所在的區塊，以獲得攻擊的獎勵骰，前提是你能控制的重量等級上限 ≧ 摧毀該區塊類型所需的最低`力量`。若該區塊已被摧毀，則無法進行此攻擊。\n此異能的用途很廣，但 GM 擁有最終決定權。",
+    levelDesc:{ "強力":"你可以控制重量等級最高為 6（1 噸）的物質；此異能的攻擊具有傷害 4。", "超級":"重量等級最高為 8（10 噸）；傷害 5。", "終極":"重量等級最高為 10（100 噸）；傷害 6。" },
+    enh:[],
+    lim:[
+      {name:"特定物質",desc:"你只能操控特定類型的物質（需在創角時指定，例如石材、木材或沙子）。"}
+    ]
+  },
+  {
+    name:"擬態", en:"Mimicry", type:"控制類", examples:"外星腕錶、吸血鬼天賦、魔法護身符、觸碰同化",
+    desc:"以 1 個完整動作，你可以從你所處區塊內的 1 個目標身上複製 1 項屬性或異能（包括任何強化與限制），並如同自己擁有一樣使用數分鐘。你同時只能複製 1 項屬性或異能。若複製屬性，該屬性的數值最高為 6；若複製異能，只能獲得基礎等級的效果。",
+    levelDesc:{ "強力":"你可以複製的屬性值最高為 8；異能等級最高為強力。", "超級":"屬性值最高為 10；異能等級最高為超級。", "終極":"屬性值最高為 12；異能等級最高為終極。" },
+    enh:[
+      {name:"多重擬態",desc:"你可以同時複製最多 3 項屬性或異能（任意組合）。"},
+      {name:"異能吸收",desc:"你需要觸碰目標（肉搏攻擊，不會造成傷害）才能複製屬性或異能。若觸碰成功，目標會失去該異能，或屬性值減半（無條件進位），直到效果結束。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"心靈控制", en:"Mind Control", type:"控制類", examples:"心靈入侵、惡魔支配、腦部寄生蟲、言靈法杖",
+    desc:"以 1 個完整動作，你可以嘗試控制所處區塊或 1 個相鄰區塊內的 1 個智慧生物。對目標進行`氣場`對抗檢定（目標無需動作）。若你獲勝，目標會立刻進行 1 個完整回合（即使他該輪已經行動過），並聽從你的指示執行 1 個完整動作和 1 個快速動作（或 2 個快速動作）。之後，目標會失去他的下個回合，而且在那之前無法執行反應動作。\n在戰鬥外，你可以控制目標的行動數分鐘。在此期間，每當你強迫目標執行他通常不會做的行為時，目標可以進行`氣場`檢定來嘗試擺脫控制。此異能對巨獸無效。",
+    enh:[
+      {name:"範圍控制",desc:"你可以嘗試控制你所處區塊或相鄰區塊內的多個目標。每額外控制 1 個目標，你都要主動承受 1 點壓力。你只進行 1 次`氣場`檢定，而每個目標都可以個別進行抵抗。"}
+    ],
+    lim:[
+      {name:"催眠術",desc:"你需要先進行催眠才能控制目標的心靈，因此只能在戰鬥外使用此異能。"},
+      {name:"需要接觸",desc:"你必須接觸目標才能發動此異能，因此你必須先進行肉搏攻擊（不會造成傷害），命中後再進行`氣場`對抗檢定。"}
+    ]
+  },
+  {
+    name:"化解", en:"Nullification", type:"控制類", examples:"反制法術、微量輻射、消能槍、異能吸取",
+    desc:"你可以使用此異能來消除或終止其他異能的效果。\n以 1 個快速動作（或作為反應動作），你可以進行`氣場`檢定來解除你所處區塊或 1 個相鄰區塊內的 1 個持續性異能效果，或在目標即將發動異能時化解該異能（若是後者，必須與對方進行`氣場`對抗檢定）。你只能化解基礎等級的異能，而且你必須在目標進行任何檢定前宣告發動此異能。若目標的異能在即將發動時被化解，目標會失去該動作額度。若化解的是常駐型的異能，該異能效果只會被暫時抑制到你下個回合開始。",
+    levelDesc:{ "強力":"你可以化解基礎和強力等級的異能。", "超級":"你可以化解超級等級以下的異能。", "終極":"你可以化解終極等級以下的異能。" },
+    enh:[],
+    lim:[]
+  },
+  {
+    name:"植物控制", en:"Plant Control", type:"控制類", examples:"光合激增、葉綠操控、費洛蒙感知、林地頭罩",
+    desc:"以 1 個完整動作，你可以控制並活化你所處區塊或 1 個相鄰區塊內的任何植物。你可以刺激植物快速生長，在 1 輪內創造茂盛的綠色植被。\n只要受影響的區塊內有植物存在，你就可以使用此異能進行傷害 3 的肉搏攻擊。此攻擊可以被格擋，但不能被反擊。若你使用此攻擊擒抱目標並成功，你不需要維持擒抱。目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行`力量`檢定（完整動作）。",
+    levelDesc:{ "強力":"你可以控制 2 個相鄰區塊內的植物，其中 1 個必須是你所處或相鄰的區塊；你的植物攻擊具有傷害 4。", "超級":"3 個相鄰區塊；傷害 5。", "終極":"4 個相鄰區塊；傷害 6。" },
+    enh:[
+      {name:"繁茂滋長",desc:"當你使用此異能進行肉搏攻擊時，你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。"},
+      {name:"生命種子",desc:"你可以使用快速動作主動承受 1 點壓力，在你的區塊內催生植物成長（前提是該區塊能讓植物生長，由 GM 決定）。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"法術", en:"Sorcery", type:"控制類", examples:"控制神祕實體、掌控祕術、超自然能量、奧術法寶",
+    desc:"透過汲取強大的力量來源，你可以施放法術來創造各種效果。以 1 個完整動作，你可以進行`氣場`檢定來準備 1 道法術，該法術會複製由你選擇的任何其他異能效果。若`氣場`檢定成功，你可以主動承受 1 點壓力來使用該異能數分鐘，或直到你陷入崩潰為止。你同時只能複製 1 項異能。你只能複製異能的基礎等級效果（若該異能具有等級）。若`氣場`檢定失敗，你在數小時內無法再次嘗試複製相同的異能。",
+    enh:[
+      {name:"招牌法術",desc:"選擇 1 個異能。當你使用【法術】來複製該異能時，你可以複製強力等級的效果。你可以重複選擇此強化選項，讓複製異能的效果提升至超級等級，甚至是終極等級。"}
+    ],
+    lim:[
+      {name:"儀式施法",desc:"當你使用【法術】來複製異能時，準備過程需要數分鐘，而非完整動作。"}
+    ]
+  },
+  {
+    name:"音波控制", en:"Sound Control", type:"控制類", examples:"聲波念力、振動調頻、超級腹語術、聲波刺激",
+    desc:"以 1 個完整動作，你可以在你所處區塊或 1 個相鄰區塊內創造並控制音波能量，改變聲音的音高或音調、增強或減弱音波強度。若要模仿特定聲音，你需要進行`氣場`檢定。\n你可以將音波聚焦成集中衝擊波，暫時致聾並癱瘓對手。這是射程 0/1 的射擊攻擊。此攻擊不會造成實際傷害，但若命中，目標必須立刻進行並通過`氣場`檢定（無需動作），否則會失去他的下個回合，而且在那之前無法執行反應動作。`護甲`無效。此異能對巨獸和不依賴聽覺的角色無效。",
+    enh:[
+      {name:"音爆",desc:"你可以主動承受 1 點壓力，讓音波攻擊獲得範圍效果。"},
+      {name:"聲納",desc:"你可以使用此異能感應周遭環境，即使在完全黑暗中也能正常感知事物。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"召喚", en:"Summoning", type:"控制類", examples:"野性呼喚、凝光構造體、召喚魔法、自動無人機",
+    desc:"以 1 個完整動作，你可以召喚 3 個盟友來協助你，他們會立刻抵達你的所處區塊或 1 個相鄰區塊。你的盟友與你共享先攻順序，而且可以在剛登場的回合就行動。在預設情況下，你盟友的所有屬性皆為 4，`決心`為 6，在戰鬥中視為雜魚。每次發動此異能時，你可以選擇以下其中 1 種特性：\n• 萬用盟友：將 2 項不同的屬性各提升 2 點（記得`決心`也要相應增加）。\n• 強大盟友：你主動承受 1 點壓力，為盟友選擇 1 個基礎等級的攻擊類異能、防禦類異能、機動類異能，或 1 個天賦。\n• 更多盟友：你額外召喚 2 個盟友。\n被召喚的盟友會持續存在數分鐘、直到因傷害而崩潰、直到你崩潰，或直到你使用完整動作解散他們為止。只要場上還有被你召喚的盟友存在，你就不能再額外召喚新的盟友。被你召喚的盟友能夠獨立行動，也可以協助檢定，並跟你擁有某種連結，你能感知他們經歷的一切，反之亦然。",
+    levelDesc:{ "強力":"召喚盟友時，你可以選擇 2 種特性，而不是 1 種。你可以重複選擇相同的特性（屬性和異能等級會累積提升）。", "超級":"你可以選擇 3 種特性。", "終極":"你可以選擇 4 種特性。" },
+    enh:[],
+    lim:[
+      {name:"延遲召喚",desc:"發動此異能召喚盟友時，他們會在你下個回合開始時抵達，而非立刻抵達。"}
+    ]
+  },
+  {
+    name:"科技控制", en:"Technology Control", type:"控制類", examples:"電腦駭客、賽博巫術、科技念力、模控遠端介面",
+    desc:"以 1 個完整動作，你可以連接你所處區塊或 1 個相鄰區塊內的任何科技或機械，並將其啟動、關閉、組裝或操作。你可以執行該科技或機械的所有功能，如同正常操作一樣。若要存取受限的操作，或以非常規方式使用科技，需要進行`理智`檢定。若你控制武器，你可以在同個回合內進行`敏捷`檢定來進行攻擊。控制效果會持續數分鐘，或直到你崩潰為止。",
+    enh:[],
+    lim:[]
+  },
+  {
+    name:"念動力", en:"Telekinesis", type:"控制類", examples:"意念移動、能量環力場、神話之力、使役靈體",
+    desc:"你可以純粹用意念舉起並移動物體和人物，而不需要接觸對方。以 1 個完整動作，你可以移動並控制你所處區塊或 1 個相鄰區塊內的 1 個固態物體或角色，重量等級最高為 4（200 公斤），並將其移動最多 2 個區塊（包括垂直移動）。你可以將此異能的重量等級上限提升最多 2 級，但必須主動承受等量壓力。\n若對非自願的角色發動此異能，你必須進行`敏捷`檢定，而對方可以進行閃避（如同閃避射擊攻擊）。若成功，你可以將目標拋向並撞穿障礙物（如同肉搏攻擊的「擊退」特技），每次撞擊都會造成 3 點傷害（`護甲`可以減傷）。\n你也可以使用此異能進行傷害 3，射程 0/2 的射擊攻擊，前提是你所處區塊或相鄰區塊內有物體可以投擲。\n此異能也可以用來精確操控物體，如同使用雙手一樣，例如打開車門、用鎚子敲釘子，或從容器中取出物品。特別複雜的操作需要進行`敏捷`檢定，如同使用雙手一樣。",
+    levelDesc:{ "強力":"你可以將重量等級最高為 6（1 噸）的角色和物體移動最多 3 個區塊；此異能的攻擊具有傷害 4（撞擊障礙物時亦同）、射程 0/3。", "超級":"重量等級最高為 8（10 噸）、4 個區塊；傷害 5、射程 0/4。", "終極":"重量等級最高為 10（100 噸）、5 個區塊；傷害 6、射程 0/5。" },
+    enh:[
+      {name:"多重目標",desc:"你可以同時移動多個物體或角色。每額外控制 1 個目標，你都要主動承受 1 點壓力。所有目標必須一起移動，從相同的起始區塊移至相同的目標區塊，而且總重量不能超過異能的重量上限。"}
+    ],
+    lim:[]
+  },
+  {
+    name:"水流控制", en:"Water Control", type:"控制類", examples:"御水念力、亞特蘭提斯冷鍛法、深海三叉戟、波塞頓之觸",
+    desc:"以 1 個完整動作，你可以移動並控制你所處區塊或 1 個相鄰區塊內的任何液體。你可以用水淹沒 1 個區塊，或移除 1 個區塊內的所有水體。你可以使用此異能進行傷害 1、射程 0/1 的射擊攻擊。你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。若你願意，你可以使用此攻擊將目標（巨獸除外）移動到你選擇的任何相鄰區塊，而非造成傷害。此攻擊也可以使用「擊退」特技。",
+    levelDesc:{ "強力":"你可以控制 2 個相鄰區塊內的水體，其中 1 個必須是你所處或相鄰的區塊；你的水流攻擊具有傷害 3。", "超級":"3 個相鄰區塊；傷害 4。", "終極":"4 個相鄰區塊；傷害 5。" },
+    enh:[
+      {name:"湧泉",desc:"你可以主動承受 1 點壓力，憑空創造水源來控制或發動射擊攻擊。"}
+    ],
+    lim:[
+      {name:"浸沒",desc:"你必須完全浸泡在水中才能使用此異能。"}
+    ]
+  },
+  {
+    name:"天氣控制", en:"Weather Control", type:"控制類", examples:"德魯伊魔法、風暴之鎚、氣象念力、魔法風向儀",
+    desc:"以 1 個完整動作，你可以控制當地天氣開始或停止降雨、改變氣溫、提升或降低風速。新的天氣會持續數分鐘，但仍需符合該地點與季節的合理範圍。\n你可以在你所處區塊或 1 個相鄰區塊製造強大的風暴，讓所有移動都變成需要進行`力量`檢定的完整動作，而且該區塊內的所有射擊攻擊檢定都會 -3 骰。風暴會持續數分鐘，或直到你崩潰為止。你不會受到自己風暴的影響。你也可以使用此異能呼喚閃電、強風或冰雹，進行傷害 3、射程 0/1 的射擊攻擊。",
+    levelDesc:{ "強力":"你可以在 2 個相鄰區塊內製造風暴，其中 1 個必須是你所處或相鄰的區塊；你的天氣攻擊具有傷害 4、射程 0/2。", "超級":"3 個相鄰區塊；傷害 5、射程 0/3。", "終極":"4 個相鄰區塊；傷害 6、射程 0/4。" },
+    enh:[
+      {name:"颶風",desc:"當你使用此異能進行射擊攻擊時，你可以主動承受 1 點壓力，讓攻擊獲得範圍效果。"},
+      {name:"氣旋",desc:"當你在區塊內製造風暴時，該區塊會被摧毀，而且區塊內的所有角色都必須進行`力量`檢定，失敗會被拋出區塊（移到你選擇的相鄰區塊）。"}
+    ],
+    lim:[
+      {name:"僅限操控大氣",desc:"你只能使用此異能來製造局部風暴和進行攻擊，而無法改變整體天氣。"}
     ]
   }
 ];
@@ -1786,8 +2065,20 @@ function toggleSource(i){
   if(creator.tier==null) return;
   const arr=creator.powerSources, pos=arr.indexOf(i);
   if(pos>=0){ arr.splice(pos,1); }
-  else { if(arr.length>=1 && pointsLeft()<1) return; arr.push(i); } // 額外來源需 1 點
+  else { if(arr.length>=1 && pointsLeft()<1) return; arr.push(i); } // 額外來源需付 1 點
   renderCreator();
+}
+function rollSource(){
+  if(creator.tier==null) return;
+  const arr=creator.powerSources;
+  const avail=POWER_SOURCES.map((s,i)=>i).filter(i=>!arr.includes(i));
+  if(!avail.length){ showInfo("沒有可擲的來源","所有異能來源都已選取。"); return; }
+  const doRoll=()=>{ arr.push(avail[rand(avail.length)]); renderCreator(); };
+  if(arr.length===0){ doRoll(); return; }                 // 第 1 種免費，直接擲
+  if(pointsLeft()<1){ showInfo("創角點數不足","第 2 種之後的異能來源每種需付 1 點創角點數，但你的點數不足。"); return; }
+  showChoice("購買額外異能來源",
+    `<p class="choice-desc">第 1 種異能來源免費，第 2 種之後每種都需要花費 1 點創角點數購買。</p><p class="choice-q">確定要隨機再抽 1 種來源嗎？</p>`,
+    [{label:"隨機再抽 1 種（需付 1 點）",cls:"btn-gold",onClick:doRoll},{label:"取消",cls:"btn-ghost",onClick:null}]);
 }
 
 /* ---- 步驟定義（可自由前後切換、不鎖定） ---- */
@@ -1804,9 +2095,11 @@ const CREATOR_STEPS=[
 
 function tierCard(t,i,selected){
   const stat=(l,v)=>`<div class="tier-stat"><span class="tier-stat-num display">${v}</span><span class="tier-stat-label">${l}</span></div>`;
-  return `<div class="tier-card${selected?" sel":""}" data-tier="${i}" role="button" tabindex="0" aria-pressed="${selected?"true":"false"}">
-    <span class="tier-name display">${t.name}</span><span class="tier-en">${t.en}</span>
+  return `<div class="card tier-card-paper${selected?" sel":""}" data-tier="${i}" role="button" tabindex="0" aria-pressed="${selected?"true":"false"}">
+    <div class="card-top"><span class="card-en">${t.en}</span>${selected?'<span class="tier-sel-badge">✓ 已選擇</span>':''}</div>
+    <h2 class="card-name display">${t.name}</h2>
     <div class="tier-stats">${stat("創角點數",t.points)}${stat("起始屬性上限",t.attrCap)}${stat("免費異能數量",t.powers)}${stat("起始聲望",t.fame)}</div>
+    <div class="card-cta display">${selected?"已選擇此階級":"選擇此階級"}</div>
   </div>`;
 }
 function needTierHint(){ return `<p class="tier-hint">請先回到「決定階級」選擇英雄階級。</p>`; }
@@ -1840,8 +2133,8 @@ function renderPowerSourceStep(){
   const cards=POWER_SOURCES.map((s,i)=>{
     const selPos=arr.indexOf(i), isSel=selPos>=0;
     const tag = isSel
-      ? (selPos===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">已付 1 點</span>`)
-      : (arr.length===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">需 1 點</span>`);
+      ? (selPos===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag paid">已付 1 點</span>`)
+      : (arr.length===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">需付 1 點</span>`);
     const disabled = !isSel && arr.length>=1 && pointsLeft()<1;
     return `<div class="src-card${isSel?" sel":""}${disabled?" disabled":""}" data-source="${i}" role="button" tabindex="0" aria-pressed="${isSel?"true":"false"}">
       <div class="src-name">${s.name}${tag}</div><div class="src-desc">${s.desc}</div>
@@ -1850,9 +2143,11 @@ function renderPowerSourceStep(){
   const n=arr.length, cost=powerSourceCost();
   const summary = n===0
     ? `尚未選擇來源，至少需選 1 種。`
-    : `已選 ${n} 種異能來源（免費 1 種${cost>0?`，額外 ${cost} 種，共花費 ${cost} 點創角點數`:""}）。`;
+    : `已選免費 1 種${cost>0?`、額外 ${cost} 種，共花費 ${cost} 點創角點數`:""}`;
   const note = n>1 ? `<p class="src-note">擁有多種來源時，之後分配異能時須指定每個異能屬於哪一種來源。</p>` : "";
-  return `<p class="step-intro">所有英雄都擁有「異能」，也就是超越凡人的能力。每個異能都必須源自某種「異能來源」，說明此異能的來龍去脈，幫助你更好扮演角色。你可以免費挑選 1 種異能來源；通常你只會有 1 種，所有異能都源自它。你也可以花費 1 點創角點數額外購買 1 種來源。（異能來源共 36 種，目前先收錄 6 種。）</p>
+  const secHead=`<div class="sec-head"><div><span class="sec-title display">異能來源</span><span class="sec-hint">免費 1 種，第 2 種起每種需付 1 點</span></div><button class="dice-btn" data-source-roll="1">🎲 隨機</button></div>`;
+  return `<p class="step-intro">所有英雄都擁有「異能」，也就是超越凡人的能力。每個異能都必須源自某種「異能來源」，說明此異能的來龍去脈，幫助你更好扮演角色。你可以免費挑選 1 種異能來源；通常你只會有 1 種，所有異能都源自它。你也可以花費 1 點創角點數額外購買 1 種來源。（異能來源共 36 種。）</p>
+    ${secHead}
     <div class="src-grid">${cards}</div>
     <p class="src-summary">${summary}</p>${note}`;
 }
@@ -1864,7 +2159,7 @@ function powerCard(p){
   if(p.enh.length) rows.push(`<div class="pw-sum-row"><span class="pw-sum-k">強化</span><span class="pw-sum-v">${p.enh.map(ei=>pw.enh[ei]?pw.enh[ei].name:"").filter(Boolean).join("、")}</span></div>`);
   if(p.lim.length) rows.push(`<div class="pw-sum-row"><span class="pw-sum-k">限制</span><span class="pw-sum-v">${p.lim.map(x=>pw.lim[x.li]?pw.lim[x.li].name:"").filter(Boolean).join("、")}</span></div>`);
   return `<div class="pw-card added">
-    <div class="pw-head"><span class="pw-name">${pw.name}</span><span class="pw-type-tag">${pw.type}</span><span class="pw-contrib-tag">占 ${contrib} 欄位</span>
+    <div class="pw-head"><span class="pw-name">${pw.name}${pw.en?`<span class="pw-en">${pw.en}</span>`:""}</span><span class="pw-type-tag">${pw.type}</span><span class="pw-contrib-tag">占 ${contrib} 欄位</span>
       <span class="pw-card-acts"><button class="btn btn-sm" data-pw-edit="${p.id}">編輯異能</button><button class="btn btn-ghost btn-sm" data-pw-remove="${p.id}">移除</button></span></div>
     <div class="pw-desc">${fmtHTML(pw.desc)}</div>
     <div class="pw-sum">${rows.join("")}</div>
@@ -1927,7 +2222,7 @@ function matchPower(pw,q){
 function powerListItem(pw,id){
   const m=creator.powerModal, sel=m.editPid===id, owned=!sel&&!!findPower(id);
   const head=`<div class="store-item${sel?" sel":""}${owned?" taken":""}" ${owned?'aria-disabled="true"':`data-pw-pick="${id}" role="button" tabindex="0"`}>
-    <div class="store-info"><span class="store-name">${pw.name}</span><span class="store-ex">範例：${pw.examples}</span></div>
+    <div class="store-info"><span class="store-name">${pw.name}${pw.en?`<span class="pw-en">${pw.en}</span>`:""}</span><span class="store-ex">範例：${pw.examples}</span></div>
     ${owned?'<span class="store-ex">已選擇</span>':''}
   </div>`;
   if(!sel) return head;
@@ -1966,7 +2261,7 @@ function renderPowerModal(){
     <div class="pw-modal-stats" id="pwModalStats">${powerModalStatsHTML()}</div>
     <div class="pw-search-wrap"><input class="pw-search" data-pw-search value="${escapeHTML(m.search)}" placeholder="🔍 搜尋異能名稱、範例或效果…" autocomplete="off"></div>
   </div>`;
-  const list=`<div class="pw-modal-list"><div class="store-title">異能清單（共 96 個，目前先收錄 7 個攻擊類做測試）</div><div id="pwModalListInner">${renderPowerListInner()}</div></div>`;
+  const list=`<div class="pw-modal-list"><div class="store-title">異能清單（共 96 個，目前收錄 ${POWERS.length} 個）</div><div id="pwModalListInner">${renderPowerListInner()}</div></div>`;
   const footer=`<div class="modal-actions pw-modal-foot"><button class="btn btn-gold" data-pw-modal-close="1">確定異能</button></div>`;
   return head+list+footer;
 }
@@ -1980,7 +2275,7 @@ function renderPowerStep(){
   if(creator.tier==null) return needTierHint();
   ensureCreatorSlots();
   const base=baseFreeSlots(), total=totalSlots(), used=powersUsed(), empty=emptySlots(), maxLvl=maxLevelForTier();
-  const status=`免費欄位 <b>${freeSlotsUsed()}</b> / ${freeSlotsCount()}，額外欄位 <b>${extraSlotsUsed()}</b> / ${extraSlotsCount()}。`;
+  const status=`免費欄位 <b>${freeSlotsUsed()}</b> / ${freeSlotsCount()}　額外欄位 <b>${extraSlotsUsed()}</b> / ${extraSlotsCount()}`;
 
   const powerCards=creator.powers.map(p=>powerCard(p)).join("");
   let emptyCards="";
@@ -2168,8 +2463,8 @@ function renderDataStep(){
 function renderCreator(){
   const step=CREATOR_STEPS[creator.step];
   const nav=`<div class="step-nav">${CREATOR_STEPS.map((s,i)=>`<button class="step-chip${i===creator.step?" cur":""}" data-step="${i}">${s.chip}</button>`).join("")}</div>`;
-  const pbar=(creator.step>=1&&creator.tier!=null)?`<div class="points-bar">剩餘創角點數 <b>${pointsLeft()}</b> / ${pointsTotal()}</div>`:"";
-  const content=`<section class="bsec"><div class="sec-head"><span class="sec-title display">${step.label}</span></div>${pbar}${step.render()}</section>`;
+  const pbar=(creator.step>=1&&creator.tier!=null)?`<div class="points-sticky"><div class="points-bar">剩餘創角點數 <b>${pointsLeft()}</b> / ${pointsTotal()}</div></div>`:"";
+  const content=`<section class="bsec"><div class="sec-head"><span class="sec-title display">${step.label}</span></div>${step.render()}</section>`;
   const foot=`<div class="step-foot">
       <button class="btn btn-ghost" data-nav="prev"${creator.step===0?" disabled":""}>← 上一步</button>
       <span class="step-count">步驟 ${creator.step+1} / ${CREATOR_STEPS.length}</span>
@@ -2180,13 +2475,19 @@ function renderCreator(){
       <p class="builder-sub">打造完全原創的超級英雄。步驟之間可自由切換、隨時回頭修改。</p>
     </div>
     <div class="wip-banner">🚧 此功能尚未完成。</div>
-    ${nav}${content}${foot}`;
+    ${nav}${pbar}${content}${foot}`;
   syncPowerModal();
 }
 function gotoStep(i){ if(i<0||i>=CREATOR_STEPS.length) return; creator.step=i; renderCreator(); window.scrollTo(0,0); }
 function selectTier(ti){
   if(creator.tier!==ti){ creator.tier=ti; resetCreatorAttrs(); creator.powerSources=[]; creator.powers=[]; creator.slots=TIERS[ti].powers; creator.powerModal=null; creator.talents=[]; creator.weaknesses=[]; }
   renderCreator();
+}
+function confirmTier(ti){
+  showChoice("確認階級",
+    `<p class="choice-desc">確定是「${TIERS[ti].name}」嗎？</p><p class="choice-q">確定後將直接進入下一步「分配起始屬性」。</p>`,
+    [{label:"確定，進入下一步",cls:"btn-gold",onClick:()=>{ selectTier(ti); gotoStep(creator.step+1); }},
+     {label:"取消",cls:"btn-ghost",onClick:null}]);
 }
 function wireCreator(){
   if(creatorWired) return; creatorWired=true;
@@ -2198,6 +2499,8 @@ function wireCreator(){
     if(chip){ gotoStep(+chip.dataset.step); return; }
     const st=e.target.closest("[data-attr]");
     if(st){ adjustAttr(st.dataset.attr,+st.dataset.delta); return; }
+    const srcRoll=e.target.closest("[data-source-roll]");
+    if(srcRoll){ rollSource(); return; }
     const src=e.target.closest("[data-source]");
     if(src){ if(!src.classList.contains("disabled")) toggleSource(+src.dataset.source); return; }
     const slotAcq=e.target.closest("[data-slot-acquire]");
@@ -2238,14 +2541,14 @@ function wireCreator(){
     const talSubj=e.target.closest("[data-tal-subj]");
     if(talSubj){ if(!talSubj.disabled){ const [i,j]=talSubj.dataset.talSubj.split(":").map(Number); toggleTalentSubject(i,j); } return; }
     const tier=e.target.closest("[data-tier]");
-    if(tier){ selectTier(+tier.dataset.tier); return; }
+    if(tier){ confirmTier(+tier.dataset.tier); return; }
   });
   body.addEventListener("keydown",e=>{
     if(e.key!=="Enter"&&e.key!==" ") return;
     const fwd=e.target.closest("[data-prof],[data-bond-custom-pick],[data-group]");
     if(fwd){ e.preventDefault(); fwd.click(); return; }
     const tier=e.target.closest("[data-tier]"), src=e.target.closest("[data-source]");
-    if(tier){ e.preventDefault(); selectTier(+tier.dataset.tier); }
+    if(tier){ e.preventDefault(); confirmTier(+tier.dataset.tier); }
     else if(src){ e.preventDefault(); if(!src.classList.contains("disabled")) toggleSource(+src.dataset.source); }
   });
   body.addEventListener("input",e=>{
