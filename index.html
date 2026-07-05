@@ -135,6 +135,9 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;padding:4px 0 6px}
 .tier-card-paper{padding:20px 20px 18px}
 .tier-card-paper .card-name{font-size:1.7rem;margin:4px 0 2px}
+.prof-card-desc{font-size:.82rem;color:#5b5a50;line-height:1.5;margin:6px 0 12px}
+.prof-card-picks{font-size:.8rem;font-weight:700;color:var(--red);margin:0 0 10px;line-height:1.4}
+.prof-modal-body{padding:2px}
 .tier-sel-badge{font-family:"Oswald",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#fff;padding:3px 9px;border-radius:2px;white-space:nowrap}
 .tier-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 4px}
 .tier-stat{background:rgba(25,25,34,.05);border:1px solid rgba(25,25,34,.12);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
@@ -178,6 +181,11 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .src-tag.free{background:var(--green);color:#04210f}
 .src-tag.cost{background:var(--gold);color:var(--ink)}
 .src-tag.paid{background:var(--red);color:#fff}
+.cost-pill{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:8px;white-space:nowrap}
+.cost-free{background:#a8e0bf;color:#12572f}
+.cost-need{background:#f3d488;color:#5a3d06}
+.cost-paid{background:#c3b4ec;color:#382566}
+.src-none-hint{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#e5934a;font-size:.9rem;font-weight:600}
 .src-desc{font-size:.86rem;color:#b7bcd2;line-height:1.6}
 .src-summary{color:#d8dcec;margin-top:14px;line-height:1.7;font-weight:600}
 .src-note{color:#9aa0bd;font-size:.85rem;margin-top:6px;line-height:1.6}
@@ -349,7 +357,7 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;ba
 .modal-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
 #choiceModal{z-index:120}
 .modal-box-wide{max-width:640px;max-height:88vh;display:flex;flex-direction:column;padding:0}
-.modal-box-wide #powerModalContent{display:flex;flex-direction:column;min-height:0;flex:1}
+.modal-box-wide #powerModalContent,.modal-box-wide #profModalContent{display:flex;flex-direction:column;min-height:0;flex:1}
 .pw-modal-head{padding:18px 22px 12px;border-bottom:1.5px solid #2a3258}
 .pw-modal-head .modal-title{margin-bottom:8px}
 .pw-modal-stats{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;color:#aeb4cf}
@@ -412,6 +420,9 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
 .card.sel{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--green)}
 .card.sel .card-cta{color:var(--green)}
 .card.sel .card-cta::after{content:"✓";transform:none}
+.prof-card.sel .card-cta::after{content:none}
+.prof-talent-notice{background:rgba(242,183,5,.12);border:1.5px solid var(--gold);border-radius:6px;padding:12px 16px;font-size:.95rem;font-weight:600;color:var(--paper);margin:0 0 14px;line-height:1.55}
+.prof-talent-notice b{color:var(--gold)}
 
 /* 手機底部動作列（常駐匯出/複製＋完成度），桌機隱藏 */
 .mobile-bar{display:none}
@@ -505,6 +516,10 @@ footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
 
 <div class="modal" id="powerModal"><div class="modal-box modal-box-wide">
   <div id="powerModalContent"></div>
+</div></div>
+
+<div class="modal" id="profModal"><div class="modal-box modal-box-wide">
+  <div id="profModalContent"></div>
 </div></div>
 
 <div class="modal" id="choiceModal"><div class="modal-box">
@@ -1494,7 +1509,7 @@ const TIERS=[
   {name:"全球守衛", en:"Global Guardian",   points:32, attrCap:10, powers:4, fame:2},
   {name:"宇宙勇者", en:"Cosmic Champion",   points:38, attrCap:12, powers:5, fame:3}
 ];
-let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,powerModal:null,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",identity:null,talents:[],weaknesses:[],step:0};
+let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,powerModal:null,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",profModalOpen:false,identity:null,talents:[],weaknesses:[],step:0};
 let creatorWired=false;
 
 const CREATOR_ATTRS=[
@@ -1941,21 +1956,10 @@ const POWERS=[
 // 職業（共 22 種，目前先收錄 1 種做測試）
 const CREATOR_PROFESSIONS=[
   {
-    name:"學者",
+    name:"學者", en:"Academic",
     desc:"你投身於學術世界，可能在學院、機構或大學擔任教師、講師、研究員、校長、圖書館員、教務長或院長。",
     resource:5,
-    talents:[
-      {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
-      {name:"足智多謀",desc:"你可以強推任何`理智`檢定 2 次。第 2 次強推後，每出現 1 個 :invincible-1:，你受到 1 點壓力。"},
-      {name:"學識淵博",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰。隨機決定或自選以下 1 個主題（也可以自己發想）：",subjects:[
-        {name:"自然科學",desc:"你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。"},
-        {name:"社會科學",desc:"你能透過心理學、社會學、考古學、語言學與政治學來理解人類行為。"},
-        {name:"人文",desc:"你能從歷史、藝術、語言、文學、哲學與宗教來理解文化意義。"},
-        {name:"科技",desc:"你能透過電腦科學、程式設計、人工智慧與機器人學來理解硬體、軟體與機械。"},
-        {name:"時事",desc:"你能掌握最新的新聞、娛樂、政治、體育與國際事務的脈動。"},
-        {name:"祕聞",desc:"你能理解通常不為人知的知識，例如魔法、靈性學、神祕學、超自然活動與祕術。"}
-      ]}
-    ],
+    talents:["條分縷析","足智多謀","學識淵博"],
     bonds:[
       {name:"有前途的學生",desc:"像海綿一樣吸收知識。"},
       {name:"悠閒的行政人員",desc:"偶爾提供幫助，但品質普通。"},
@@ -1965,6 +1969,342 @@ const CREATOR_PROFESSIONS=[
       "你在知名的學府發表客座演講。",
       "在辦公時間，你與一名需要幫助的學生會面。",
       "你主持一場同行評審，討論最近在爭議性學術期刊上發表的文章。"
+    ]
+  },
+  {
+    name:"冒險家", en:"Adventurer",
+    desc:"你渴望冒險的刺激與風險。這個職業包括極限運動員、探險家、遺跡獵人、戶外活動愛好者或全職超級英雄。",
+    resource:3,
+    talents:["堅定決心","桀驁不馴","化險為夷"],
+    bonds:[
+      {name:"勇敢的助手",desc:"願意為你做任何事情。"},
+      {name:"友善的對手",desc:"想打敗你，但會公平競爭。"},
+      {name:"冷淡的贊助者",desc:"奉行時間就是金錢的原則。"}
+    ],
+    scenes:[
+      "你舉行一場記者會，慶祝（或解釋）近期任務的結果。",
+      "你過去認識的某人掌握了你需要的情報，但你們上次分別時不太愉快。",
+      "你遇到了競爭對手，對方公開挑戰你進行一場友誼賽，並為慈善和榮耀而直播比賽過程。"
+    ]
+  },
+  {
+    name:"藝術家", en:"Artist",
+    desc:"你將想法與藝術化為現實，無論你是作家、視覺藝術家、遊戲設計師、音樂家、攝影師、平面設計師、電影導演或發明家。",
+    resource:3,
+    talents:["足智多謀","學識淵博","得力助手"],
+    bonds:[
+      {name:"熱切的出版商",desc:"想知道你的下一個專案何時完成。"},
+      {name:"值得信賴的編輯",desc:"提供的建議不僅限於藝術作品本身。"},
+      {name:"嚴厲的評論家",desc:"知道如何激怒你，但有時確實一針見血。"}
+    ],
+    scenes:[
+      "你接到一通電話，要討論目前專案的預算問題。",
+      "一位具影響力的出版商或製作人邀請你提案構想。",
+      "你受邀成為本年度最大研討會的座談嘉賓。"
+    ]
+  },
+  {
+    name:"運動員", en:"Athlete",
+    desc:"你投身於職業體育運動，例如運動團隊的球員或經理、奧運獎牌得主、摔角表演者、拳擊手、特技演員或綜合格鬥選手。",
+    resource:4,
+    talents:["靈活協調","勵志大師","重振活力"],
+    bonds:[
+      {name:"脾氣暴躁的教練",desc:"總是在尋找改進的機會。"},
+      {name:"死忠粉絲",desc:"對你的職業生涯和累積數據著迷。"},
+      {name:"投機取巧的經紀人",desc:"想要更高的分潤。"}
+    ],
+    scenes:[
+      "體育頻道的晨間脫口秀節目邀請你接受訪問。",
+      "你與教練一起參加影片分析會議，檢討並學習最近的比賽經驗。",
+      "你的經紀人安排了一場與大型品牌的會議，討論可能的贊助合作。"
+    ]
+  },
+  {
+    name:"藍領", en:"Blue Collar",
+    desc:"你從事體力勞動或技術性工作。你可能是建築工人、工廠員工、承包商、農夫、技工、服務業員工、水電工或清潔工。",
+    resource:3,
+    talents:["頑強生命","尋找破綻","獨到見解"],
+    bonds:[
+      {name:"狀況外的主管",desc:"不明白你為什麼經常上班遲到。"},
+      {name:"樂天派夥伴",desc:"與你一起在前線奮鬥，讓工作變得更有趣。"},
+      {name:"熱血工會代表",desc:"毫不妥協，永遠支持你。"}
+    ],
+    scenes:[
+      "主管突然造訪你的工作地點，視察工作進度。",
+      "辛苦的輪班結束後，你與工作夥伴在休息室裡閒聊。",
+      "你最喜歡的同事退休了，你受邀在退休派對上致詞。"
+    ]
+  },
+  {
+    name:"名人", en:"Celebrity",
+    desc:"你活在鎂光燈下，可能是演員、藝人、表演者、媒體人物、網紅、模特兒或文化偶像。",
+    resource:6,
+    talents:["非凡魅力","聲名遠播","脣槍舌劍"],
+    bonds:[
+      {name:"溺愛的父母",desc:"他們是你能有今天成就的原因。"},
+      {name:"多年老友",desc:"在你成名之前就認識你。"},
+      {name:"務實的公關",desc:"一手塑造了你的形象。"}
+    ],
+    scenes:[
+      "熱門的深夜節目邀請你客串演出。",
+      "你參加紅毯首映會，在拍照時回答記者的提問。",
+      "你的公關打電話過來討論近期爭議或醜聞帶來的影響。"
+    ]
+  },
+  {
+    name:"罪犯", en:"Criminal",
+    desc:"你曾在法律的錯誤一側度過一段時間。你可能是小偷、詐騙高手、黑幫成員、走私者、恐怖分子，或其他類型的職業罪犯。",
+    resource:3,
+    talents:["搬弄是非","冷酷無情","識途老馬"],
+    bonds:[
+      {name:"清白的家人",desc:"不知道你的非法活動。"},
+      {name:"勒索的老大",desc:"掌握著你的把柄，讓你無法脫身。"},
+      {name:"人脈廣的走私販",desc:"可以為你弄到任何東西，只要付得起價錢。"}
+    ],
+    scenes:[
+      "警方針對最近發生的犯罪案件找你問話。",
+      "老大想要與你見面，並請你幫個忙。",
+      "一位家人問你，為什麼好人也會做壞事。"
+    ]
+  },
+  {
+    name:"信徒", en:"Devotee",
+    desc:"你深深投入於某個信仰、理念或精神，例如擔任神職人員、追隨特定的哲學思想、執著於復仇的聖戰士，或神祕學與祕術的修行者。",
+    resource:2,
+    talents:["堅定決心","學識淵博","不屈不撓"],
+    bonds:[
+      {name:"剛入門的信徒",desc:"剛踏上這條道路，需要指引。"},
+      {name:"睿智的導師",desc:"你渴望成為的榜樣。"},
+      {name:"懷疑的批評者",desc:"努力證明你走上錯誤的方向。"}
+    ],
+    scenes:[
+      "某個與你信仰有關的組織邀請你在集會上發言。",
+      "一位理念與你不同的知名評論家邀請你參加公開辯論。",
+      "你遭到家人的反對，他們希望你休息一下，避免耗盡心力。"
+    ]
+  },
+  {
+    name:"專家", en:"Expert",
+    desc:"你在特定領域或學科中擁有極高的造詣，例如歷史學家、經濟學家、武術大師、哲學家、魔術師，或狩獵大師。",
+    resource:5,
+    talents:["巧妙轉移","學識淵博","脣槍舌劍"],
+    bonds:[
+      {name:"難搞的同儕",desc:"從來都不認同你，而且會確保你知道。"},
+      {name:"活潑的學徒",desc:"渴求知識，總是讓事情變得更有趣。"},
+      {name:"盡職的記者",desc:"無論如何都要追蹤故事的真相。"}
+    ],
+    scenes:[
+      "你被傳喚到一樁知名案件中提供證詞。",
+      "某個對手或敵人聯絡了你，炫耀他最近的成功。",
+      "你在公園無意間聽到一群人討論你很熟的專業領域，於是忍不住插話參與。"
+    ]
+  },
+  {
+    name:"救難員", en:"First Responder",
+    desc:"你受過專業訓練，能在高壓情境下迅速反應，為急需幫助的人提供支援。你可能是消防員、搜救專家、急救員、災害救援協調員或危機談判專家。",
+    resource:4,
+    talents:["醫療專家","得力助手","及時警告"],
+    bonds:[
+      {name:"古怪的調度員",desc:"會在糟糕的情況下緩和氣氛。"},
+      {name:"善於溝通的諮商師",desc:"幫助你應對工作的壓力。"},
+      {name:"認真的警察",desc:"跟你一樣努力行善。"}
+    ],
+    scenes:[
+      "你與受害者交談，藉此分散對方的注意力。",
+      "最新的調度顯示緊急情況涉及你熟識的某人。",
+      "你參加某人的葬禮，他在最近一次出勤中過世了。"
+    ]
+  },
+  {
+    name:"調查員", en:"Investigator",
+    desc:"你致力於揭露真相，可能是偵探、記者、犯罪側寫師、私家偵探、超自然現象愛好者、保險理賠師或事實查核員。",
+    resource:3,
+    talents:["洞若觀火","調查專家","識途老馬"],
+    bonds:[
+      {name:"不可靠的線人",desc:"痛恨被你掌握把柄。"},
+      {name:"才華洋溢的分析師",desc:"最近好像都連絡不上，他還好嗎？"},
+      {name:"驚恐的目擊者",desc:"看見了不該外流的事情。"}
+    ],
+    scenes:[
+      "你挨家挨戶走訪社區，尋找可能的目擊者。",
+      "委託人或受害者與你會面，聽取你在調查過程中的發現。",
+      "政府探員針對你目前正在進行的調查找你問話。"
+    ]
+  },
+  {
+    name:"執法者", en:"Law Enforcer",
+    desc:"你可能擔任警察、警長、州警、聯邦執法官、政府探員或獄警，負責維護公共安全。",
+    resource:4,
+    talents:["忠誠護衛","強力重擊","壓制高手"],
+    bonds:[
+      {name:"政府局長",desc:"重視漂亮數據勝過實際行善。"},
+      {name:"冷漠的搭檔",desc:"曾經在乎過自己的工作，也許會重新振作。"},
+      {name:"精明的法醫",desc:"從不遺漏任何細節。"}
+    ],
+    scenes:[
+      "一名曾被你逮捕的前科犯要求會面，為自己的行為道歉。",
+      "你攔下了一輛蛇行的可疑車輛，發現駕駛是個正在兜風的小屁孩。",
+      "當地的慈善組織為政府部門舉辦鬆餅早餐募款活動，你出席參加。"
+    ]
+  },
+  {
+    name:"醫護員", en:"Medic",
+    desc:"你在醫療保健產業工作，可能是醫生、護士、精神科醫師、藥劑師、牙醫或病理學家。",
+    resource:5,
+    talents:["學識淵博","醫療專家","得力助手"],
+    bonds:[
+      {name:"資深護士長",desc:"清楚知道該如何提供協助。"},
+      {name:"寡言的實驗室技術員",desc:"只要有人詢問，總是有資訊可以分享。"},
+      {name:"貪婪的行政主管",desc:"追求數量勝過品質。"}
+    ],
+    scenes:[
+      "你與難相處的同事爭執治療計畫。",
+      "新的病人前來找你進行初步諮詢。",
+      "你必須向病人的家屬報告壞消息。"
+    ]
+  },
+  {
+    name:"局外人", en:"Outsider",
+    desc:"你遠離家鄉而格格不入，可能是放逐者、流浪者、難民，或來自異世界的陌生人。",
+    resource:2,
+    talents:["非凡魅力","獨行孤狼","獨到見解"],
+    bonds:[
+      {name:"可愛的寵物",desc:"無法用言語表達感受，但你完全明白。"},
+      {name:"接納你的夥伴",desc:"在新環境中第一個對你展現友善的人。"},
+      {name:"昔日戰友",desc:"一直在尋找你。"}
+    ],
+    scenes:[
+      "你受邀參加一場正式派對，但你不懂當中的禮儀規矩。",
+      "某個認識你的人主動聯絡你，說他擁有關於你故鄉的消息。",
+      "有人請你分享自己的童年。"
+    ]
+  },
+  {
+    name:"權貴", en:"Privileged",
+    desc:"你過著富足繁榮的生活，可能是企業家、慈善家、投資者、社交名流或信託基金受益人。",
+    resource:6,
+    talents:["巧妙轉移","聲名遠播","意外之財"],
+    bonds:[
+      {name:"謹慎的會計師",desc:"即將退休，需要找到繼承人。"},
+      {name:"紀錄片導演",desc:"正在拍攝一部關於你的紀錄片。"},
+      {name:"深藏不露的管家",desc:"遠比表面看起來更不簡單。"}
+    ],
+    scenes:[
+      "你在國外度假時遇到一個你很討厭的人。",
+      "一間美術館聯絡了你，詢問能否在即將舉辦的展覽中展出你的個人收藏。",
+      "你在自己創辦或贊助的慈善活動中擔任主講者。"
+    ]
+  },
+  {
+    name:"公僕", en:"Public Servant",
+    desc:"你以政治家、社運人士、社工、都市規劃師、非營利組織工作者、城市檢查員、公園管理員或圖書館員的身分服務公眾利益。",
+    resource:3,
+    talents:["非凡魅力","足智多謀","得力助手"],
+    bonds:[
+      {name:"麻煩的同事",desc:"即使你一再婉拒，仍然想跟你混熟。"},
+      {name:"妥協的稽核員",desc:"無論問題是否真的存在，都一定會找出問題。"},
+      {name:"熱心的市民",desc:"讓你保持誠實與正直。"}
+    ],
+    scenes:[
+      "一支危機管理團隊向你諮詢最近發生的事件。",
+      "你在公開的抗議活動中與民眾陷入言語衝突。",
+      "糾纏不休的說客不斷針對爭議事件向你施壓。"
+    ]
+  },
+  {
+    name:"科學家", en:"Scientist",
+    desc:"你是物理學家、天文學家、生物學家、遺傳學家、植物學家、心理學家、社會學家或地質學家，在形式科學、自然科學或社會科學領域從事工作、研究與實驗。",
+    resource:4,
+    talents:["條分縷析","調查專家","學識淵博"],
+    bonds:[
+      {name:"需要幫助的博士候選人",desc:"尚未找到自己的方向，但你可以幫助他們。"},
+      {name:"興奮的期刊出版商",desc:"熱愛你的作品，需要更多內容。"},
+      {name:"一絲不苟的補助金審查員",desc:"總會找到藉口駁回申請。"}
+    ],
+    scenes:[
+      "在等待實驗結果時，你與實驗室技術員閒聊。",
+      "科學期刊想採訪你，詢問你對該領域最新發現的看法。",
+      "你為初學者舉辦了入門培訓課程。"
+    ]
+  },
+  {
+    name:"祕密特務", en:"Secret Agent",
+    desc:"你從事祕密行動，可能是間諜、刺客、情報官、黑色行動專家、臥底警察或企業間諜。",
+    resource:5,
+    talents:["無堅不摧","搬弄是非","潛行高手"],
+    bonds:[
+      {name:"神祕的上司",desc:"不願現身見面。"},
+      {name:"不滿的主任",desc:"對目前的狀況感到不滿。"},
+      {name:"焦慮的朋友",desc:"不知道你在做什麼，只知道很危險。"}
+    ],
+    scenes:[
+      "一位政府的聯絡官堅持要你完成最新任務後進行彙報。",
+      "你的一位機密線人要求見面，他有重要的事情要分享。",
+      "你與其他人一起進行假身分的排練。"
+    ]
+  },
+  {
+    name:"士兵", en:"Soldier",
+    desc:"你是軍事部隊中的戰鬥人員，例如步兵、軍官、特種部隊、傭兵或民兵。",
+    resource:4,
+    talents:["運籌帷幄","無堅不摧","戰術支援"],
+    bonds:[
+      {name:"機構聯絡員",desc:"閱讀每份報告，並期望準時提交。"},
+      {name:"受人尊敬的指揮官",desc:"以身作則領導團隊。"},
+      {name:"摯愛的家人",desc:"希望你不要經常離家。"}
+    ],
+    scenes:[
+      "你在結束任務後返家休假，與家人團聚。",
+      "一位陣亡士兵的家屬要求與你會面，想了解他是如何犧牲的。",
+      "你受邀在退伍軍人活動上發表演說。"
+    ]
+  },
+  {
+    name:"學生", en:"Student",
+    desc:"你在學校、社區學院、大學、神學院、軍事學院或其他教育機構中學習並訓練某個領域或學科。",
+    resource:3,
+    talents:["堅定決心","學識淵博","不屈不撓"],
+    bonds:[
+      {name:"嚴格的導師",desc:"對你抱持更高的期望。"},
+      {name:"衝動的同學",desc:"讓你感到既有趣又沮喪。"},
+      {name:"惡意的霸凌者",desc:"嫉妒你，想要打壓你。"}
+    ],
+    scenes:[
+      "你因為作業逾期而被指導老師、校長或院長叫進辦公室。",
+      "一位被霸凌的同學在下課後找你幫忙。",
+      "一群同學請你幫助他們為即將到來的考試做準備。"
+    ]
+  },
+  {
+    name:"技術員", en:"Technician",
+    desc:"你在技術領域工作，例如工程師、技工、駭客、生產專家、分析師或系統管理員。",
+    resource:4,
+    talents:["條分縷析","學識淵博","得力助手"],
+    bonds:[
+      {name:"神祕的贊助者",desc:"為你提供最好的裝備，但他想要什麼回報？"},
+      {name:"匿名的對手",desc:"總是領先你一步。"},
+      {name:"人工智慧夥伴",desc:"明明是你編寫的程式，為什麼這麼喜歡唱反調？"}
+    ],
+    scenes:[
+      "你與同事一起腦力激盪，試圖解決一個反覆出現的問題。",
+      "網路駭客聯絡了你，請你協助扳倒一個腐敗的組織。",
+      "你參加投資者的會議，試圖為即將進行的專案爭取資金。"
+    ]
+  },
+  {
+    name:"白領", en:"White Collar",
+    desc:"你從事辦公室工作，可能是商務人士、高階主管、會計師、律師、銀行家、財務顧問、業務員、行銷人員或房地產仲介。",
+    resource:5,
+    talents:["足智多謀","巧妙轉移","意外之財"],
+    bonds:[
+      {name:"優柔寡斷的客戶",desc:"無法下定決心。"},
+      {name:"不切實際的股東",desc:"期望用極少的資源達成過高的目標。"},
+      {name:"有用的顧問",desc:"提供的協助符合他的收費。"}
+    ],
+    scenes:[
+      "你主持一場與合作夥伴、客戶或供應商的談判，但對方非常刁難。",
+      "你的主管要求你準備一份簡報，說明本季的數據。",
+      "你參加公司的節日派對，卻忘記自己要帶什麼。"
     ]
   }
 ];
@@ -2213,8 +2553,8 @@ function renderPowerSourceStep(){
   const cards=POWER_SOURCES.map((s,i)=>{
     const selPos=arr.indexOf(i), isSel=selPos>=0;
     const tag = isSel
-      ? (selPos===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag paid">已付 1 點</span>`)
-      : (arr.length===0?`<span class="src-tag free">免費</span>`:`<span class="src-tag cost">需付 1 點</span>`);
+      ? (selPos===0?`<span class="cost-pill cost-free">免費</span>`:`<span class="cost-pill cost-paid">已付 1 點</span>`)
+      : (arr.length===0?`<span class="cost-pill cost-free">免費</span>`:`<span class="cost-pill cost-need">需付 1 點</span>`);
     const disabled = !isSel && arr.length>=1 && pointsLeft()<1;
     return `<div class="src-card${isSel?" sel":""}${disabled?" disabled":""}" data-source="${i}" role="button" tabindex="0" aria-pressed="${isSel?"true":"false"}">
       <div class="src-name">${s.name}${tag}</div><div class="src-desc">${s.desc}</div>
@@ -2273,6 +2613,8 @@ function powerConfigBlocks(p){
     const cur=powerSrc(p);
     const btns=creator.powerSources.map(s=>`<button class="src-pick${s===cur?" cur":""}" data-pw-src="${p.id}:${s}">${POWER_SOURCES[s].name}</button>`).join("");
     srcBlock=`<div class="pw-block"><div class="pw-block-label">分配異能來源</div><div class="src-pick-row">${btns}</div></div>`;
+  } else {
+    srcBlock=`<div class="pw-block"><div class="pw-block-label">分配異能來源</div><div class="src-none-hint"><span>尚未選擇異能來源</span><button class="btn btn-sm btn-ink" data-goto-sources="1">前往選擇 →</button></div></div>`;
   }
   let levelBlock="";
   if(ownMax>0){
@@ -2418,28 +2760,48 @@ function renderPowerStep(){
 function profSecHead(title,hint,rollKind){
   return `<div class="sec-head"><div><span class="sec-title display">${title}</span>${hint?`<span class="sec-hint">${hint}</span>`:""}</div>${rollKind?`<button class="dice-btn" data-prof-roll="${rollKind}">🎲 隨機</button>`:""}</div>`;
 }
-function selectProfession(i){ if(creator.profession!==i){ creator.profession=i; creator.professionTalent=null; creator.professionTalentSubject=null; creator.bondMode=null; creator.bondIdx=null; creator.bondCustom=""; } renderCreator(); }
-function selectProfTalent(i){ creator.professionTalent=i; creator.professionTalentSubject=null; renderCreator(); }
-function selectProfSubj(i){ creator.professionTalentSubject=i; renderCreator(); }
-function selectBondPreset(i){ creator.bondMode="preset"; creator.bondIdx=i; renderCreator(); }
-function chooseBondCustom(){ creator.bondMode="custom"; creator.bondIdx=null; renderCreator(); }
+function profTalentObjs(p){ return (p&&p.talents?p.talents:[]).map(n=>CREATOR_TALENTS.find(t=>t.name===n)).filter(Boolean); }
+function refreshProfModal(){
+  const cont=document.getElementById("profModalContent"); if(!cont) return;
+  const old=cont.querySelector(".prof-modal-body"); const st=old?old.scrollTop:0;
+  cont.innerHTML=renderProfModal();
+  const nw=cont.querySelector(".prof-modal-body"); if(nw) nw.scrollTop=st;
+}
+function afterProfChange(){ if(creator.profModalOpen&&creator.step===4&&document.getElementById("profModal")&&document.getElementById("profModal").classList.contains("on")) refreshProfModal(); else renderCreator(); }
+function selectProfession(i){ if(creator.profession!==i){ creator.profession=i; creator.professionTalent=null; creator.professionTalentSubject=null; creator.bondMode=null; creator.bondIdx=null; creator.bondCustom=""; } creator.profModalOpen=true; renderCreator(); }
+function closeProfModal(){ creator.profModalOpen=false; renderCreator(); }
+function selectProfTalent(i){ creator.professionTalent=i; creator.professionTalentSubject=null; afterProfChange(); }
+function selectProfSubj(i){ creator.professionTalentSubject=i; afterProfChange(); }
+function selectBondPreset(i){ creator.bondMode="preset"; creator.bondIdx=i; afterProfChange(); }
+function chooseBondCustom(){ creator.bondMode="custom"; creator.bondIdx=null; afterProfChange(); }
 function selectIdentity(v){ creator.identity=v; renderCreator(); }
-function rollProfTalent(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; creator.professionTalent=rand(p.talents.length); const t=p.talents[creator.professionTalent]; creator.professionTalentSubject=t.subjects?rand(t.subjects.length):null; renderCreator(); }
-function rollProfSubj(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p||creator.professionTalent==null)return; const t=p.talents[creator.professionTalent]; if(!t.subjects)return; creator.professionTalentSubject=rand(t.subjects.length); renderCreator(); }
-function rollBond(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; creator.bondMode="preset"; creator.bondIdx=rand(p.bonds.length); renderCreator(); }
+function rollProfTalent(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; const tals=profTalentObjs(p); creator.professionTalent=rand(tals.length); const t=tals[creator.professionTalent]; creator.professionTalentSubject=t&&t.subjects?rand(t.subjects.length):null; afterProfChange(); }
+function rollProfSubj(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p||creator.professionTalent==null)return; const t=profTalentObjs(p)[creator.professionTalent]; if(!t||!t.subjects)return; creator.professionTalentSubject=rand(t.subjects.length); afterProfChange(); }
+function rollBond(){ const p=CREATOR_PROFESSIONS[creator.profession]; if(!p)return; creator.bondMode="preset"; creator.bondIdx=rand(p.bonds.length); afterProfChange(); }
 
+function professionCard(p,i,sel){
+  return `<div class="card tier-card-paper prof-card${sel?" sel":""}" data-prof="${i}" role="button" tabindex="0" aria-pressed="${sel?"true":"false"}">
+    <div class="card-top"><span class="card-en">${p.en}</span>${sel?'<span class="tier-sel-badge">已選擇</span>':''}</div>
+    <h2 class="card-name display">${p.name}</h2>
+    <p class="prof-card-desc">${p.desc}</p>
+    <div class="card-cta display">${sel?"檢視 / 重新設定 →":"選擇此職業"}</div>
+  </div>`;
+}
 function renderProfessionStep(){
-  const intro=`<p class="step-intro">職業代表你的背景、平民生活或日常工作。選擇 1 個職業，並決定你的真實身分要保密還是公開。每個職業提供：免費的職業天賦（自選或擲骰）、起始資源值、1 段關鍵羈絆（可自選／自創／擲骰，細節於後續步驟完成），以及社交場景靈感。（職業共 22 種，目前先收錄 1 種做測試。）</p>`;
-  const profCards=CREATOR_PROFESSIONS.map((p,i)=>`<div class="src-card${creator.profession===i?" sel":""}" data-prof="${i}" role="button" tabindex="0" aria-pressed="${creator.profession===i?"true":"false"}"><div class="src-name">${p.name}</div><div class="src-desc">${p.desc}</div></div>`).join("");
-  const picker=`<div class="src-grid">${profCards}</div>`;
-  const idRow=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">真實身分</span><span class="sec-hint">保密或公開</span></div></div>
+  const intro=`<p class="step-intro">職業代表你的背景、平民生活或日常工作。選擇 1 個職業，並決定你的真實身分要保密還是公開。每個職業提供：免費的職業天賦（自選或擲骰）、起始資源值、1 段關鍵羈絆（可自選／自創／擲骰），以及社交場景靈感。（職業共 22 種，已全部收錄。）</p>`;
+  const idRow=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">真實身分</span></div></div>
     <div class="opt-pills">
       <button class="pill${creator.identity==="secret"?" sel":""}" data-identity="secret">保密</button>
       <button class="pill${creator.identity==="public"?" sel":""}" data-identity="public">公開</button>
     </div></div>`;
-  if(creator.profession==null) return intro+picker+idRow;
-  const p=CREATOR_PROFESSIONS[creator.profession];
-  const talHTML=p.talents.map((t,i)=>{
+  const profCards=CREATOR_PROFESSIONS.map((p,i)=>professionCard(p,i,creator.profession===i)).join("");
+  const picker=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">選擇職業</span><span class="sec-hint">點選職業卡進行後續設定</span></div></div><div class="tier-grid">${profCards}</div></div>`;
+  return intro+idRow+picker;
+}
+function renderProfModal(){
+  const p=CREATOR_PROFESSIONS[creator.profession]; if(!p) return "";
+  const tals=profTalentObjs(p);
+  const talHTML=tals.map((t,i)=>{
     let h=optRow("profTalent",i,t.name,t.desc,creator.professionTalent===i);
     if(creator.professionTalent===i&&t.subjects){
       h+=`<div class="subject-inline">${profSecHead("專精主題","1D"+t.subjects.length+" 或自選 1 個","subject")}${t.subjects.map((s,j)=>optRow("profSubj",j,s.name,s.desc,creator.professionTalentSubject===j)).join("")}</div>`;
@@ -2450,18 +2812,26 @@ function renderProfessionStep(){
     +`<div class="opt${creator.bondMode==="custom"?" sel":""}" data-bond-custom-pick="1" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">自創關鍵羈絆</span><span class="opt-desc">自行描述 1 段與職業有關的重要人際關係。</span></div></div>`
     +(creator.bondMode==="custom"?`<textarea class="bond-input" data-bond-custom="1" rows="2" placeholder="描述你的關鍵羈絆（例如：栽培你的恩師，總在關鍵時刻給你指引…）">${escapeHTML(creator.bondCustom)}</textarea>`:"");
   const sceneHTML=`<ul class="scene-list">${p.scenes.map(s=>`<li>${s}</li>`).join("")}</ul>`;
-  return intro+picker+idRow
-    +`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">職業：${p.name}</span></div><span class="resource-badge">資源 ${p.resource}</span></div><p class="prof-desc">${p.desc}</p></div>`
-    +`<div class="bsec-sub">${profSecHead("職業天賦","1D"+p.talents.length+" 或自選 1 個（免費）","talent")}${talHTML}</div>`
-    +`<div class="bsec-sub">${profSecHead("關鍵羈絆","1D"+p.bonds.length+"、自選或自創","bond")}${bondHTML}</div>`
-    +`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">社交場景靈感</span></div></div>${sceneHTML}</div>`;
+  const head=`<div class="pw-modal-head"><div class="pw-modal-titlebar"><h3 class="modal-title display">職業：${p.name}${p.en?`<span class="pw-en">${p.en}</span>`:""}</h3><span class="resource-badge">資源 ${p.resource}</span></div><p class="prof-desc">${p.desc}</p></div>`;
+  const body=`<div class="pw-modal-list prof-modal-body">
+    <div class="bsec-sub">${profSecHead("職業天賦","1D"+tals.length+" 或自選 1 個（免費）","talent")}${talHTML}</div>
+    <div class="bsec-sub">${profSecHead("關鍵羈絆","1D"+p.bonds.length+"、自選或自創","bond")}${bondHTML}</div>
+    <div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">社交場景靈感</span></div></div>${sceneHTML}</div>
+  </div>`;
+  const footer=`<div class="modal-actions pw-modal-foot"><button class="btn btn-gold" data-prof-modal-close="1">完成</button></div>`;
+  return head+body+footer;
+}
+function syncProfModal(){
+  const el=document.getElementById("profModal"); if(!el) return;
+  if(creator.profModalOpen && creator.step===4 && creator.profession!=null){ document.getElementById("profModalContent").innerHTML=renderProfModal(); el.classList.add("on"); }
+  else el.classList.remove("on");
 }
 const CREATOR_FREE_TALENTS=1; // 自選天賦免費額度（職業天賦另計於步驟 4）
 function talentPointCost(){ return Math.max(0,(creator.talents?creator.talents.length:0)-CREATOR_FREE_TALENTS); }
 function talentMaxCount(i){ return CREATOR_TALENTS[i].max||1; }
 function countTalent(i){ return creator.talents.filter(t=>t.id===i).length; }
 function hasTalentSubject(i,subj){ return creator.talents.some(t=>t.id===i&&t.subject===subj); }
-function professionTalentName(){ if(creator.profession==null||creator.professionTalent==null) return null; return CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent].name; }
+function professionTalentName(){ if(creator.profession==null||creator.professionTalent==null) return null; return CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent]||null; }
 function isCreatorTalentBlocked(i){ const t=CREATOR_TALENTS[i], pn=professionTalentName(); return pn!=null && t.name===pn && !talentRepeatable(t.name); }
 // 學識淵博：若職業天賦也是學識淵博，其主題不可在此重複選取
 function isLoreSubjectBlocked(subj){ return professionTalentName()==="學識淵博" && creator.professionTalentSubject===subj; }
@@ -2479,12 +2849,21 @@ function removeTalentInstance(i,subject){
   for(let k=0;k<creator.talents.length;k++){ const t=creator.talents[k]; if(t.id===i && (subject==null||t.subject===subject)){ creator.talents.splice(k,1); renderCreator(); return; } }
 }
 function toggleTalentSubject(i,subj){ if(hasTalentSubject(i,subj)) removeTalentInstance(i,subj); else addTalentInstance(i,subj); }
+function talentCostTag(i){
+  const freeN=CREATOR_FREE_TALENTS, count=countTalent(i);
+  if(count===0){ return creator.talents.length<freeN ? `<span class="cost-pill cost-free">免費</span>` : `<span class="cost-pill cost-need">需付 1 點</span>`; }
+  let paidCount=0; creator.talents.forEach((t,k)=>{ if(t.id===i && k>=freeN) paidCount++; });
+  return paidCount>0 ? `<span class="cost-pill cost-paid">已付 ${paidCount} 點</span>` : `<span class="cost-pill cost-free">免費</span>`;
+}
 function talentCard(i){
   const t=CREATOR_TALENTS[i], count=countTalent(i), max=talentMaxCount(i), hasSub=!!t.subjects, blocked=isCreatorTalentBlocked(i);
-  const nextFree = creator.talents.length<CREATOR_FREE_TALENTS, costLabel = nextFree?"免費":"1 點";
   let tags="";
   if(blocked){ tags=""; }
-  else { if(count>0) tags+=`<span class="src-tag sel">已選${(max>1||hasSub)?` ×${count}`:""}</span>`; if(max>1) tags+=`<span class="src-tag free">${isFinite(max)?`可選 ${max} 次`:"可重複"}</span>`; }
+  else {
+    tags+=talentCostTag(i);
+    if(max>1) tags+=`<span class="src-tag free">${isFinite(max)?`可選 ${max} 次`:"可重複"}</span>`;
+    if(count>0&&(max>1||hasSub)) tags+=`<span class="src-tag sel">已選 ${count} 次</span>`;
+  }
   let control="";
   if(blocked){ control=`<span class="tal-lock">🔒 已作為職業天賦取得，天賦不可重複</span>`; }
   else if(hasSub){
@@ -2494,21 +2873,20 @@ function talentCard(i){
     }).join("")}</div>`;
   }
   else if(max>1){
-    control=`<div class="tal-stepper"><button class="btn btn-ghost btn-sm" data-tal-remove="${i}"${count<=0?" disabled":""}>−</button><span class="tal-count display">${count}</span><button class="btn btn-sm" data-tal-add="${i}"${count>=max?" disabled":""}>＋ 選擇（${costLabel}）</button></div>`;
+    control=`<div class="tal-stepper"><button class="btn btn-ghost btn-sm" data-tal-remove="${i}"${count<=0?" disabled":""}>−</button><span class="tal-count display">${count}</span><button class="btn btn-sm" data-tal-add="${i}"${count>=max?" disabled":""}>＋ 選擇</button></div>`;
   }
   else {
     control = count>0 ? `<button class="btn btn-ghost btn-sm" data-tal-remove="${i}">✓ 已選（移除）</button>`
-                      : `<button class="btn btn-sm" data-tal-add="${i}">＋ 選擇（${costLabel}）</button>`;
+                      : `<button class="btn btn-sm" data-tal-add="${i}">＋ 選擇</button>`;
   }
   return `<div class="weak-card${count>0?" on":""}"><div class="weak-head"><span class="weak-name">${t.name}${tags}</span>${hasSub?"":control}</div><div class="weak-desc">${fmtHTML(t.desc)}</div>${hasSub?control:""}</div>`;
 }
 function renderTalentStep(){
-  const pn=professionTalentName(), chosen=creator.talents.length;
-  const paid=talentPointCost(), free=Math.min(chosen,CREATOR_FREE_TALENTS);
+  const pn=professionTalentName();
   const profLine = pn ? `已獲得職業天賦：<b>${pn}</b>（步驟 4），視為 2 個免費天賦中的 1 個。` : `尚未於步驟 4 選擇職業天賦──那會是你 2 個免費天賦中的第 1 個。`;
   const rows=CREATOR_TALENTS.map((t,i)=>talentCard(i)).join("");
   return `<p class="step-intro">「天賦」是讓英雄取得優勢的各種技巧、招式與次要能力。創角時免費獲得 <b>2 個天賦</b>：1 個職業天賦（已於上一步選定）＋1 個自選天賦。用完這 2 個免費天賦後，每多選 1 個天賦花費 <b>1 點</b>創角點數。部分天賦可重複選取（如堅定決心、頑強生命最多 5 次；學識淵博每個主題各 1 次），每多 1 份照樣計入點數與數據加成。（天賦共 51 個，目前先收錄 ${CREATOR_TALENTS.length} 個做測試。）</p>
-    <p class="src-note">${profLine}</p>
+    <div class="prof-talent-notice">${profLine}</div>
     <div class="talent-list">${rows}</div>`;
 }
 function weaknessPointDelta(){ return -(creator.weaknesses?creator.weaknesses.length:0); } // 每個弱點 +1 創角點數（降低 spent）
@@ -2594,7 +2972,7 @@ function renderCreator(){
   const step=CREATOR_STEPS[creator.step];
   const nav=`<div class="step-nav">${CREATOR_STEPS.map((s,i)=>`<button class="step-chip${i===creator.step?" cur":""}" data-step="${i}">${s.chip}</button>`).join("")}</div>`;
   const cnt=stepCountHTML();
-  const pbar=(creator.step>=1&&creator.tier!=null)?`<div class="points-sticky"><div class="points-bar">剩餘創角點數 <b>${pointsLeft()}</b> / ${pointsTotal()}</div>${cnt?`<div class="points-bar count-bar">${cnt}</div>`:""}</div>`:"";
+  const pbar=(creator.step>=1&&creator.tier!=null)?`<div class="points-sticky"><div class="points-bar">剩餘創角點數 <b>${pointsLeft()}</b>/${pointsTotal()}</div>${cnt?`<div class="points-bar count-bar">${cnt}</div>`:""}</div>`:"";
   const content=`<section class="bsec"><div class="sec-head"><span class="sec-title display">${step.label}</span></div>${step.render()}</section>`;
   const foot=`<div class="step-foot">
       <button class="btn btn-ghost" data-nav="prev"${creator.step===0?" disabled":""}>← 上一步</button>
@@ -2608,13 +2986,11 @@ function renderCreator(){
     <div class="wip-banner">🚧 此功能尚未完成。</div>
     ${nav}${pbar}${content}${foot}`;
   syncPowerModal();
+  syncProfModal();
 }
 function gotoStep(i){
   if(i<0||i>=CREATOR_STEPS.length) return;
-  if(creator.step===2 && i>2 && creator.powerSources.length===0){
-    showInfo("尚未選擇異能來源","每個異能都必須指定一個異能來源。請至少選擇 1 種異能來源再繼續。");
-    return;
-  }
+  creator.profModalOpen=false;
   creator.step=i; renderCreator(); window.scrollTo(0,0);
 }
 function selectTier(ti){
@@ -3062,6 +3438,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){
     if(document.getElementById("choiceModal").classList.contains("on")) hideChoice();
     else if(document.getElementById("powerModal").classList.contains("on")) closePowerModal();
+    else if(document.getElementById("profModal").classList.contains("on")) closeProfModal();
     else if(document.getElementById("modal").classList.contains("on")) hideModal();
     else if(document.getElementById("builderScreen").classList.contains("on")||document.getElementById("creatorScreen").classList.contains("on")) goHome();
   }
@@ -3075,6 +3452,7 @@ document.getElementById("choiceModal").addEventListener("click",e=>{if(e.target.
 
 document.getElementById("powerModal").addEventListener("click",e=>{
   if(e.target.id==="powerModal"){ closePowerModal(); return; }
+  if(e.target.closest("[data-goto-sources]")){ creator.powerModal=null; gotoStep(2); return; }
   if(e.target.closest("[data-pw-modal-close]")){ closePowerModal(); return; }
   if(e.target.closest("[data-pw-modal-remove]")){ removePowerFromModal(); return; }
   const buy=e.target.closest("[data-add-slot]");
@@ -3101,6 +3479,26 @@ document.getElementById("powerModal").addEventListener("keydown",e=>{
   if(e.target.closest("[data-pw-search]")) return;          // 搜尋框照常輸入
   const t=e.target.closest("[data-cat],[data-pw-pick],[data-pw-enh],[data-pw-lim]");
   if(t&&!t.classList.contains("disabled")&&!t.classList.contains("taken")){ e.preventDefault(); t.click(); }
+});
+document.getElementById("profModal").addEventListener("click",e=>{
+  if(e.target.id==="profModal"){ closeProfModal(); return; }
+  if(e.target.closest("[data-prof-modal-close]")){ closeProfModal(); return; }
+  const profRoll=e.target.closest("[data-prof-roll]");
+  if(profRoll){ const k=profRoll.dataset.profRoll; if(k==="talent")rollProfTalent(); else if(k==="subject")rollProfSubj(); else if(k==="bond")rollBond(); return; }
+  const bondPick=e.target.closest("[data-bond-custom-pick]");
+  if(bondPick){ chooseBondCustom(); return; }
+  const opt=e.target.closest("[data-group]");
+  if(opt&&!opt.classList.contains("disabled")){ const g=opt.dataset.group, idx=+opt.dataset.idx; if(g==="profTalent")selectProfTalent(idx); else if(g==="profSubj")selectProfSubj(idx); else if(g==="bond")selectBondPreset(idx); return; }
+});
+document.getElementById("profModal").addEventListener("keydown",e=>{
+  if(e.key!=="Enter"&&e.key!==" ") return;
+  if(e.target.closest("[data-bond-custom]")) return;        // 自創羈絆輸入框照常輸入
+  const t=e.target.closest("[data-prof-roll],[data-bond-custom-pick],[data-group],[data-prof-modal-close]");
+  if(t&&!t.classList.contains("disabled")){ e.preventDefault(); t.click(); }
+});
+document.getElementById("profModal").addEventListener("input",e=>{
+  const bc=e.target.closest("[data-bond-custom]");
+  if(bc){ creator.bondCustom=bc.value; }
 });
 document.getElementById("savesSection").addEventListener("click",e=>{
   const load=e.target.closest(".save-load"),del=e.target.closest(".save-del");
