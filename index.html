@@ -6,442 +6,475 @@
 <title>超級英雄建檔工具</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chocolate+Classical+Sans&family=IBM+Plex+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --night:#0e1326;--night-2:#161d38;--paper:#f4efe4;--ink:#191922;--ink-soft:#4a4a57;
-  --red:#e5342b;--gold:#f2b705;--green:#2f9e54;--line:2px solid var(--ink);
+  --night:#f6f2e8; --paper:#fffdf6; --ink:#181a20; --ink-soft:#5b5b66;
+  --rule:#d9d2c0; --red:#cf3529; --gold:#ffd23f; --green:#1e8e7e;
+  --cyan:#0e94b4; --cyan-ink:#0a5d72;
+  --line:2px solid var(--ink);
+  --shadow:4px 4px 0 rgba(24,26,32,.9);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--night);background-image:radial-gradient(circle at 20% -10%,#1d2647 0%,transparent 45%),radial-gradient(circle at 90% 0%,#241a3a 0%,transparent 40%);color:var(--paper);line-height:1.7;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased}
-.display{font-family:"Oswald","Noto Sans TC",sans-serif}
+body{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  background:var(--night);
+  background-image:radial-gradient(rgba(24,26,32,.055) 1px,transparent 1.2px);
+  background-size:16px 16px;
+  color:var(--ink); line-height:1.7; min-height:100vh; min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold)}
+.display{font-family:"Chocolate Classical Sans","Noto Sans TC",sans-serif;font-weight:400}
+.mono{font-family:"IBM Plex Mono","Noto Sans TC",monospace}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
 /* 報頭 */
 .masthead{padding:54px 0 30px;text-align:center}
-.eyebrow{display:inline-block;font-family:"Oswald",sans-serif;letter-spacing:.42em;font-size:.72rem;text-transform:uppercase;color:var(--gold);border:1px solid rgba(242,183,5,.5);padding:5px 14px 5px 18px;border-radius:2px;margin-bottom:20px}
-.wordmark{font-weight:900;font-size:clamp(2.6rem,8vw,5rem);line-height:.95;letter-spacing:.04em}
+.eyebrow{display:inline-block;font-family:"IBM Plex Mono",monospace;font-weight:700;
+  letter-spacing:.28em;font-size:.7rem;text-transform:uppercase;color:var(--cyan-ink);
+  border:2px solid var(--cyan);background:var(--paper);padding:5px 12px 5px 16px;
+  border-radius:3px;box-shadow:3px 3px 0 rgba(14,148,180,.35);margin-bottom:20px}
+.wordmark{font-size:clamp(2.6rem,8vw,4.8rem);line-height:1.05;letter-spacing:.05em;
+  color:var(--ink);text-shadow:.05em .05em 0 var(--cyan)}
 .wordmark .wm-part{display:inline-block;white-space:nowrap}
-.tagline{margin-top:16px;color:#b9bed1;font-size:clamp(.95rem,2.4vw,1.1rem);max-width:none}
-.count-strip{margin-top:26px;display:inline-flex;align-items:center;gap:14px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;color:#8d93ad}
-.count-strip b{color:var(--paper);font-size:1.05rem}
-.count-strip .ln{display:inline-block;width:34px;height:1px;background:#3b4263}
+.tagline{margin-top:16px;color:var(--ink-soft);font-size:clamp(.95rem,2.4vw,1.1rem);max-width:none}
+.count-strip{margin-top:26px;display:inline-flex;align-items:center;gap:14px;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.82rem;letter-spacing:.12em;color:var(--ink-soft)}
+.count-strip b{color:var(--ink);font-size:1.05rem}
+.count-strip .ln{display:inline-block;width:34px;height:2px;background:var(--rule)}
 
-/* 卡片牆 */
+/* 卡片牆（檔案夾風格） */
 .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding:14px 0 70px}
-.card{position:relative;background:var(--paper);color:var(--ink);border:var(--line);border-radius:4px;padding:22px 20px 20px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease;outline:none;display:flex;flex-direction:column}
-.card:focus-visible{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--gold)}
-.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:20px}
-.card-en{font-family:"Oswald",sans-serif;letter-spacing:.16em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:600}
-.role-badge{font-family:"Oswald",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--gold);padding:3px 9px;border-radius:2px;white-space:nowrap}
-.card-name{font-weight:900;font-size:2rem;line-height:1.1;margin:6px 0 4px;letter-spacing:.02em}
-.card-hex{display:flex;justify-content:center;margin:4px 0 10px}
-.card-intro{font-size:.9rem;color:#3c3c47}
-.card-cta{margin-top:16px;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:6px}
-.card-cta::after{content:"→";transition:transform .14s ease}
+.card{position:relative;background:var(--paper);color:var(--ink);border:var(--line);
+  border-radius:0 8px 8px 8px;box-shadow:var(--shadow);margin-top:20px;
+  padding:22px 20px 20px;cursor:pointer;transition:transform .14s ease,box-shadow .14s ease;
+  outline:none;display:flex;flex-direction:column}
+.card-top{display:flex;justify-content:flex-end;align-items:center;gap:10px;min-height:20px}
+.card-en{position:absolute;top:-20px;left:-2px;height:22px;display:inline-flex;
+  align-items:center;background:var(--paper);border:var(--line);border-bottom:none;
+  border-radius:8px 8px 0 0;padding:0 12px;font-family:"IBM Plex Mono",monospace;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.66rem;
+  color:var(--cyan-ink);white-space:nowrap;max-width:calc(100% - 8px);
+  overflow:hidden;text-overflow:ellipsis}
 
-/* 雷達：數字＋名稱皆在六角尖端外側，沿軸由內而外 */
-.hex-grid{stroke:#c9c0ad;stroke-width:1;fill:none}
-.hex-spoke{stroke:#d6cdba;stroke-width:1}
-.hex-shape{fill:rgba(229,52,43,.18);stroke:var(--red);stroke-width:2.5;stroke-linejoin:round}
-.hex-dot{fill:var(--red)}
-.hex-dot.peak{fill:var(--gold);stroke:var(--ink);stroke-width:1.2}
-.hex-num{font-family:"Oswald",sans-serif;font-weight:700;fill:var(--ink)}
+@media(hover:hover){
+  .card:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--cyan)}
+  .card.sel:hover{box-shadow:8px 8px 0 var(--green)}
+  .land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--cyan)}
+}
+.card:focus-visible{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--cyan)}
+.card.sel{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--green)}
+
+/* 橡皮章 */
+.role-badge{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.66rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--red);
+  border:2px solid var(--red);border-radius:3px;padding:1px 8px;
+  transform:rotate(-3deg);white-space:nowrap}
+.card-name{font-size:2rem;line-height:1.1;margin:12px 0 4px;color:var(--ink)}
+.card-hex{display:flex;justify-content:center;margin:4px 0 10px}
+.card-intro{font-size:.9rem;color:var(--ink-soft)}
+.card-cta{margin-top:auto;padding-top:16px;font-family:"IBM Plex Mono",monospace;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:700;display:flex;align-items:center;gap:6px}
+.card-cta::after{content:"→";transition:transform .14s ease}
+@media(hover:hover){ .card:hover .card-cta::after{transform:translateX(4px)} }
+.card.sel .card-cta{color:var(--green)}
+.card.sel .card-cta::after{content:"✓";transform:none}
+.prof-card.sel .card-cta::after{content:"→";transform:none}
+
+/* 雷達圖色彩 */
+.hex-grid{stroke:var(--rule);stroke-width:1;fill:none}
+.hex-spoke{stroke:#e6dfcd;stroke-width:1}
+.hex-shape{fill:rgba(14,148,180,.18);stroke:var(--cyan);stroke-width:2.5;stroke-linejoin:round}
+.hex-dot{fill:var(--cyan-ink)}
+.hex-num{font-family:"IBM Plex Mono",monospace;font-weight:700;fill:var(--ink)}
 .hex-name{font-family:"Noto Sans TC",sans-serif;font-weight:700;fill:var(--ink-soft)}
 
 /* 覆蓋頁 */
-.screen{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;height:100dvh;z-index:40;background:var(--night);background-image:radial-gradient(circle at 15% 0%,#1d2647 0%,transparent 50%),radial-gradient(circle at 95% 10%,#241a3a 0%,transparent 45%);overflow-y:auto}
+.screen{display:none;position:fixed;inset:0;z-index:40;background:var(--night);
+  background-image:radial-gradient(rgba(24,26,32,.055) 1px,transparent 1.2px);
+  background-size:16px 16px;overflow-y:auto}
 .screen.on{display:block}
 .screen-inner{max-width:1000px;margin:0 auto;padding:calc(26px + env(safe-area-inset-top)) 24px 90px}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 0 24px;gap:12px;flex-wrap:wrap}
-.btn{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;font-weight:600;padding:11px 20px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:transform .12s ease,background .12s ease,color .12s ease,border-color .12s ease;display:inline-flex;align-items:center;gap:8px}
-.btn:active{transform:translateY(1px)}
-.btn-ghost{background:transparent;color:#c5cadd;border-color:#39406a}
-.btn-ghost:hover{border-color:var(--paper);color:var(--paper)}
-.btn-gold{background:var(--gold);color:var(--ink)}
-.btn-gold:hover{background:#dba504}
+
+/* 按鈕：壓印效果 */
+.btn{font-family:"IBM Plex Mono","Noto Sans TC",monospace;font-weight:700;
+  letter-spacing:.06em;font-size:.84rem;padding:10px 18px;border-radius:4px;
+  cursor:pointer;border:2px solid var(--ink);background:var(--paper);color:var(--ink);
+  box-shadow:3px 3px 0 var(--ink);display:inline-flex;align-items:center;gap:8px;
+  transition:transform .1s ease,box-shadow .1s ease,background .12s ease}
+.btn:hover{background:#fff}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn-gold{background:var(--gold)}
+.btn-gold:hover{background:#ffdb63}
+.btn-ghost{background:transparent;box-shadow:none;border-color:var(--ink-soft);color:var(--ink-soft)}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
 .btn-ink{background:var(--paper);color:var(--ink);border-color:var(--ink)}
 .btn-ink:hover{background:#fff}
+.btn[disabled]{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
 
-/* 建檔 */
-.builder-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-.builder-head .display{font-weight:900;font-size:clamp(1.8rem,5vw,2.6rem)}
-.builder-name{color:var(--gold)}
+/* 建檔區塊 */
+.builder-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px;color:var(--ink)}
+.builder-head .display{font-size:clamp(1.8rem,5vw,2.6rem)}
+.builder-name{color:var(--cyan-ink)}
 .builder-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.builder-en{font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.82rem;color:#b7bcd2}
-.builder-role{font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;border:1px solid #3a4673;color:#b7bcd2;padding:5px 10px;border-radius:2px}
+.builder-en{font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;font-size:.82rem;color:var(--ink-soft)}
+.builder-role{font-family:"IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;font-size:.78rem;border:2px solid var(--ink);color:var(--ink);padding:3px 10px;border-radius:3px;transform:rotate(-2deg)}
 .builder-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.builder-sub{color:#9aa0bd;margin-bottom:16px}
+.builder-sub{color:var(--ink-soft);margin-bottom:16px}
 .builder-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;align-items:start}
 .builder-col{display:flex;flex-direction:column;gap:18px;min-width:0}
-.bsec{background:#141b33;border:1.5px solid #262e54;border-radius:6px;padding:18px 18px 20px}
+
+.bsec{background:var(--paper);border:2px solid var(--rule);border-radius:6px;padding:18px 18px 20px;box-shadow:2px 2px 0 rgba(24,26,32,.05)}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
-.sec-title{font-weight:900;font-size:1.15rem;color:var(--paper)}
-.sec-hint{display:block;font-size:.75rem;color:#8d93ad;margin-top:2px;letter-spacing:.04em}
-.dice-btn{flex:none;background:#1d2647;border:1.5px solid #3a4673;color:#cfd4e6;font-family:"Oswald",sans-serif;font-size:.74rem;letter-spacing:.06em;padding:6px 11px;border-radius:3px;cursor:pointer;transition:border-color .12s,color .12s}
-.dice-btn:hover{border-color:var(--gold);color:var(--gold)}
+.sec-title{font-size:1.4rem;color:var(--ink)}
+.sec-hint{display:block;font-size:.75rem;color:var(--ink-soft);margin-top:2px;letter-spacing:.04em}
+.dice-btn{flex:none;background:#fff;border:2px solid var(--ink);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;padding:6px 11px;border-radius:3px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.dice-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
 
 /* 範型概覽 */
 .ov-top{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:start;margin-bottom:18px}
-.ov-art{width:120px}
-.ov-intro{font-size:.98rem;color:#d7dbe8;line-height:1.7}
+.ov-intro{font-size:.98rem;color:var(--ink);line-height:1.7}
 .ov-top2{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
-.ov-stats{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
-.ov-hexbox{background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:6px;display:flex;justify-content:center}
+.ov-hexbox{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:6px;display:flex;justify-content:center}
 .ov-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-.ov-stat{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:12px 10px;text-align:center}
-.ov-stat-up{border-color:var(--green)}
-.ov-stat-num{display:block;font-weight:900;font-size:1.7rem;color:var(--paper);line-height:1}
+.ov-stat{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:12px 10px;text-align:center}
+.ov-stat-up{border-color:var(--green); background:rgba(30,142,126,.05)}
+.ov-stat-num{display:block;font-size:2rem;color:var(--ink);line-height:1}
 .ov-stat-up .ov-stat-num{color:var(--green)}
-.ov-stat-label{display:block;margin-top:5px;font-family:"Oswald",sans-serif;letter-spacing:.08em;font-size:.72rem;color:#9aa0bd}
-.ov-gauge{min-width:0}
-.art{width:100%;aspect-ratio:4/5;border:var(--line);border-radius:4px;overflow:hidden;background:#0f1530;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
-.art img{width:100%;height:100%;object-fit:cover;display:block}
-.art-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:3rem;color:#fff;background:linear-gradient(135deg,#e5342b,#7a1e8a)}
+.ov-stat-label{display:block;margin-top:5px;font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;font-size:.72rem;color:var(--ink-soft)}
 
-/* 屬性量表 */
-.stat-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.stat-row:last-child{margin-bottom:0}
-.stat-name{width:3.4em;font-weight:700;flex:none}
-.stat-bar{flex:1;height:15px;background:#0c1124;border:1px solid #2d345c;border-radius:3px;overflow:hidden;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.10) 0 1.5px,transparent 1.5px 10%)}
-.stat-fill{height:100%;border-radius:2px 0 0 2px;box-shadow:0 0 8px rgba(0,0,0,.25) inset}
-.stat-num{width:2.1em;text-align:right;flex:none;font-family:"Oswald",sans-serif;font-weight:700;font-size:1.25rem}
-
-/* 表單 / 選項 */
+/* 表單 / 卷宗選項 */
 .field{margin-bottom:14px}
 .field:last-child{margin-bottom:0}
-.field label{display:block;font-family:"Oswald",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:#aeb3cc;margin-bottom:7px}
-.field input,.field textarea{width:100%;background:#0f1530;border:1.5px solid #343c64;border-radius:3px;color:var(--paper);font-family:inherit;font-size:1rem;padding:11px 13px;line-height:1.6;transition:border-color .12s}
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--red)}
+.field label{display:block;font-family:"IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;font-size:.74rem;color:var(--ink-soft);margin-bottom:7px}
+.field input,.field textarea{width:100%;background:#fff;border:2px solid var(--rule);border-radius:3px;color:var(--ink);font-family:inherit;font-size:1rem;padding:11px 13px;line-height:1.6;transition:border-color .12s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(14,148,180,.1)}
 .field textarea{resize:vertical;min-height:96px}
-.opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1.5px solid #2a3258;border-radius:5px;cursor:pointer;margin-bottom:9px;background:#0f1530;transition:border-color .12s,background .12s;outline:none}
+
+/* 選取與藥丸 */
+.opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;
+  border:2px solid var(--rule);border-radius:5px;cursor:pointer;margin-bottom:9px;
+  background:#fff;transition:border-color .12s,background .12s}
 .opt:last-child{margin-bottom:0}
-.opt:hover{border-color:#46508a}
-.opt:focus-visible{border-color:var(--gold)}
-.opt.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
-.opt-mark{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #46508a;margin-top:3px;position:relative}
-.opt.sel .opt-mark{border-color:var(--red)}
-.opt.sel .opt-mark::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--red)}
-.opt-name{display:block;font-weight:700;color:var(--paper);margin-bottom:3px}
-.opt-desc{display:block;font-size:.88rem;color:#b7bcd2;line-height:1.65}
-.opt.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.opt.disabled:hover{border-color:#2a3258}
-.opt-lock{display:block;font-size:.78rem;font-weight:600;color:var(--red);margin-bottom:3px}
-.land-card{position:relative}
-.land-badge{position:absolute;top:14px;right:14px;background:var(--gold);color:var(--ink);font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
-.wip-banner{background:rgba(242,183,5,.12);border:1.5px solid var(--gold);color:#f6d77a;border-radius:6px;padding:14px 16px;margin:0 0 22px;font-weight:600;line-height:1.65}
-.step-intro{color:#b7bcd2;line-height:1.75;margin:6px 0 18px;font-size:.95rem}
+.opt:hover{border-color:var(--ink-soft)}
+.opt.sel{border-color:var(--ink);background:rgba(207,53,41,.05);box-shadow:inset 4px 0 0 var(--red)}
+.opt-mark{flex:none;width:17px;height:17px;border:2px solid var(--ink-soft);
+  border-radius:3px;margin-top:4px;position:relative;background:#fff}
+.opt.sel .opt-mark{border-color:var(--ink);background:var(--red)}
+.opt.sel .opt-mark::after{content:"✓";position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:center;color:#fff;font-size:.78rem;
+  font-weight:900;line-height:1}
+.opt-name{display:block;font-weight:900;color:var(--ink);margin-bottom:3px}
+.opt-desc{display:block;font-size:.88rem;color:#4a4a55;line-height:1.7}
+.opt.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.opt-lock{display:block;font-size:.78rem;font-weight:700;color:var(--red);margin-bottom:3px}
+
+.pill{background:#fff;border:2px solid var(--rule);color:var(--ink-soft);
+  padding:7px 16px;border-radius:30px;cursor:pointer;font-family:inherit;
+  font-weight:500;font-size:.95rem;transition:background .12s,border-color .12s,color .12s}
+.pill:hover{border-color:var(--ink-soft); color:var(--ink)}
+.pill.sel{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.opt-pills{display:flex;flex-wrap:wrap;gap:9px}
+
+/* 警示與標籤 */
+.wip-banner{background:rgba(255,210,63,.3);border:2px dashed #c79a00;color:#6e5500;
+  border-radius:6px;padding:14px 16px;margin:0 0 22px;font-weight:600;line-height:1.65}
+.step-intro{color:var(--ink);line-height:1.75;margin:6px 0 18px;font-size:.95rem}
+.step-intro-list{margin:-10px 0 18px;padding-left:20px;color:var(--ink);font-size:.92rem;line-height:1.7}
+.step-intro-list li{margin-bottom:5px}
+.tier-sel-badge{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.66rem;
+  letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#fff;
+  padding:3px 9px;border-radius:3px;white-space:nowrap}
+.draft-badge{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.64rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  border:1.5px dashed var(--ink-soft);padding:3px 8px;border-radius:3px;white-space:nowrap}
+
 .tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;padding:4px 0 6px}
-.tier-card-paper{padding:20px 20px 18px}
+.tier-card-paper{padding:20px 20px 18px; display:block}
 .tier-card-paper .card-name{font-size:1.7rem;margin:4px 0 2px}
-.prof-card-desc{font-size:.82rem;color:#5b5a50;line-height:1.5;margin:6px 0 12px}
-.prof-card-picks{font-size:.8rem;font-weight:700;color:var(--red);margin:0 0 10px;line-height:1.4}
+.prof-card-desc{font-size:.82rem;color:var(--ink-soft);line-height:1.5;margin:6px 0 12px}
 .prof-modal-body{padding:2px}
-.tier-sel-badge{font-family:"Oswald",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--green);color:#fff;padding:3px 9px;border-radius:2px;white-space:nowrap}
 .tier-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 4px}
-.tier-stat{background:rgba(25,25,34,.05);border:1px solid rgba(25,25,34,.12);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
-.tier-stat-num{font-size:1.4rem;color:var(--red);line-height:1;font-weight:900}
-.tier-stat-label{font-size:.72rem;color:var(--ink-soft)}
-@media(max-width:600px){.tier-grid{grid-template-columns:1fr}}
-.tier-hint{color:#9aa0bd;font-style:italic;padding:6px 0}
-.points-bar{display:inline-block;background:#0b1026;border:1.5px solid var(--gold);color:#f6d77a;border-radius:30px;padding:8px 18px;font-weight:700;margin-bottom:16px}
-.points-bar b{color:var(--gold);font-size:1.15rem}
-.points-sticky{position:sticky;top:0;z-index:30;padding:10px 0 8px;margin-bottom:6px;background:linear-gradient(var(--night) 70%,rgba(14,19,38,0));backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.points-bar.count-bar{color:#cdd3ea;border-color:#39406a;background:#0b1026;font-weight:600}
-.points-bar.count-bar b{color:var(--paper)}
-.points-sticky .points-bar{margin-bottom:0;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.tier-stat{background:var(--night);border:2px solid var(--rule);border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;align-items:center}
+.tier-stat-num{font-size:1.6rem;color:var(--ink);line-height:1;font-weight:700}
+.tier-stat-label{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--ink-soft)}
+.tier-hint{color:var(--ink-soft);font-style:italic;padding:6px 0}
+
+/* 點數計 */
+.points-bar{display:inline-block;background:var(--paper);border:2px solid var(--ink);
+  border-radius:30px;padding:8px 18px;font-weight:700;color:var(--ink);
+  box-shadow:3px 3px 0 rgba(24,26,32,.85);margin-bottom:16px}
+.points-bar b{font-family:"IBM Plex Mono",monospace;color:var(--red);font-size:1.15rem}
+.points-sticky{position:sticky;top:0;z-index:30;padding:10px 0 8px;margin-bottom:6px;background:linear-gradient(var(--night) 70%,transparent);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.count-bar{color:var(--ink);border-color:var(--rule);background:#fff;font-weight:600}
+.count-bar b{color:var(--cyan-ink)}
+.points-sticky .points-bar{margin-bottom:0}
+
+/* 屬性加點 */
 .attr-alloc{display:flex;flex-direction:column;gap:10px}
-.attr-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:12px 16px}
+.attr-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:2px solid var(--rule);border-radius:6px;padding:12px 16px}
 .attr-info{display:flex;flex-direction:column;gap:2px;min-width:0}
-.attr-name{font-weight:800;color:var(--paper);font-size:1.05rem}
-.attr-desc{font-size:.8rem;color:#9aa0bd;line-height:1.5}
+.attr-name{font-weight:700;color:var(--ink);font-size:1.05rem}
+.attr-desc{font-size:.8rem;color:var(--ink-soft);line-height:1.5}
 .attr-stepper{display:flex;align-items:center;gap:10px;flex:none}
-.step-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid #46508a;background:#0b1026;color:var(--paper);font-size:1.3rem;line-height:1;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:border-color .12s,background .12s}
-.step-btn:hover:not(:disabled){border-color:var(--red)}
-.step-btn:disabled{opacity:.3;cursor:not-allowed}
-.attr-val{font-size:1.5rem;color:var(--gold);min-width:26px;text-align:center}
-.attr-word{font-size:.85rem;color:#b7bcd2;min-width:38px;text-align:center}
-.attr-legend{font-size:.8rem;color:#9aa0bd;line-height:1.8;margin-top:14px}
-@media(max-width:560px){.attr-row{flex-direction:column;align-items:stretch;gap:10px}.attr-stepper{justify-content:space-between}}
+.step-btn{width:38px;height:38px;border-radius:4px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-size:1.3rem;line-height:1;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.step-btn:hover:not(:disabled){background:#fff}
+.step-btn:active:not(:disabled){transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.step-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;transform:none}
+.attr-val{font-size:1.8rem;color:var(--red);min-width:26px;text-align:center}
+.attr-word{font-size:.85rem;color:var(--ink-soft);min-width:38px;text-align:center}
 .step-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
-.step-chip{min-width:42px;height:38px;padding:0 14px;border-radius:30px;border:1.5px solid #2a3258;background:#0f1530;color:#cfd4e6;font-family:inherit;font-weight:700;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
-.step-chip:hover{border-color:#46508a}
+.step-chip{min-width:42px;height:38px;padding:0 14px;border-radius:30px;border:2px solid var(--rule);background:#fff;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;font-weight:700;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
+.step-chip:hover{border-color:var(--ink-soft); color:var(--ink)}
 .step-chip.cur{background:var(--red);border-color:var(--red);color:#fff}
-.step-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid #232a4d}
-.step-count{color:#9aa0bd;font-size:.9rem;white-space:nowrap}
-.step-foot .btn[disabled]{opacity:.35;cursor:not-allowed}
+.step-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:26px;padding-top:18px;border-top:2px dashed var(--rule)}
+.step-count{font-family:"IBM Plex Mono",monospace;color:var(--ink-soft);font-size:.85rem;white-space:nowrap}
+
+/* 來源與成本 */
 .src-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.src-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:16px;cursor:pointer;transition:border-color .12s,background .12s;outline:none}
-.src-card:hover{border-color:#46508a}
-.src-card.sel{border-color:var(--red);background:rgba(229,52,43,.10)}
-.src-card.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
-.src-name{font-weight:800;color:var(--paper);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.src-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px}
-.src-tag.free{background:var(--green);color:#04210f}
-.src-tag.cost{background:var(--gold);color:var(--ink)}
-.src-tag.paid{background:var(--red);color:#fff}
-.cost-pill{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:8px;white-space:nowrap}
-.cost-free{background:#a8e0bf;color:#12572f}
-.cost-need{background:#f3d488;color:#5a3d06}
-.cost-paid{background:#c3b4ec;color:#382566}
-.src-none-hint{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#e5934a;font-size:.9rem;font-weight:600}
-.src-desc{font-size:.86rem;color:#b7bcd2;line-height:1.6}
-.src-summary{color:#d8dcec;margin-top:14px;line-height:1.7;font-weight:600}
-.src-note{color:#9aa0bd;font-size:.85rem;margin-top:6px;line-height:1.6}
-@media(max-width:600px){.src-grid{grid-template-columns:1fr}}
+.src-card{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:16px;cursor:pointer;transition:border-color .12s,background .12s;outline:none}
+.src-card:hover{border-color:var(--ink-soft)}
+.src-card.sel{border-color:var(--ink);background:rgba(207,53,41,.05);box-shadow:inset 4px 0 0 var(--red)}
+.src-card.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.src-name{font-weight:700;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.src-tag{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:3px}
+.src-tag.free{background:var(--rule);color:var(--ink)}
+.src-tag.sel{background:var(--green);color:#fff}
+.cost-pill{font-family:"IBM Plex Mono","Noto Sans TC",monospace;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap;margin-left:8px}
+.cost-free{background:#cdeeda;color:#12572f;border:1px solid #7fc79c}
+.cost-need{background:#ffe9b0;color:#5a3d06;border:1px solid #dbb75a}
+.cost-paid{background:#ddd2f5;color:#382566;border:1px solid #a893da}
+.src-none-hint{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--gold);font-size:.9rem;font-weight:700}
+.src-desc{font-size:.86rem;color:var(--ink-soft);line-height:1.6}
+.src-note{color:var(--ink-soft);font-size:.85rem;margin-top:10px;line-height:1.6}
 .btn-sm{padding:6px 14px;font-size:.85rem;min-height:0}
-.pw-status{display:block;background:#0b1026;border-color:#46508a;color:#d8dcec;font-weight:600;font-size:.86rem;padding:7px 14px}
-.pw-status b{color:var(--gold);font-size:1rem}
-@media (max-width:480px){
-  .pw-status{font-size:.76rem;padding:6px 12px}
-  .pw-status b{font-size:.86rem}
-}
-.pw-type-sec{margin-bottom:22px}
-.pw-type-head{font-weight:800;color:var(--gold);letter-spacing:.06em;border-bottom:1.5px solid #2a3258;padding-bottom:6px;margin-bottom:12px}
-.pw-empty{color:#828aa8;font-style:italic;font-size:.88rem;padding:2px 0 6px}
-.pw-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;padding:16px;margin-bottom:12px}
-.pw-card.added{border-color:var(--red)}
+
+/* 異能卡片 */
+.pw-empty{color:var(--ink-soft);font-style:italic;font-size:.88rem;padding:2px 0 6px}
+.pw-card{background:#fff;border:2px solid var(--rule);border-radius:6px;padding:16px;margin-bottom:12px;transition:border-color .12s}
+.pw-card.added{border-color:var(--ink);box-shadow:3px 3px 0 rgba(24,26,32,.05)}
 .pw-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pw-head-toggle{cursor:pointer;border-radius:5px;margin:-4px -6px;padding:4px 6px;transition:background .12s}
-.pw-head-toggle:hover{background:rgba(242,183,5,.10)}
-.pw-caret{color:var(--gold);font-size:1rem;font-weight:800;width:16px;display:inline-flex;justify-content:center;flex:0 0 auto}
-.pw-detail-hint{font-size:.72rem;color:var(--gold);opacity:.75;margin-left:2px;white-space:nowrap}
-.pw-head-toggle:hover .pw-detail-hint{opacity:1;text-decoration:underline}
-.src-pick-row{display:flex;flex-wrap:wrap;gap:8px}
-.src-pick{font-family:inherit;font-size:.86rem;padding:7px 13px;border-radius:3px;border:1.5px solid #39406a;background:#0f1530;color:#c5cadd;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
-.src-pick:hover{border-color:var(--paper);color:var(--paper)}
-.src-pick.cur{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
-.src-locked{color:var(--paper);font-weight:600;display:flex;align-items:center;gap:8px}
-.pw-name{font-weight:800;color:var(--paper);font-size:1.12rem}
-.pw-en{font-family:'Oswald',system-ui,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.04em;color:#8b91ad;margin-left:8px;text-transform:uppercase;vertical-align:middle}
-.pw-type-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;background:#232a4d;color:#aeb4d0}
+.pw-head-toggle:hover{background:rgba(255,210,63,.2)}
+.pw-caret{color:var(--cyan);font-size:1rem;font-weight:900;width:16px;display:inline-flex;justify-content:center;flex:0 0 auto}
+.pw-name{font-weight:700;color:var(--ink);font-size:1.12rem}
+.pw-en{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.74rem;letter-spacing:.04em;color:var(--ink-soft);margin-left:8px;text-transform:uppercase;vertical-align:middle}
+.pw-type-tag{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:3px;background:var(--rule);color:var(--ink)}
+.pw-contrib-tag{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:3px;background:var(--paper);border:2px solid var(--gold);color:var(--ink)}
 .pw-head .btn{margin-left:auto}
-.pw-examples{font-size:.8rem;color:#8b91ad;margin:8px 0 4px}
-.pw-desc{font-size:.9rem;color:#c7ccdf;line-height:1.65}
-.pw-block{margin-top:14px}
-.pw-block-label{font-size:.82rem;font-weight:700;color:#9aa0bd;margin-bottom:8px}
+.pw-card-acts{margin-left:auto;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.pw-card-acts .btn{margin-left:0}
+.pw-desc{font-size:.9rem;color:var(--ink);line-height:1.65;margin-top:10px}
+.pw-cfg-sum{margin-top:8px;font-family:"IBM Plex Mono",monospace;font-size:.84rem;font-weight:700;color:var(--cyan-ink)}
+.pw-sum{margin-top:10px;display:flex;flex-direction:column;gap:5px;border-top:2px dashed var(--rule);padding-top:10px}
+.pw-sum-row{display:flex;gap:10px;font-size:.86rem;line-height:1.5}
+.pw-sum-k{flex:0 0 40px;color:var(--ink-soft);font-weight:700}
+.pw-sum-v{color:var(--ink)}
+.pw-block{margin-top:16px}
+.pw-block-label{font-family:"IBM Plex Mono",monospace;font-size:.76rem;font-weight:700;color:var(--ink-soft);margin-bottom:8px;text-transform:uppercase}
 .lvl-row{display:flex;flex-wrap:wrap;gap:8px}
-.lvl-btn{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;padding:8px 12px;border-radius:6px;border:1.5px solid #2a3258;background:#0b1026;color:#cfd4e6;font-family:inherit;font-weight:700;cursor:pointer;transition:border-color .12s,background .12s,color .12s}
-.lvl-btn:hover:not(.disabled){border-color:#46508a}
-.lvl-btn.cur{background:var(--red);border-color:var(--red);color:#fff}
+.lvl-btn{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px;padding:8px 12px;border-radius:4px;border:2px solid var(--rule);background:#fff;color:var(--ink-soft);font-family:inherit;font-weight:700;cursor:pointer;transition:border-color .1s,background .1s}
+.lvl-btn:hover:not(.disabled){border-color:var(--ink);color:var(--ink)}
+.lvl-btn.cur{background:var(--red);border-color:var(--red);color:#fff;box-shadow:2px 2px 0 var(--red)}
 .lvl-btn.disabled{opacity:.4;cursor:not-allowed}
-.lvl-na{font-size:.62rem;font-weight:600;opacity:.85}
-.lvl-desc{margin-top:10px;font-size:.86rem;color:#c7ccdf;line-height:1.6;background:#0b1026;border:1px solid #232a4d;border-radius:5px;padding:8px 12px}
-.pw-contrib{margin-top:14px;font-size:.9rem;color:#d8dcec;font-weight:600}
-.pw-contrib b{color:var(--gold)}
-.pw-contrib-tag{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px;background:#1a2440;color:#f2b705;border:1px solid #3a4673}
-.lim-tag{font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:20px;background:rgba(47,158,84,.18);color:var(--green);margin-left:6px}
+.lvl-na{font-family:"IBM Plex Mono",monospace;font-size:.62rem;font-weight:700;opacity:.85}
+.lvl-desc{margin-top:10px;font-size:.86rem;color:var(--ink);line-height:1.6;background:var(--night);border:2px dashed var(--rule);border-radius:4px;padding:10px 14px}
+.lim-tag{font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--green);color:#fff;margin-left:6px}
 .slot-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
 .src-group{display:flex;flex-direction:column;gap:12px}
-.src-group-head{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:.9rem;font-weight:700;color:var(--gold);border-bottom:1.5px solid #2a3258;padding-bottom:6px;display:flex;align-items:center;gap:10px}
-.src-group-count{font-size:.72rem;background:#232a4d;color:#aeb4d0;border-radius:20px;padding:1px 9px;font-family:inherit}
-.slot-empty{border:1.5px dashed #3a4673;border-radius:6px;padding:14px 16px;background:#0c1228;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.slot-empty-head{font-weight:700;color:#9aa0bd;font-size:.95rem}
+.src-group-head{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.05em;font-size:.9rem;font-weight:700;color:var(--cyan-ink);border-bottom:2px solid var(--rule);padding-bottom:6px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.src-group-count{font-size:.72rem;background:var(--rule);color:var(--ink);border-radius:20px;padding:1px 9px;font-family:inherit}
+.slot-empty{border:2px dashed var(--ink-soft);border-radius:6px;padding:14px 16px;background:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.slot-empty-head{font-weight:700;color:var(--ink-soft);font-size:.95rem}
 .slot-empty-acts{display:flex;gap:9px;flex-wrap:wrap}
 .slot-add-row{margin-top:12px}
-.store{margin-top:16px;border:1.5px solid var(--gold);border-radius:8px;background:#0b1026;overflow:hidden}
-.store-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:rgba(242,183,5,.10);border-bottom:1px solid #2a3258;flex-wrap:wrap}
-.store-title{font-weight:800;color:var(--gold);font-size:.95rem}
-.store-sec{padding:6px 16px 12px}
-.store-sec-head{font-size:.8rem;font-weight:700;color:#9aa0bd;margin:10px 0 6px}
-.store-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1.5px solid #2a3258;border-radius:6px;margin-bottom:8px;background:#0f1530;cursor:pointer;transition:border-color .12s,background .12s}
-.store-item:hover{border-color:#5b67a8;background:#131a38}
-.store-item.taken{opacity:.55;border-style:dashed;cursor:not-allowed}
-.store-item.taken:hover{border-color:#2a3258;background:#0f1530}
-.cat-head{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:8px 0 8px;border:1.5px solid #2a3258;border-radius:6px;background:#11183244;cursor:pointer;user-select:none;transition:border-color .12s,background .12s}
-.cat-head:hover{border-color:#5b67a8;background:#151d3a}
-.cat-arrow{color:var(--gold);font-size:.85rem;width:14px;text-align:center}
-.cat-name{font-weight:800;color:var(--paper);font-size:.95rem;flex:1}
-.cat-count{font-size:.78rem;font-weight:700;color:#9aa0bd;background:#1a2440;border:1px solid #3a4673;border-radius:20px;padding:1px 10px}
-.pw-search-wrap{margin-top:10px}
-.pw-search{width:100%;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;color:var(--paper);font-family:inherit;font-size:.92rem;padding:9px 12px}
-.pw-search:focus{outline:none;border-color:var(--gold)}
-.pw-search::placeholder{color:#7a8099}
-.pw-inline-config{border:1.5px solid var(--red);border-top:none;border-radius:0 0 6px 6px;background:rgba(229,52,43,.05);padding:14px 16px 8px;margin:-6px 0 12px}
+
+/* Modal 內元件 */
+.pw-search-wrap{margin-top:12px}
+.pw-search{width:100%;background:#fff;border:2px solid var(--rule);border-radius:4px;color:var(--ink);font-family:inherit;font-size:.92rem;padding:9px 12px;box-shadow:inset 2px 2px 0 rgba(0,0,0,.03)}
+.pw-search:focus{outline:none;border-color:var(--cyan);box-shadow:inset 2px 2px 0 rgba(14,148,180,.1)}
+.pw-inline-config{border:2px solid var(--ink);border-top:2px dashed var(--rule);border-radius:0 0 6px 6px;background:#fff;padding:16px;margin:0 0 16px;box-shadow:inset 4px 0 0 var(--red), 4px 4px 0 rgba(24,26,32,.05)}
 .pw-inline-top{margin-bottom:8px}
-.pw-inline-acts{margin-top:8px}
-.store-info{display:flex;flex-direction:column;gap:2px}
-.store-name{font-weight:700;color:var(--paper)}
-.store-ex{font-size:.78rem;color:#8b91ad}
-.choice-desc{color:#d7dbe8;font-size:.92rem;line-height:1.7;margin-bottom:10px}
-.choice-q{color:#9aa0bd;font-size:.86rem;font-weight:700;margin-bottom:2px}
-#choiceActions{flex-direction:column;align-items:stretch}
-#choiceActions .btn{width:100%}
-.bsec-sub{margin-top:22px}
-.resource-badge{font-weight:700;color:var(--gold);background:#1a2440;border:1px solid #3a4673;border-radius:20px;padding:4px 13px;font-size:.9rem;white-space:nowrap}
-.prof-desc{color:#c7ccdf;font-size:.92rem;line-height:1.7;margin-top:8px}
-.scene-list{margin:4px 0 0;padding-left:20px;color:#c7ccdf;font-size:.9rem;line-height:1.75}
-.scene-list li{margin-bottom:5px}
-.bond-input{width:100%;margin-top:10px;background:#0f1530;border:1.5px solid #2a3258;border-radius:6px;color:var(--paper);font-family:inherit;font-size:.92rem;padding:10px 12px;line-height:1.6;resize:vertical}
-.bond-input:focus{outline:none;border-color:var(--red)}
-.src-tag.sel{background:var(--red);color:#fff}
-.opt-name .src-tag{margin-left:8px;vertical-align:middle}
-.weak-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
-.weak-card{border:1.5px solid #2a3258;border-radius:6px;padding:14px 16px;background:#0f1530}
-.weak-card.on{border-color:var(--red);background:rgba(229,52,43,.07)}
-.weak-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
-.weak-name{font-weight:800;color:var(--paper)}
-.weak-name .src-tag{margin-left:8px;vertical-align:middle}
-.weak-desc{font-size:.88rem;color:#c7ccdf;line-height:1.65}
-.chosen-weak{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border:1.5px solid var(--red);border-radius:6px;background:rgba(229,52,43,.08);margin-bottom:8px}
-.cw-name{font-weight:700;color:var(--paper)}
-.tal-stepper{display:flex;align-items:center;gap:10px}
-.tal-count{min-width:22px;text-align:center;font-size:1.2rem;font-weight:900;color:var(--gold)}
-.tal-lock{font-size:.8rem;font-weight:600;color:var(--red)}
-.tal-subj-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.tal-chip{background:#0b1026;border:1.5px solid #2a3258;color:#cfd4e6;padding:6px 13px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.85rem;transition:border-color .12s,background .12s,color .12s}
-.tal-chip:hover:not(.blocked){border-color:#46508a}
-.tal-chip.on{background:var(--red);border-color:var(--red);color:#fff}
-.tal-chip.blocked{opacity:.4;cursor:not-allowed;text-decoration:line-through}
-.data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
-.data-card{background:#0f1530;border:1.5px solid #2a3258;border-radius:8px;padding:18px 16px;text-align:center}
-.data-val{font-size:2.6rem;font-weight:900;color:var(--gold);line-height:1}
-.data-label{font-weight:800;color:var(--paper);margin-top:6px}
-.data-formula{font-size:.8rem;color:#9aa0bd;margin-top:8px;line-height:1.5}
-.data-bonus{font-size:.78rem;color:var(--green);font-weight:700;margin-top:4px}
-.data-note{font-size:.82rem;color:#b7bcd2;line-height:1.6;margin-top:10px;text-align:left;border-top:1px solid #232a4d;padding-top:10px}
-@media(max-width:640px){.data-grid{grid-template-columns:1fr}}
-.opt-pills{display:flex;flex-wrap:wrap;gap:9px}
-.pill{background:#0f1530;border:1.5px solid #2a3258;color:#cfd4e6;padding:8px 16px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.95rem;transition:background .12s,border-color .12s,color .12s}
-.pill:hover{border-color:#46508a}
-.pill.sel{background:var(--red);border-color:var(--red);color:#fff}
-.mini-hint{margin-top:10px;font-size:.78rem;color:#8d93ad}
-.powers{display:flex;flex-direction:column;gap:14px}
-.power{border-left:3px solid var(--gold);padding-left:12px}
-.power-name{font-weight:900;color:var(--gold);font-size:1.05rem;margin-bottom:3px}
-.power-desc{font-size:.88rem;color:#b7bcd2;line-height:1.65}
-.talent-slot{margin-top:14px;padding-top:16px;border-top:1px dashed #2e3768}
-.subject-inline{margin:0 0 9px 18px;padding:12px 14px;border-left:2px dashed #46508a;background:rgba(70,80,138,.08);border-radius:0 6px 6px 0}
-.subject-inline .sec-title{font-size:1rem}
-.subject-inline .sec-head{margin-bottom:10px}
-.talent-hint{margin-top:12px;font-size:.85rem;color:#7e84a3;font-style:italic}
+.store-title{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--cyan-ink);font-size:.92rem;margin:8px 0 12px}
+.store-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:2px solid var(--rule);border-radius:6px;margin-bottom:8px;background:#fff;cursor:pointer;transition:border-color .12s}
+.store-item:hover{border-color:var(--ink-soft)}
+.store-item.taken{opacity:.6;border-style:dashed;cursor:not-allowed;background:var(--night)}
+.store-item.taken:hover{border-color:var(--rule)}
+.store-item.sel{border-color:var(--ink);background:rgba(207,53,41,.05);border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:0;border-bottom:none;box-shadow:inset 4px 0 0 var(--red)}
+.cat-head{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:12px 0 8px;border:2px solid var(--rule);border-radius:6px;background:var(--night);cursor:pointer;user-select:none;transition:border-color .12s}
+.cat-head:hover{border-color:var(--ink-soft)}
+.cat-arrow{color:var(--cyan);font-size:.85rem;width:14px;text-align:center;font-weight:900}
+.cat-name{font-weight:700;color:var(--ink);font-size:1.05rem;flex:1}
+.cat-count{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:700;color:var(--ink-soft);background:var(--rule);border-radius:20px;padding:1px 10px}
+.store-info{display:flex;flex-direction:column;gap:4px}
+.store-name{font-weight:700;color:var(--ink);font-size:1.05rem}
+.store-ex{font-size:.82rem;color:var(--ink-soft)}
+.src-pick-row{display:flex;flex-wrap:wrap;gap:8px}
+.src-pick{font-family:inherit;font-size:.9rem;font-weight:500;padding:7px 14px;border-radius:4px;border:2px solid var(--rule);background:#fff;color:var(--ink-soft);cursor:pointer;transition:border-color .12s,color .12s}
+.src-pick:hover{border-color:var(--ink);color:var(--ink)}
+.src-pick.cur{background:var(--gold);color:var(--ink);border-color:var(--ink);font-weight:700;box-shadow:2px 2px 0 var(--ink)}
 
-/* 內文標記 */
-.kw{background:#23305c;color:#cfe0ff;padding:1px 6px;border-radius:3px;font-size:.92em;font-weight:600}
-.die{padding:.05em .42em;border-radius:.3em;font-family:"Oswald",sans-serif;font-weight:700;font-size:.92em;color:#fff}
-.die6{background:var(--green)}
-.die1{background:var(--red)}
-
-/* 預覽 */
-.preview-wrap{position:sticky;top:24px;min-width:0}
-.preview-label{font-family:"Oswald",sans-serif;letter-spacing:.14em;text-transform:uppercase;font-size:.76rem;color:#9aa0bd;margin-bottom:10px}
-.preview{background:#0a0e1d;border:1.5px solid #2d345c;border-radius:4px;padding:18px;font-family:"Oswald","Courier New",monospace;white-space:pre-wrap;word-break:break-word;color:#d7dbe8;font-size:.9rem;line-height:1.75;max-height:74vh;overflow-y:auto}
-.builder-actions{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
-
-.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(12px);background:var(--gold);color:var(--ink);font-weight:700;padding:12px 24px;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .25s ease,transform .3s cubic-bezier(.2,1.3,.4,1),visibility .25s;z-index:90}
-.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
-
-.progress{margin-bottom:14px}
-.progress-bar{height:8px;background:#0c1124;border:1px solid #2d345c;border-radius:5px;overflow:hidden}
-.progress-bar span{display:block;height:100%;transition:width .2s ease}
-.progress-text{margin-top:7px;font-size:.82rem;color:#9aa0bd}
-
-.saves-title{font-weight:900;font-size:1.4rem;margin:6px 0 14px;color:var(--paper)}
-.saves-list{display:flex;flex-direction:column;gap:10px;margin-bottom:30px}
-.save-item{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--paper);color:var(--ink);border:var(--line);border-radius:4px;padding:12px 16px;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
-.save-name{font-weight:900;font-size:1.1rem;display:block}
-.save-sub{display:block;font-size:.78rem;color:var(--ink-soft);font-family:"Oswald",sans-serif;letter-spacing:.04em;margin-top:2px}
-.save-btns{display:flex;gap:8px;flex:none}
-.save-btns button{font-family:"Oswald",sans-serif;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:8px 14px;border-radius:3px;cursor:pointer;border:2px solid var(--ink)}
-.save-load{background:var(--red);color:#fff;border-color:var(--red)}
-.save-load:hover{background:#c72a22}
-.save-del{background:transparent;color:var(--ink-soft);border-color:#bcb3a0}
-.save-del:hover{border-color:var(--ink);color:var(--ink)}
-
-.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(8,10,20,.72);align-items:center;justify-content:center;padding:24px}
+/* Modal 框架 */
+.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(24,26,32,.72);align-items:center;justify-content:center;padding:24px}
 .modal.on{display:flex}
-.modal-box{background:#141b33;border:1.5px solid #3a4673;border-radius:8px;max-width:430px;width:100%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-.modal-title{font-weight:900;font-size:1.3rem;color:var(--gold);margin-bottom:12px}
-.modal-body{white-space:pre-line;color:#d7dbe8;font-size:.95rem;line-height:1.75;margin-bottom:20px}
+.modal-box{background:var(--paper);border:var(--line);border-radius:8px;max-width:430px;width:100%;padding:24px;box-shadow:8px 8px 0 var(--ink)}
+.modal-title{font-size:1.6rem;color:var(--ink);margin-bottom:12px}
+.modal-body{white-space:pre-line;color:var(--ink);font-size:.95rem;line-height:1.75;margin-bottom:20px}
 .modal-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
 #choiceModal{z-index:120}
-.modal-box-wide{max-width:640px;max-height:88vh;display:flex;flex-direction:column;padding:0}
+.choice-desc{color:var(--ink);font-size:.92rem;line-height:1.7;margin-bottom:10px}
+.choice-q{color:var(--ink-soft);font-size:.86rem;font-weight:700;margin-bottom:2px}
+#choiceActions{flex-direction:column;align-items:stretch}
+#choiceActions .btn{width:100%; justify-content:center}
+
+.modal-box-wide{max-width:680px;max-height:88vh;display:flex;flex-direction:column;padding:0}
 .modal-box-wide #powerModalContent,.modal-box-wide #profModalContent{display:flex;flex-direction:column;min-height:0;flex:1}
-.pw-modal-head{padding:18px 22px 12px;border-bottom:1.5px solid #2a3258}
-.pw-modal-head .modal-title{margin-bottom:8px}
-.pw-modal-stats{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;color:#aeb4cf}
-.pw-modal-stats b{color:var(--gold)}
-@media (max-width:480px){
-  .pw-modal-stats{gap:10px 12px;font-size:.75rem}
-  .pw-modal-head{padding:14px 16px 10px}
-  .pw-modal-titlebar .modal-title{font-size:1.1rem}
-}
-.pw-modal-list{overflow-y:auto;padding:8px 22px 4px;flex:1;min-height:80px}
-.pw-modal-list .store-title{font-weight:800;color:var(--gold);font-size:.92rem;margin:8px 0 4px}
-.store-item.sel{border-color:var(--red);background:rgba(229,52,43,.10);border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:0}
-.store-item.sel:hover{border-color:var(--red)}
-.store-pick{font-size:.78rem;color:#8b91ad;white-space:nowrap}
-.store-pick-tag{font-size:.72rem;font-weight:700;color:var(--red);white-space:nowrap}
-.pw-modal-config{border-top:1.5px solid #2a3258;padding:14px 22px 4px;overflow-y:auto;max-height:42vh}
-.pw-modal-config-name{font-weight:800;color:var(--paper);font-size:1.02rem;margin-bottom:6px}
-.pw-modal-hint{padding:14px 22px;color:#8b91ad;font-size:.88rem;border-top:1.5px solid #2a3258}
-.pw-modal-foot{padding:14px 22px;border-top:1.5px solid #2a3258;justify-content:space-between}
-.pw-card-acts{display:inline-flex;gap:8px;margin-left:auto}
-.pw-cfg-sum{margin-top:8px;font-size:.84rem;font-weight:700;color:#f2b705}
-.pw-cfg-sum.muted{color:#8b91ad;font-weight:600}
-.pw-sum{margin-top:10px;display:flex;flex-direction:column;gap:5px;border-top:1px solid #2a3258;padding-top:10px}
-.pw-sum-row{display:flex;gap:10px;font-size:.86rem;line-height:1.5}
-.pw-sum-k{flex:0 0 40px;color:#9aa0bd;font-weight:700}
-.pw-sum-v{color:var(--paper)}
+.pw-modal-head{padding:18px 22px 12px;border-bottom:2px solid var(--rule);background:var(--night);border-radius:8px 8px 0 0}
+.pw-modal-stats{display:flex;gap:14px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:.84rem;color:var(--ink-soft);margin-top:8px}
+.pw-modal-stats b{color:var(--cyan-ink)}
+.pw-modal-list{overflow-y:auto;padding:12px 22px;flex:1;background:var(--paper)}
+.pw-modal-foot{padding:14px 22px;border-top:2px solid var(--rule);justify-content:space-between;background:var(--night);border-radius:0 0 8px 8px}
 .pw-modal-titlebar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .pw-modal-titlebar .modal-title{margin-bottom:0}
 .pw-buy-slot{white-space:nowrap}
+.prof-done-hint{font-family:"IBM Plex Mono","Noto Sans TC",monospace;font-size:.82rem;font-weight:700;color:var(--red);align-self:center;margin-right:auto}
+.prof-done-btn{margin-left:auto}
 
+/* 其他設定 */
+.bsec-sub{margin-top:22px}
+.resource-badge{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--ink);background:var(--gold);border:2px solid var(--ink);border-radius:3px;padding:4px 12px;font-size:.85rem;white-space:nowrap;box-shadow:2px 2px 0 var(--ink);transform:rotate(2deg)}
+.prof-desc{color:var(--ink-soft);font-size:.92rem;line-height:1.7;margin-top:8px}
+.scene-list{margin:4px 0 0;padding-left:20px;color:var(--ink);font-size:.9rem;line-height:1.75}
+.scene-list li{margin-bottom:6px}
+.bond-input{width:100%;margin-top:10px;background:#fff;border:2px solid var(--ink);border-radius:4px;color:var(--ink);font-family:inherit;font-size:.92rem;padding:12px;line-height:1.6;resize:vertical;box-shadow:inset 2px 2px 0 rgba(0,0,0,.03)}
+.bond-input:focus{outline:none;border-color:var(--cyan);box-shadow:inset 2px 2px 0 rgba(14,148,180,.1)}
+.weak-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.weak-card{border:2px solid var(--rule);border-radius:6px;padding:16px;background:#fff;transition:border-color .12s}
+.weak-card.on{border-color:var(--ink);background:rgba(207,53,41,.03);box-shadow:inset 4px 0 0 var(--red)}
+.weak-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.weak-name{font-weight:700;color:var(--ink);font-size:1.05rem;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.weak-desc{font-size:.88rem;color:var(--ink-soft);line-height:1.65}
+.tal-stepper{display:flex;align-items:center;gap:12px}
+.tal-count{min-width:24px;text-align:center;font-size:1.4rem;font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--red)}
+.tal-lock{font-size:.8rem;font-weight:700;color:var(--ink-soft);background:var(--rule);padding:4px 10px;border-radius:4px}
+.tal-subj-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tal-chip{background:#fff;border:2px solid var(--rule);color:var(--ink-soft);padding:6px 14px;border-radius:30px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:500;transition:border-color .1s,color .1s}
+.tal-chip:hover:not(.blocked){border-color:var(--ink);color:var(--ink)}
+.tal-chip.on{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.tal-chip.blocked{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
+.data-card{background:#fff;border:2px solid var(--ink);border-radius:8px;padding:18px 16px;text-align:center;box-shadow:3px 3px 0 rgba(24,26,32,.85)}
+.data-val{font-family:"IBM Plex Mono",monospace;font-size:2.6rem;font-weight:700;color:var(--red);line-height:1}
+.data-label{font-weight:900;color:var(--ink);margin-top:6px}
+.data-formula{font-size:.8rem;color:var(--ink-soft);margin-top:8px}
+.data-bonus{margin-top:10px;text-align:left;background:rgba(30,142,126,.08);border:1px solid rgba(30,142,126,.4);border-radius:5px;padding:8px 10px}
+.data-bonus-head{font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:700;letter-spacing:.08em;color:var(--green);text-transform:uppercase;margin-bottom:5px}
+.data-bonus-row{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;color:var(--ink);line-height:1.6}
+.data-bonus-row b{color:var(--green);font-family:"IBM Plex Mono",monospace;flex:none}
+.chip-cloud{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.detail-count{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.9rem;color:var(--red);white-space:nowrap;flex:none}
+.detail-head-right{display:flex;align-items:center;gap:10px;flex:none}
+.detail-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 6px}
+.detail-custom{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.detail-custom-input{flex:1;min-width:140px;background:#fff;border:2px solid var(--rule);border-radius:4px;color:var(--ink);font-family:inherit;font-size:.9rem;padding:8px 12px}
+.detail-custom-input:focus{outline:none;border-color:var(--cyan);box-shadow:inset 2px 2px 0 rgba(14,148,180,.1)}
+.req{color:var(--red);font-size:.7rem;font-weight:700;margin-left:4px}
+.bond-block{margin-top:18px}
+.bond-block:first-child{margin-top:6px}
+.sec-sub-head{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan-ink);margin:0 0 6px}
+.sec-sub-head-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.review-check{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px 16px;margin:6px 0 16px}
+.review-item{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--ink-soft)}
+.review-item.done{color:var(--ink)}
+.review-item .req{margin-left:2px;color:var(--red);font-weight:700}
+.review-mark{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--ink-soft);flex:none;opacity:.55}
+.review-item.done .review-mark{color:var(--green);opacity:1}
+.review-note{font-size:.9rem;line-height:1.6;padding:11px 15px;border-radius:6px;margin-bottom:10px;background:var(--paper);border:2px solid var(--rule);color:var(--ink)}
+.review-note.ok{border-color:var(--green);color:var(--green);background:rgba(30,142,126,.08)}
+.review-note.warn{border-color:var(--red);color:var(--red);background:rgba(207,53,41,.06)}
+.detail-desc{margin-top:12px;background:rgba(207,53,41,.05);border:2px solid var(--rule);border-left:4px solid var(--red);border-radius:0 6px 6px 0;padding:12px 14px;font-size:.9rem;line-height:1.65;color:var(--ink)}
+.detail-desc b{color:var(--red)}
+.data-note{font-size:.82rem;color:var(--ink-soft);line-height:1.6;margin-top:12px;text-align:left;border-top:2px dashed var(--rule);padding-top:10px}
+.powers{display:flex;flex-direction:column;gap:14px}
+.power{border-left:4px solid var(--gold);padding-left:12px}
+.power-name{font-weight:700;color:var(--ink);font-size:1.1rem;margin-bottom:3px}
+.power-desc{font-size:.9rem;color:var(--ink);line-height:1.65}
+.talent-slot{margin-top:14px;padding-top:16px;border-top:2px dashed var(--rule)}
+.subject-inline{margin:0 0 10px 20px;padding:14px;border-left:2px dashed var(--cyan);background:rgba(14,148,180,.05);border-radius:0 6px 6px 0}
+.subject-inline .sec-title{font-size:1.1rem;color:var(--cyan-ink)}
+.subject-inline .sec-head{margin-bottom:10px}
+.talent-hint{margin-top:12px;font-size:.85rem;color:var(--ink-soft);font-style:italic}
+.kw{background:linear-gradient(transparent 12%,rgba(255,210,63,.75) 12% 88%,transparent 88%);padding:0 3px;border-radius:2px;font-weight:700}
+.die{padding:.05em .42em;border-radius:.28em;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.9em;color:#fff}
+.die6{background:var(--green)}
+.die1{background:var(--red)}
+
+/* 預覽與輸出 */
+.preview-wrap{position:sticky;top:24px;min-width:0}
+.preview-label{font-family:"IBM Plex Mono",monospace;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;color:var(--ink-soft);margin-bottom:10px}
+.preview{background:#eef4f5;border:var(--line);border-radius:5px;box-shadow:var(--shadow);padding:18px;font-family:"IBM Plex Mono","Noto Sans TC",monospace;white-space:pre-wrap;word-break:break-word;color:#28506a;font-size:.88rem;line-height:1.8;max-height:74vh;overflow-y:auto}
+.builder-actions{margin-top:18px;display:flex;gap:14px;flex-wrap:wrap}
+.progress{margin-bottom:14px;margin-top:14px}
+.progress-bar{height:8px;background:var(--rule);border:2px solid var(--ink);border-radius:5px;overflow:hidden}
+.progress-bar span{display:block;height:100%;transition:width .2s ease}
+.progress-text{margin-top:7px;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--ink-soft)}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:var(--gold);font-weight:700;padding:12px 24px;border-radius:4px;border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(24,26,32,.4);opacity:0;visibility:hidden;transition:opacity .25s,transform .3s,visibility .25s;z-index:90}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+
+/* 著陸頁與存檔 */
 .landing-options{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:10px 0 70px;max-width:780px;margin:0 auto}
-.land-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;font:inherit;background:var(--paper);color:var(--ink);border:var(--line);border-radius:6px;padding:32px 28px;cursor:pointer;box-shadow:6px 6px 0 rgba(0,0,0,.55);transition:transform .14s ease,box-shadow .14s ease}
-.land-icon{font-size:2rem;color:var(--red);line-height:1}
-.land-title{font-weight:900;font-size:1.9rem}
-.land-desc{font-size:.92rem;color:#3c3c47;line-height:1.6}
-.land-cta{margin-top:8px;font-family:"Oswald",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:600}
-.land-card-disabled{opacity:.5;cursor:not-allowed;box-shadow:4px 4px 0 rgba(0,0,0,.4)}
+.land-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;font:inherit;background:var(--paper);color:var(--ink);border:var(--line);border-radius:8px;padding:32px 28px;cursor:pointer;box-shadow:var(--shadow);transition:transform .14s ease,box-shadow .14s ease;position:relative}
+.land-icon{font-size:2rem;color:var(--red);line-height:1;transform:rotate(-5deg)}
+.land-title{font-size:2.2rem}
+.land-desc{font-size:.92rem;color:var(--ink-soft);line-height:1.6}
+.land-cta{margin-top:8px;font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem;color:var(--red);font-weight:700}
+.land-card-disabled{opacity:.6;cursor:not-allowed;box-shadow:2px 2px 0 rgba(24,26,32,.5)}
 .land-card-disabled .land-icon,.land-card-disabled .land-cta{color:var(--ink-soft)}
+.land-badge{position:absolute;top:-12px;right:16px;background:var(--gold);border:2px solid var(--ink);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:3px;letter-spacing:.04em;transform:rotate(3deg)}
 .reg-back{padding:20px 0 0}
+.saves-title{font-size:1.8rem;margin:10px 0 16px;color:var(--ink)}
+.saves-list{display:flex;flex-direction:column;gap:12px;margin-bottom:30px}
+.save-item{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--paper);color:var(--ink);border:var(--line);border-radius:0 8px 8px 8px;padding:14px 18px;box-shadow:var(--shadow)}
+.save-name{font-size:1.3rem;display:block;margin-bottom:2px}
+.save-sub{display:block;font-size:.78rem;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+.save-btns{display:flex;gap:8px;flex:none}
+.save-btns button{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:8px 14px;border-radius:3px;cursor:pointer;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.save-btns button:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.save-load{background:var(--paper);color:var(--ink)}
+.save-load:hover{background:#fff}
+.save-del{background:transparent;box-shadow:none;border-color:var(--ink-soft);color:var(--ink-soft)}
+.save-del:hover{border-color:var(--red);color:var(--red)}
 
-.draft-badge{font-family:"Oswald",sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#8a7e63;border:1px dashed #b3a888;padding:3px 8px;border-radius:2px;white-space:nowrap}
-.draft-note{background:rgba(242,183,5,.12);border:1.5px solid rgba(242,183,5,.5);color:#f2d27a;border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:.9rem;line-height:1.6}
-.tag-req{color:var(--red);font-size:.72em;margin-left:6px;font-family:"Oswald",sans-serif;letter-spacing:.06em}
+footer{text-align:center;color:var(--ink-soft);font-size:.8rem;padding:30px 0 50px}
+.prof-talent-notice{background:var(--night);border:2px dashed var(--rule);border-radius:6px;padding:12px 16px;font-size:.95rem;font-weight:500;color:var(--ink);margin:0 0 16px;line-height:1.55}
+.prof-talent-notice b{color:var(--ink)}
 
-@media (max-width:600px){.landing-options{grid-template-columns:1fr}}
-footer{text-align:center;color:#5a6087;font-size:.8rem;padding:30px 0 50px}
-
-@media (max-width:980px){.gallery{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.gallery{grid-template-columns:1fr}}
-@media (max-width:780px){.builder-grid{grid-template-columns:1fr}.preview-wrap{position:static}}
-@media (max-width:600px){.ov-top2{grid-template-columns:1fr;justify-items:center}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-
-/* 浮起 hover 僅在有滑鼠的裝置觸發，避免觸控點完卡住 */
-@media (hover:hover){
-  .card:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
-  .card:hover .card-cta::after{transform:translateX(4px)}
-  .land-card:hover:not(:disabled){transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--red)}
-}
-.card.sel{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--green)}
-.card.sel .card-cta{color:var(--green)}
-.card.sel .card-cta::after{content:"✓";transform:none}
-.prof-card.sel .card-cta::after{content:none}
-.prof-talent-notice{background:rgba(242,183,5,.12);border:1.5px solid var(--gold);border-radius:6px;padding:12px 16px;font-size:.95rem;font-weight:600;color:var(--paper);margin:0 0 14px;line-height:1.55}
-.prof-talent-notice b{color:var(--gold)}
-
-/* 手機底部動作列（常駐匯出/複製＋完成度），桌機隱藏 */
+/* 手機底部動作列 */
 .mobile-bar{display:none}
-.mb-progress{flex:1;font-family:"Oswald",sans-serif;font-size:.82rem;letter-spacing:.04em;color:#9aa0bd;min-width:0}
-.mb-progress .mb-done{color:var(--green);font-weight:700}
-.mb-actions{display:flex;gap:10px;flex:none}
-.mb-actions button{font-family:"Oswald",sans-serif;font-weight:600;letter-spacing:.06em;font-size:.88rem;padding:0 18px;min-height:44px;border-radius:4px;border:none;cursor:pointer}
-.mb-export{background:var(--gold);color:var(--ink)}
-.mb-copy{background:#1d2647;color:var(--paper);border:1.5px solid #3a4673}
-
+@media (max-width:980px){.gallery{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:780px){
+  .builder-grid{grid-template-columns:1fr}.preview-wrap{position:static}
   .preview{max-height:none;overflow:visible}
   .btn{min-height:44px}
   .dice-btn{min-height:42px;padding:8px 14px}
   .pill{min-height:44px;padding:10px 18px}
   .save-btns button{min-height:44px}
-  .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;gap:12px;background:rgba(14,19,38,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1.5px solid #2d345c;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;gap:12px;background:rgba(246,242,232,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:2px solid var(--ink);padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 12px rgba(24,26,32,.1)}
+  .mb-progress{flex:1;font-family:"IBM Plex Mono",monospace;font-size:.82rem;font-weight:700;letter-spacing:.04em;color:var(--ink-soft);min-width:0}
+  .mb-progress .mb-done{color:var(--green)}
+  .mb-actions{display:flex;gap:10px;flex:none}
+  .mb-actions button{font-family:"IBM Plex Mono",monospace;font-weight:700;letter-spacing:.06em;font-size:.88rem;padding:0 18px;min-height:44px;border-radius:4px;cursor:pointer;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+  .mb-actions button:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+  .mb-export{background:var(--gold);color:var(--ink)}
+  .mb-copy{background:var(--paper);color:var(--ink)}
   .screen-inner{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 }
+@media (max-width:640px){.data-grid{grid-template-columns:1fr}}
+@media (max-width:600px){.landing-options{grid-template-columns:1fr}.ov-top2{grid-template-columns:1fr;justify-items:center}.tier-grid,.src-grid{grid-template-columns:1fr}}
+@media (max-width:560px){.gallery{grid-template-columns:1fr}.attr-row{flex-direction:column;align-items:stretch;gap:10px}.attr-stepper{justify-content:space-between}}
+@media (max-width:480px){.pw-modal-stats{gap:10px 12px;font-size:.75rem}.pw-modal-head{padding:14px 16px 10px}.pw-modal-titlebar .modal-title{font-size:1.3rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -553,7 +586,7 @@ const ARCHETYPES=[
     powerSource:{options:["實驗血清","專用裝備","軍事訓練"]},
     powers:[
       {name:"抗性",desc:"你擁有某種防禦形式，可以抵抗影響心智的效果。當你受到會造成壓力的攻擊時，此異能會提供`護甲` 3；當你抵抗【震盪】、【心靈控制】和【心靈感應】時，你的檢定會 +3 骰。此異能不會幫你抵抗因為發動異能或強推屬性檢定而承受的壓力。"},
-      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 名能與你溝通的其他英雄，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不影響他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 名英雄格擋或閃避襲來的攻擊，而不花費他自己的動作。"},
+      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 個能與你溝通的其他 PC，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不消耗他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 個 PC 格擋或閃避襲來的攻擊，而不消耗他自己的動作。"},
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"}
     ],
     professions:[
@@ -652,7 +685,7 @@ const ARCHETYPES=[
     powerSource:{options:["專用器械","整合式義體","仿生身體"]},
     powers:[
       {name:"轟擊",desc:"你可以朝遠處的對手投射、發射、拋擲或釋放傷害性攻擊。這是傷害 3、射程 0/3 的射擊攻擊。"},
-      {name:"偵測",desc:"你會自動感知你所處區塊內的無形能量，包括磁場、輻射、靈能、暗影力場、星界能量和魔法。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有這類能量存在。"},
+      {name:"偵測",desc:"你會自動感應你所處區塊內是否有無形能量存在，包括磁場、輻射、靈能、暗影力場、星界能量和魔法。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有這類能量存在。"},
       {name:"飛行",desc:"你可以使用 1 個快速動作或完整動作來飛行最多 2 個區塊。若你主動承受 1 點壓力，則可以飛行最多 4 個區塊。"},
       {name:"防護",desc:"你擁有某種可以減免物理傷害的防禦形式，讓你在抵抗任何攻擊時獲得`護甲` 2。"},
       {name:"捕縛",desc:"你可以束縛並限制對手的行動。這是射程 0/1 的射擊攻擊。若命中，目標會被定身，而且無法執行任何需要身體活動的動作（包括肉搏攻擊和射擊攻擊），直到掙脫為止。掙脫需要進行 -2 骰的`力量`檢定（完整動作）。此異能對巨獸無效。使用此異能時，你無法觸發射擊攻擊的任何特技。"},
@@ -760,7 +793,7 @@ const ARCHETYPES=[
     powerSource:{options:["超級智力","整合式奈米電路","奧術祕密"]},
     powers:[
       {name:"行動計畫",desc:"以 1 個完整動作，你可以進行`理智`檢定來制定絕妙的行動計畫。選擇「攻擊」、「防禦」或「指揮」其中 1 項。若檢定成功，你每擲出 1 個 :invincible-6:，團隊中所有聽得見你的其他 PC（包括透過通訊設備或異能）只要按照你的計畫行動，屬性檢定就會 +1 骰。攻擊計畫用於攻擊檢定；防禦計畫用於閃避和格擋；指揮計畫用於所有其他檢定。"},
-      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 名能與你溝通的其他英雄，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不影響他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 名英雄格擋或閃避襲來的攻擊，而不花費他自己的動作。"},
+      {name:"指引",desc:"以 1 個完整動作，你可以進行`氣場`檢定。每擲出 1 個 :invincible-6:，你可以鼓舞 1 個能與你溝通的其他 PC，讓他在你的回合中立刻執行 1 個由你選擇的免費完整動作或快速動作（不消耗他自己的動作額度）。目標可以拒絕該動作，但不能改為執行其他動作。\n此外，以 1 個反應動作，你可以進行`氣場`檢定，讓另 1 個 PC 格擋或閃避襲來的攻擊，而不消耗他自己的動作。"},
       {name:"化解",desc:"你可以使用此異能來消除或終止其他異能的效果。\n以 1 個快速動作（或作為反應動作），你可以進行`氣場`檢定來解除你所處區塊或 1 個相鄰區塊內的 1 個持續性異能效果，或在目標即將發動異能時化解該異能（若是後者，必須與對方進行`氣場`對抗檢定）。你只能化解基礎等級的異能，而且你必須在目標進行任何檢定前宣告發動此異能。若目標的異能在即將發動時被化解，目標會失去該動作額度。若化解的是常駐型的異能，該異能效果只會被暫時抑制到你下個回合開始。"},
       {name:"召喚",desc:"以 1 個完整動作，你可以召喚 3 個盟友來協助你，他們會立刻抵達你的所處區塊或 1 個相鄰區塊。你的盟友與你共享先攻順序，而且可以在剛登場的回合就行動。在預設情況下，你盟友的所有屬性皆為 4，`決心`為 6，在戰鬥中視為雜魚。每次發動此異能時，你可以選擇以下其中 1 種特性：\n• 萬用盟友：將 2 項不同的屬性各提升 2 點（記得`決心`也要相應增加）。\n• 強大盟友：你主動承受 1 點壓力，為盟友選擇 1 個基礎等級的攻擊類異能、防禦類異能、機動類異能，或 1 個天賦。\n• 更多盟友：你額外召喚 2 個盟友。\n被召喚的盟友會持續存在數分鐘、直到因傷害而崩潰、直到你崩潰，或直到你使用完整動作解散他們為止。只要場上還有被你召喚的盟友存在，你就不能再額外召喚新的盟友。被你召喚的盟友能夠獨立行動，也可以協助檢定，並跟你擁有某種連結，你能感知他們經歷的一切，反之亦然。"},
       {name:"傳送",desc:"你可以瞬間從 1 個地點移動到另 1 個地點，不需要穿越中間的空間。你可以使用 1 個快速動作或完整動作來傳送最多 2 個區塊。若你主動承受 1 點壓力，則可以傳送最多 4 個區塊。"}
@@ -833,7 +866,7 @@ const ARCHETYPES=[
        talents:[
         {name:"條分縷析",desc:"你可以對你研究至少數分鐘的對象或主題進行`理智`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問 1 個關於該對象或主題的問題。"},
         {name:"調查專家",desc:"若你待在某個區域數分鐘，你可以進行`直覺`檢定。每擲出 1 個 :invincible-6:，你可以向 GM 詢問以下其中 1 個問題：\n• 這裡發生了什麼事？\n• 這裡有隱藏什麼東西嗎？有的話，在哪裡？\n• 這裡有特別異常的細節嗎？\nGM 必須誠實回答，但可以含糊其辭。"},
-        {name:"學識淵博（自然科學）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（自然科學：你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學。）。"}
+        {name:"學識淵博（自然科學）",desc:"當你回想、尋找或理解特定主題的資訊時，`理智`檢定 +3 骰（自然科學：你理解生命與物質世界的科學，例如生物學、化學、天文學、遺傳學、物理學與地質學）。"}
       ]}
     ],
     freeTalents:[
@@ -1034,7 +1067,7 @@ const ARCHETYPES=[
     powerSource:{options:["精神頓悟","超進化心智","異界存在"]},
     powers:[
       {name:"抗性",desc:"你擁有某種防禦形式，可以抵抗影響心智的效果。當你受到會造成壓力的攻擊時，此異能會提供`護甲` 3；當你抵抗【震盪】、【心靈控制】和【心靈感應】時，你的檢定會 +3 骰。此異能不會幫你抵抗因為發動異能或強推屬性檢定而承受的壓力。"},
-      {name:"幻象",desc:"以 1 個完整動作，你可以讓你所處區塊或 1 個相鄰區塊內的目標看見或聽見實際上不存在的事物，或隱藏原本可見的事物。幻象最大可達人類尺寸，而且只能影響 1 個目標。目標可以進行被動`直覺`檢定來揭穿幻象（無需動作，不能強推）。若檢定失敗，目標會認為該幻象真實存在。幻象會持續數分鐘，但任何命中幻象的攻擊都會揭露其虛假的本質，並解除幻象效果。此異能對巨獸無效。"},
+      {name:"幻象",desc:"以 1 個完整動作，你可以讓你所處區塊或 1 個相鄰區塊內的 1 個目標看見或聽見實際上不存在的事物，或對他隱藏原本可見的事物。幻象最大可達人類尺寸，而且只能影響 1 個目標。目標可以進行被動`直覺`檢定來揭穿幻象（無需動作，不能強推）。若檢定失敗，目標會認為該幻象真實存在。幻象會持續數分鐘，但任何命中幻象的攻擊都會揭露其虛假的本質，並解除幻象效果。此異能對巨獸無效。"},
       {name:"心靈控制",desc:"以 1 個完整動作，你可以嘗試控制所處區塊或 1 個相鄰區塊內的 1 個智慧生物。對目標進行`氣場`對抗檢定（目標無需動作）。若你獲勝，目標會立刻進行 1 個完整回合（即使他該輪已經行動過），並聽從你的指示執行 1 個完整動作和 1 個快速動作（或 2 個快速動作）。之後，目標會失去他的下個回合，而且在那之前無法執行反應動作。\n在戰鬥外，你可以控制目標的行動數分鐘。在此期間，每當你強迫目標執行他通常不會做的行為時，目標可以進行`氣場`檢定來嘗試擺脫控制。此異能對巨獸無效。"},
       {name:"念動力",desc:"你可以純粹用意念舉起並移動物體和人物，而不需要接觸對方。以 1 個完整動作，你可以移動並控制你所處區塊或 1 個相鄰區塊內的 1 個固態物體或角色，重量等級最高為 4（200 公斤），並將其移動最多 2 個區塊（包括垂直移動）。你可以將此異能的重量等級上限提升最多 2 級，但必須主動承受等量壓力。\n若對非自願的角色發動此異能，你必須進行`敏捷`檢定，而對方可以進行閃避（如同閃避射擊攻擊）。若成功，你可以將目標拋向並撞穿障礙物（如同肉搏攻擊的「擊退」特技），每次撞擊都會造成 3 點傷害（護甲可以減傷）。\n你也可以使用此異能進行傷害 3，射程 0/2 的射擊攻擊，前提是你所處區塊或相鄰區塊內有物體可以投擲。\n此異能也可以用來精確操控物體，如同使用雙手一樣，例如打開車門、用鎚子敲釘子，或從容器中取出物品。特別複雜的操作需要進行`敏捷`檢定，如同使用雙手一樣。"},
       {name:"心靈感應",desc:"你可以讀取他人的思想，也可以向他們投射思想。以 1 個快速動作，你可以讀取你所處區塊或 1 個相鄰區塊內 1 個智慧生物的表層思想，或向他投射簡短的心靈訊息。你們不需要共享語言。\n以 1 個完整動作並進行`直覺`檢定，你可以更深入探查，讀取更深層的思想、邏輯或記憶。若對手正在積極抵抗，則需要對抗對方的`氣場`檢定。\n你會自動感應你所處區塊內是否有智慧生物存在。以 1 個快速動作，你可以進行`直覺`檢定來感應 3 個區塊內是否有智慧生物存在。"}
@@ -1447,36 +1480,33 @@ function talentExport(t,subjIdx){
   return {name,body};
 }
 function rand(n){return Math.floor(Math.random()*n);}
-function escapeHTML(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function pick2(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]];}return a.slice(0,2).sort((x,y)=>x-y);}
-function peakAttr(attrs){let b=ATTR_ORDER[0];ATTR_ORDER.forEach(a=>{if(attrs[a]>attrs[b])b=a;});return b;}
 function tierColor(v){ if(v<=2)return"#d23b2f"; if(v<=4)return"#e8853a"; if(v<=6)return"#f2b705"; if(v<=8)return"#8fc23e"; return"#33c463"; }
 
 /* 雷達圖：每根軸的尖端外側，由內而外 = 數字、名稱 */
 function hexSVG(attrs,size){
   const cx=size/2,cy=size/2,R=size*0.24,numR=size*0.30,nameR=size*0.42;
-  const pts=ATTR_ORDER.map((a,i)=>{const ang=(-90+i*60)*Math.PI/180;return{a,cos:Math.cos(ang),sin:Math.sin(ang),val:attrs[a]};});
-  let grid="";[0.4,0.7,1].forEach(r=>{grid+=`<polygon class="hex-grid" points="${pts.map(p=>`${(cx+p.cos*R*r).toFixed(1)},${(cy+p.sin*R*r).toFixed(1)}`).join(" ")}"/>`;});
-  let spokes="";pts.forEach(p=>{spokes+=`<line class="hex-spoke" x1="${cx}" y1="${cy}" x2="${(cx+p.cos*R).toFixed(1)}" y2="${(cy+p.sin*R).toFixed(1)}"/>`;});
-  const shape=pts.map(p=>{const rr=(p.val/ATTR_MAX)*R;return`${(cx+p.cos*rr).toFixed(1)},${(cy+p.sin*rr).toFixed(1)}`;}).join(" ");
-  let dots="";pts.forEach(p=>{const rr=(p.val/ATTR_MAX)*R;dots+=`<circle class="hex-dot" cx="${(cx+p.cos*rr).toFixed(1)}" cy="${(cy+p.sin*rr).toFixed(1)}" r="3"/>`;});
+  const pts=ATTR_ORDER.map((a,i)=>{const ang=(-90+i*60)*Math.PI/180;
+    return{a,cos:Math.cos(ang),sin:Math.sin(ang),val:attrs[a]};});
+  let grid="";[0.4,0.7,1].forEach(r=>{grid+=`<polygon class="hex-grid" points="${
+    pts.map(p=>`${(cx+p.cos*R*r).toFixed(1)},${(cy+p.sin*R*r).toFixed(1)}`).join(" ")}"/>`;});
+  let spokes="";pts.forEach(p=>{spokes+=`<line class="hex-spoke" x1="${cx}" y1="${cy}" x2="${
+    (cx+p.cos*R).toFixed(1)}" y2="${(cy+p.sin*R).toFixed(1)}"/>`;});
+  const shape=pts.map(p=>{const rr=(p.val/ATTR_MAX)*R;
+    return`${(cx+p.cos*rr).toFixed(1)},${(cy+p.sin*rr).toFixed(1)}`;}).join(" ");
+  let dots="";pts.forEach(p=>{const rr=(p.val/ATTR_MAX)*R;
+    dots+=`<circle class="hex-dot" cx="${(cx+p.cos*rr).toFixed(1)}" cy="${
+    (cy+p.sin*rr).toFixed(1)}" r="3"/>`;});
   let lab="";
   pts.forEach(p=>{
     let anc="middle"; if(p.cos>0.3)anc="start"; else if(p.cos<-0.3)anc="end";
-    const nx=cx+p.cos*numR, ny=cy+p.sin*numR, mx=cx+p.cos*nameR, my=cy+p.sin*nameR;
-    lab+=`<text class="hex-num" x="${nx.toFixed(1)}" y="${ny.toFixed(1)}" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.064).toFixed(1)}">${p.val}</text>`;
-    lab+=`<text class="hex-name" x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.05).toFixed(1)}">${p.a}</text>`;
+    lab+=`<text class="hex-num" x="${(cx+p.cos*numR).toFixed(1)}" y="${(cy+p.sin*numR).toFixed(1)
+      }" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.064).toFixed(1)}">${p.val}</text>`;
+    lab+=`<text class="hex-name" x="${(cx+p.cos*nameR).toFixed(1)}" y="${(cy+p.sin*nameR).toFixed(1)
+      }" text-anchor="${anc}" dominant-baseline="central" font-size="${(size*0.05).toFixed(1)}">${p.a}</text>`;
   });
-  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="六項屬性雷達圖">${grid}${spokes}<polygon class="hex-shape" points="${shape}"/>${dots}${lab}</svg>`;
-}
-function artHTML(arc){
-  const ini=arc.name.charAt(0);
-  if(arc.image) return `<div class="art"><img src="${esc(arc.image)}" alt="${esc(arc.name)} 角色圖" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="art-fallback" style="display:none">${ini}</div></div>`;
-  return `<div class="art"><div class="art-fallback">${ini}</div></div>`;
-}
-function gaugeRows(arc){
-  return ATTR_ORDER.map(a=>{const v=arc.attrs[a],pct=(v/ATTR_MAX)*100,c=tierColor(v);
-    return `<div class="stat-row"><span class="stat-name">${a}</span><span class="stat-bar"><span class="stat-fill" style="width:${pct}%;background:${c}"></span></span><span class="stat-num" style="color:${c}">${v}</span></div>`;}).join("");
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img"
+    aria-label="六項屬性雷達圖">${grid}${spokes}<polygon class="hex-shape" points="${shape}"/>${dots}${lab}</svg>`;
 }
 
 /* ===================== 首頁 ===================== */
@@ -1509,7 +1539,7 @@ const TIERS=[
   {name:"全球守衛", en:"Global Guardian",   points:32, attrCap:10, powers:4, fame:2},
   {name:"宇宙勇者", en:"Cosmic Champion",   points:38, attrCap:12, powers:5, fame:3}
 ];
-let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,powerModal:null,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",profModalOpen:false,identity:null,talents:[],weaknesses:[],step:0};
+let creator={tier:null,attrs:null,powerSources:[],powers:[],slots:null,powerModal:null,profession:null,professionTalent:null,professionTalentSubject:null,bondMode:null,bondIdx:null,bondCustom:"",profModalOpen:false,identity:null,talents:[],weaknesses:[],personalities:[],motivation:null,flaw:null,realName:"",codename:"",appearance:"",pcBond:"",step:0};
 let creatorWired=false;
 
 const CREATOR_ATTRS=[
@@ -1521,7 +1551,7 @@ const CREATOR_ATTRS=[
   {name:"氣場",desc:"個人魅力、親和力與領袖風範"}
 ];
 const ATTR_DESCRIPTORS=["","差勁","普通","良好","優秀","非凡","傑出","驚人","讚嘆","震撼","傳奇","神威","無敵"];
-// 異能來源（共 36 種，目前先收錄 6 種）
+// 異能來源（共 36 種，已全部收錄）
 const POWER_SOURCES=[
   {name:"意外事故",desc:"你是一場危險事故的唯一倖存者，因為接觸到不穩定的物質而產生異變。"},
   {name:"突變",desc:"你是變種人，在青少年時期突然覺醒了超能力。"},
@@ -1565,7 +1595,7 @@ const POWER_SOURCES=[
 const POWER_TYPES=["攻擊類","控制類","防禦類","變化類","機動類","感知類"];
 const POWER_LEVELS=["基礎","強力","超級","終極"]; // 0..3
 const POWER_LEVELS_EN=["","Major","Massive","Monstrous"]; // 英文等級前綴（0 基礎無前綴）
-// 所有異能共 96 個，目前先收錄 1 個（攻擊類·轟擊）做為測試
+// 所有異能共 96 個，目前收錄 40 個（攻擊／控制／防禦三類）
 const POWERS=[
   {
     name:"苦難", en:"Affliction", type:"攻擊類", examples:"致盲之光、腐化之握、恐懼氣體、劇毒啃咬",
@@ -1630,6 +1660,7 @@ const POWERS=[
     name:"打擊", en:"Strike", type:"攻擊類", examples:"徒手格鬥、劍刃武器、伸縮爪、電擊拳套",
     desc:"你可以更有效地對近身對手進行猛擊、斬擊或刺擊。你的`肉搏傷害` +1（無法與【發散】或【體型變化】的加成疊加）。此外，你可以主動承受 1 點壓力，讓單次攻擊所對抗的護甲減半（無條件進位）。",
     levelDesc:{ "強力":"`肉搏傷害` +2。", "超級":"`肉搏傷害` +3。", "終極":"`肉搏傷害` +4。" },
+    stat:{melee:1},
     enh:[
       {name:"穿刺打擊",desc:"當你的肉搏攻擊命中目標時，你可以主動承受 1 點壓力來完全無視任何`護甲`。此效果不適用於「擊退」特技的傷害。"},
       {name:"瞬間打擊",desc:"當你成為肉搏攻擊的目標時，你可以主動承受 1 點壓力，在對方的攻擊結算前，立刻使用反應動作進行 1 次肉搏攻擊。你的這次攻擊仍會消耗你本輪的動作額度。"},
@@ -1953,7 +1984,7 @@ const POWERS=[
   }
 ];
 
-// 職業（共 22 種，目前先收錄 1 種做測試）
+// 職業（共 22 種，已全部收錄）
 const CREATOR_PROFESSIONS=[
   {
     name:"學者", en:"Academic",
@@ -2502,6 +2533,118 @@ function rollSource(){
 }
 
 /* ---- 步驟定義（可自由前後切換、不鎖定） ---- */
+// ===== 補充細節（個性／動機／缺陷）：匯集自全部 16 個範型並去重 =====
+const CREATOR_PERSONALITIES=[
+  "專注","嚴明","無私","愛國","謙遜","耐煩","勤奮","幽默","機靈","固執","務實","忠誠",
+  "活潑","嚴謹","粗鄙","多工","豁達","諷刺","純真","穩定","鎮定","嚴格","熱情","坦率",
+  "果斷","精明","冷淡","專業","克己","神祕","沉著","笨拙","厭世","體諒","疏離","睿智",
+  "自主","可靠","自省","尷尬","多疑","好鬥","自律","自信","好勝","暴躁","激情","粗俗",
+  "樂觀","縝密","無情","淡定","矛盾","克制","遠見","迷人","沉思","好奇","細心","抬槓",
+  "開朗","穩重","挑剔","雄辯","堅定","謹慎","冷靜","踏實","理性","隨和","內斂","獨特",
+  "大膽","自由","活躍","善變","堅持","寬容","警覺","鬼祟","盡責","瀟灑","嚴肅","慈善",
+  "榮譽","猜忌","沉穩","高尚","倦怠","雄心","自卑","善良","聰明","獨立","友善","巧詐",
+];
+const CREATOR_MOTIVATIONS=[
+  {name:"利他",desc:"無論要付出什麼代價，你都會選擇做正確與善良的事。"},
+  {name:"理想",desc:"你會為了某個你願意為之犧牲的信念挺身而出。"},
+  {name:"傳授",desc:"你努力將自己學會的一切傳承下去，帶領後輩走上英雄之路。"},
+  {name:"保護",desc:"你想守護那些無力自保的人。"},
+  {name:"友情",desc:"你渴望遇見一個真正的朋友。"},
+  {name:"韌性",desc:"無論路上有什麼阻礙，你都不會輕言放棄。"},
+  {name:"警戒",desc:"你必須保持戒備，隨時應對威脅。"},
+  {name:"發明",desc:"你立志打造出能改變世界的科技。"},
+  {name:"肯定",desc:"你要讓所有人知道——你靠自己也能當個稱職的英雄。"},
+  {name:"傳承",desc:"你想承接前人留下的一切，並以此為榮。"},
+  {name:"命運",desc:"你注定要肩負更偉大的使命。"},
+  {name:"責任",desc:"你認為自己有義務將天賦用於行善與助人。"},
+  {name:"革新",desc:"你想治癒這個世界的病灶。"},
+  {name:"知足",desc:"你渴望能找到真正的滿足與圓滿。"},
+  {name:"準備",desc:"你凡事都會預先準備，連備案都有備案。"},
+  {name:"熱情",desc:"你追逐自己所愛，並激勵他人與你一起同行。"},
+  {name:"驚奇",desc:"你將每次變成新形態、每次踏上新地方，都視為成長的機會。"},
+  {name:"顯現",desc:"你想找出最完美、最適合自己的形態。"},
+  {name:"掌控",desc:"你想行善，但不想被自己怪物般的一面吞噬。"},
+  {name:"接納",desc:"你渴望被信任、被眾人認同是一名英雄。"},
+  {name:"交心",desc:"你想遇到能夠看見「你不只是怪物」的人。"},
+  {name:"家人",desc:"你願意為了至親赴湯蹈火。"},
+  {name:"名聲",desc:"你想讓自己的事蹟傳遍天下、家喻戶曉。"},
+  {name:"潛能",desc:"你想挖掘自己的能力極限到底在哪裡。"},
+  {name:"守護",desc:"你願意當保護全世界的那層護甲。"},
+  {name:"變革",desc:"你想修復或升級現有的規矩。"},
+  {name:"成功",desc:"你無法忍受失敗。為了獲勝，你什麼都做得出來。"},
+  {name:"頓悟",desc:"你渴望徹底理解自己與這個世界。"},
+  {name:"優越",desc:"你想成為最出色的人，並讓所有人知曉。"},
+  {name:"平靜",desc:"你想擺脫自己的心魔與雜音。"},
+  {name:"希望",desc:"你會讓所有人相信，更光明的未來是值得期待的。"},
+  {name:"和諧",desc:"你想為世界帶來團結與平衡。"},
+  {name:"探索",desc:"你想找到能讓世界變得更好的正確答案。"},
+  {name:"救贖",desc:"你需要彌補曾經犯下的過錯。"},
+  {name:"精準",desc:"你想將失誤降到最低，確保自己永遠不會失手。"},
+  {name:"歸屬",desc:"你想找到你從未擁有過的家人。"},
+  {name:"膽識",desc:"無論勝算多低，你都會撐到最後。"},
+  {name:"反思",desc:"你知道自己該放慢腳步，停下來享受片刻。"},
+  {name:"刺激",desc:"你需要源源不絕的刺激感。"},
+  {name:"正義",desc:"你想守護無辜、懲治惡徒。"},
+  {name:"復仇",desc:"沒有任何事情能阻止你復仇。"},
+  {name:"冒險",desc:"你需要冒險，才覺得自己真的活著。"},
+  {name:"榮耀",desc:"你渴望自己的事蹟能迴盪在永恆的殿堂。"},
+  {name:"勝利",desc:"你立志在戰場上擊敗更強大的對手。"},
+  {name:"精通",desc:"你想透過紀律與試煉，將自己的本領磨練到極致。"},
+  {name:"自由",desc:"你只聽命於自己，不受任何人差遣。"},
+  {name:"認可",desc:"你想得到你應得的尊重。"},
+  {name:"無畏",desc:"無論面對誰或什麼，你都要試試自己的斤兩。"},
+];
+const CREATOR_FLAWS=[
+  {name:"魯莽",desc:"你總是第一個衝進危險裡。"},
+  {name:"自卑",desc:"你從來都不相信自己。"},
+  {name:"專橫",desc:"你總是要別人照你說的做。"},
+  {name:"粗魯",desc:"你不太懂禮數，常常不小心就得罪周遭的人。"},
+  {name:"破壞",desc:"就算明知道不該這麼做，你總是想把東西砸爛。"},
+  {name:"貪吃",desc:"只要有機會，你就想吃點美食。"},
+  {name:"苛求",desc:"你對別人的要求總是太高。"},
+  {name:"輕率",desc:"你幾乎什麼都不當一回事。"},
+  {name:"控制",desc:"你總是得主導一切、掌握局面。"},
+  {name:"惡夢",desc:"你被那些你無法拯救之人的回憶折磨著。"},
+  {name:"天真",desc:"你總是太容易信任他人。"},
+  {name:"衝動",desc:"你總是不計後果地孤注一擲。"},
+  {name:"嚴苛",desc:"你無法容忍任何失誤。"},
+  {name:"貪婪",desc:"你永遠無法感到滿足。"},
+  {name:"傲慢",desc:"你瞧不起你遇見的每個人。"},
+  {name:"自滿",desc:"你太有自信，總愛讓別人先行動。"},
+  {name:"輕信",desc:"你很容易將別人的話照單全收。"},
+  {name:"隱瞞",desc:"你口中的真相總是有所偏頗。"},
+  {name:"暴力",desc:"你總是利用暴力來跨越每道阻礙。"},
+  {name:"累贅",desc:"你覺得自己是所有人的負擔。"},
+  {name:"退縮",desc:"你不接受幫助，也不想靠近任何人。"},
+  {name:"卑劣",desc:"你總是抵擋不住誘惑。"},
+  {name:"火爆",desc:"你從不拒絕任何挑戰。"},
+  {name:"嫉俗",desc:"你從不相信任何人或社會體制。"},
+  {name:"輕浮",desc:"你總愛耍嘴皮子、挑釁他人。"},
+  {name:"虛榮",desc:"只要有人誇獎、拍馬屁，你就樂意幫忙。"},
+  {name:"多慮",desc:"你會反覆分析自己做的每個決定。"},
+  {name:"怯懦",desc:"你總是躲在隊伍的最後方。"},
+  {name:"雞婆",desc:"你總愛插手別人的事情。"},
+  {name:"怕血",desc:"你無法忍受血腥場面。"},
+  {name:"出神",desc:"你總是容易分心。"},
+  {name:"算計",desc:"你將人生當成棋盤，覺得其他人都只是棋子。"},
+  {name:"追究",desc:"追尋知識比其他事情都更重要。"},
+  {name:"浮誇",desc:"你總是想成為眾人目光的焦點。"},
+  {name:"不羈",desc:"你不喜歡任何框架或規矩。"},
+  {name:"漂泊",desc:"你坐不住，總想一直往前走。"},
+  {name:"急躁",desc:"所有人事物都實在太慢了。"},
+  {name:"極端",desc:"你常常不知道什麼時候該收手。"},
+  {name:"惱人",desc:"你總能輕易惹惱身邊的每個人。"},
+  {name:"多疑",desc:"你不相信任何沒有親眼見證的事情。"},
+  {name:"悲觀",desc:"你總覺得事情會往最糟的方向發展。"},
+  {name:"偏執",desc:"一旦鎖定某件事情，你就無法停下來。"},
+  {name:"教條",desc:"你一旦下定決心，就絕不改變。"},
+  {name:"自誇",desc:"你總愛吹噓自己的成就。"},
+  {name:"頑固",desc:"你絕對不會跟敵人合作。"},
+  {name:"話癆",desc:"你常常不知道什麼時候該閉嘴。"},
+  {name:"懶散",desc:"你不會放過任何可以偷閒的時刻。"},
+  {name:"慣竊",desc:"你總是忍不住偷走值錢的東西。"},
+];
+
 const CREATOR_STEPS=[
   {chip:"1",   label:"1. 決定階級",      render:renderTierStep},
   {chip:"2",   label:"2. 分配起始屬性",  render:renderAttrStep},
@@ -2510,7 +2653,10 @@ const CREATOR_STEPS=[
   {chip:"4",   label:"4. 選擇職業",      render:renderProfessionStep},
   {chip:"5",   label:"5. 選擇天賦",      render:renderTalentStep},
   {chip:"6",   label:"6. 選擇弱點（非強制）", render:renderWeaknessStep},
-  {chip:"7",   label:"7. 計算數據",      render:renderDataStep}
+  {chip:"7",   label:"7. 計算數據",      render:renderDataStep},
+  {chip:"8",   label:"8. 補充細節",      render:renderDetailsStep},
+  {chip:"9",   label:"9. 命名英雄",      render:renderNameStep},
+  {chip:"10",  label:"10. 檢查資料",     render:renderReviewStep}
 ];
 
 function tierCard(t,i,selected){
@@ -2525,7 +2671,7 @@ function tierCard(t,i,selected){
 function needTierHint(){ return `<p class="tier-hint">請先回到「決定階級」選擇英雄階級。</p>`; }
 
 function renderTierStep(){
-  return `<p class="step-intro">在遊戲正式開始前，跟 GM 一起討論決定英雄的階級。通常整支團隊的英雄階級都會一樣。GM 會根據英雄階級來安排遊戲風格，以及英雄會遇到的挑戰。</p>
+  return `<p class="step-intro">在遊戲正式開始前，跟 GM 一起討論決定英雄的階級。</p>
     <div class="tier-grid">${TIERS.map((t,i)=>tierCard(t,i,creator.tier===i)).join("")}</div>`;
 }
 function renderAttrStep(){
@@ -2544,7 +2690,7 @@ function renderAttrStep(){
       </div>
     </div>`;
   }).join("");
-  return `<p class="step-intro">英雄擁有 6 項屬性，用來表示英雄的天生素質。每項屬性的數值範圍介於 1～12，普通人的屬性值為 2。將創角點數 1:1 自由分配到各項屬性：每項最低為 1（須先花 6 點作為保底），最高不超過此階級上限 <b>${cap}</b>。</p>
+  return `<p class="step-intro">將創角點數 1:1 自由分配到各項屬性：每項最低為 1（須先花 6 點作為保底），最高不超過階級上限 <b>${cap}</b>。</p>
     <div class="attr-alloc">${rows}</div>`;
 }
 function renderPowerSourceStep(){
@@ -2563,7 +2709,7 @@ function renderPowerSourceStep(){
   const n=arr.length;
   const note = n>1 ? `<p class="src-note">擁有多種來源時，之後分配異能時須指定每個異能屬於哪一種來源。</p>` : "";
   const secHead=`<div class="sec-head"><div><span class="sec-title display">異能來源</span><span class="sec-hint">免費 1 種，第 2 種起每種需付 1 點</span></div><button class="dice-btn" data-source-roll="1">🎲 隨機</button></div>`;
-  return `<p class="step-intro">所有英雄都擁有「異能」，也就是超越凡人的能力。每個異能都必須源自某種「異能來源」，說明此異能的來龍去脈，幫助你更好扮演角色。你可以免費挑選 1 種異能來源；通常你只會有 1 種，所有異能都源自它。你也可以花費 1 點創角點數額外購買 1 種來源。（異能來源共 36 種。）</p>
+  return `<p class="step-intro">英雄的每個異能都必須源自某種「異能來源」。你可以免費挑選 1 種異能來源（通常你只會有 1 種，所有異能都源自它），但每花費 1 點創角點數可以額外購買 1 種來源。</p>
     ${secHead}
     <div class="src-grid">${cards}</div>
     ${note}`;
@@ -2714,7 +2860,7 @@ function renderPowerModal(){
   const head=`<div class="pw-modal-head">
     <div class="pw-modal-titlebar"><h3 class="modal-title display">${m.editPid!=null?"編輯異能":"異能選單"}</h3><span id="pwBuySlotWrap">${powerBuySlotHTML()}</span></div>
     <div class="pw-modal-stats" id="pwModalStats">${powerModalStatsHTML()}</div>
-    <div class="pw-search-wrap"><input class="pw-search" data-pw-search value="${escapeHTML(m.search)}" placeholder="🔍 搜尋異能名稱、範例或效果…" autocomplete="off"></div>
+    <div class="pw-search-wrap"><input class="pw-search" data-pw-search value="${esc(m.search)}" placeholder="🔍 搜尋異能名稱、範例或效果…" autocomplete="off"></div>
   </div>`;
   const list=`<div class="pw-modal-list"><div class="store-title">異能清單（共 96 個，目前收錄 ${POWERS.length} 個）</div><div id="pwModalListInner">${renderPowerListInner()}</div></div>`;
   const footer=`<div class="modal-actions pw-modal-foot"><button class="btn btn-gold" data-pw-modal-close="1">確定異能</button></div>`;
@@ -2730,7 +2876,6 @@ function renderPowerStep(){
   if(creator.tier==null) return needTierHint();
   ensureCreatorSlots();
   const base=baseFreeSlots(), total=totalSlots(), used=powersUsed(), empty=emptySlots(), maxLvl=maxLevelForTier();
-  const status=`免費欄位 <b>${freeSlotsUsed()}</b>/${freeSlotsCount()}　額外欄位 <b>${extraSlotsUsed()}</b>/${extraSlotsCount()}`;
 
   let powerCards="";
   if(creator.powerSources.length>=1){
@@ -2753,7 +2898,8 @@ function renderPowerStep(){
   if(total<base) addBtn=`<button class="btn btn-ink pw-buy-slot" data-add-slot="1"${pointsLeft()<2?" disabled":""}>↩ 還原 1 個免費欄位（−2 點）</button>`;
   else addBtn=`<button class="btn btn-ink pw-buy-slot" data-add-slot="1"${pointsLeft()<2?" disabled":""}>＋ 購買額外異能欄位（−2 點）</button>`;
 
-  return `<p class="step-intro">所有英雄都擁有「異能」。本階級提供 <b>${base}</b> 個免費異能欄位：在每個欄位上「獲得異能」會彈出異能清單供你挑選，或「捨棄」用不到的欄位換取創角點數（每捨棄 1 個欄位退 2 點，至少保留 1 個欄位）。提升等級或加上強化會占用更多欄位；免費欄位用完後，可花 2 點購買額外欄位。<b>限制免費折抵</b>──點選某個限制即可選擇免費升 1 級，或免費換取 1 個強化。創角時最高可升到 <b>${POWER_LEVELS[maxLvl]}</b>（終極不可，超級僅限宇宙勇者）。</p>
+  return `<p class="step-intro">本階級提供 <b>${base}</b> 個免費異能欄位：點選「獲得異能」會彈出異能清單供你挑選，「捨棄欄位」可以換取創角點數（每捨棄 1 個欄位換 2 點，但至少保留 1 個欄位）。</p>
+    <ul class="step-intro-list"><li><b>購買欄位：</b>提升等級或選擇強化項目會占用更多欄位。免費欄位用完後，可花 2 點購買額外欄位。</li><li><b>限制折抵：</b>點選限制項目可以選擇免費升級或換取 1 個強化。</li></ul>
     <div class="slot-list">${powerCards}${emptyCards}</div>
     ${addBtn?`<div class="slot-add-row">${addBtn}</div>`:""}`;
 }
@@ -2784,11 +2930,11 @@ function professionCard(p,i,sel){
     <div class="card-top"><span class="card-en">${p.en}</span>${sel?'<span class="tier-sel-badge">已選擇</span>':''}</div>
     <h2 class="card-name display">${p.name}</h2>
     <p class="prof-card-desc">${p.desc}</p>
-    <div class="card-cta display">${sel?"檢視 / 重新設定 →":"選擇此職業"}</div>
+    <div class="card-cta display">${sel?"檢視 / 重新設定":"選擇此職業"}</div>
   </div>`;
 }
 function renderProfessionStep(){
-  const intro=`<p class="step-intro">職業代表你的背景、平民生活或日常工作。選擇 1 個職業，並決定你的真實身分要保密還是公開。每個職業提供：免費的職業天賦（自選或擲骰）、起始資源值、1 段關鍵羈絆（可自選／自創／擲骰），以及社交場景靈感。（職業共 22 種，已全部收錄。）</p>`;
+  const intro=`<p class="step-intro">職業代表你的背景、平民生活或日常工作。選擇 1 個職業，並決定你的真實身分要保密還是公開。每個職業會提供：免費職業天賦、起始資源值、NPC 關鍵羈絆，以及社交場景靈感。</p>`;
   const idRow=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">真實身分</span></div></div>
     <div class="opt-pills">
       <button class="pill${creator.identity==="secret"?" sel":""}" data-identity="secret">保密</button>
@@ -2810,15 +2956,19 @@ function renderProfModal(){
   }).join("");
   const bondHTML=p.bonds.map((b,i)=>optRow("bond",i,b.name,b.desc,creator.bondMode==="preset"&&creator.bondIdx===i)).join("")
     +`<div class="opt${creator.bondMode==="custom"?" sel":""}" data-bond-custom-pick="1" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">自創關鍵羈絆</span><span class="opt-desc">自行描述 1 段與職業有關的重要人際關係。</span></div></div>`
-    +(creator.bondMode==="custom"?`<textarea class="bond-input" data-bond-custom="1" rows="2" placeholder="描述你的關鍵羈絆（例如：栽培你的恩師，總在關鍵時刻給你指引…）">${escapeHTML(creator.bondCustom)}</textarea>`:"");
+    +(creator.bondMode==="custom"?`<textarea class="bond-input" data-bond-custom="1" rows="2" placeholder="描述你的關鍵羈絆（例如：栽培你的恩師，總在關鍵時刻給你指引…）">${esc(creator.bondCustom)}</textarea>`:"");
   const sceneHTML=`<ul class="scene-list">${p.scenes.map(s=>`<li>${s}</li>`).join("")}</ul>`;
   const head=`<div class="pw-modal-head"><div class="pw-modal-titlebar"><h3 class="modal-title display">職業：${p.name}${p.en?`<span class="pw-en">${p.en}</span>`:""}</h3><span class="resource-badge">資源 ${p.resource}</span></div><p class="prof-desc">${p.desc}</p></div>`;
   const body=`<div class="pw-modal-list prof-modal-body">
-    <div class="bsec-sub">${profSecHead("職業天賦","1D"+tals.length+" 或自選 1 個（免費）","talent")}${talHTML}</div>
-    <div class="bsec-sub">${profSecHead("關鍵羈絆","1D"+p.bonds.length+"、自選或自創","bond")}${bondHTML}</div>
+    <div class="bsec-sub">${profSecHead("職業天賦（必選）","1D"+tals.length+" 或自選 1 個（免費）","talent")}${talHTML}</div>
+    <div class="bsec-sub">${profSecHead("關鍵羈絆（NPC）","1D"+p.bonds.length+"、自選或自創","bond")}${bondHTML}</div>
     <div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">社交場景靈感</span></div></div>${sceneHTML}</div>
   </div>`;
-  const footer=`<div class="modal-actions pw-modal-foot"><button class="btn btn-gold" data-prof-modal-close="1">完成</button></div>`;
+  const talentObj = creator.professionTalent!=null ? tals[creator.professionTalent] : null;
+  const talentDone = !!talentObj && (!talentObj.subjects || creator.professionTalentSubject!=null);
+  const done = talentDone;
+  const missing = !talentDone?"職業天賦":"";
+  const footer=`<div class="modal-actions pw-modal-foot">${done?"":`<span class="prof-done-hint">尚未選擇：${missing}</span>`}<button class="btn btn-gold prof-done-btn" data-prof-modal-close="1"${done?"":" disabled"}>完成</button></div>`;
   return head+body+footer;
 }
 function syncProfModal(){
@@ -2829,6 +2979,7 @@ function syncProfModal(){
 const CREATOR_FREE_TALENTS=1; // 自選天賦免費額度（職業天賦另計於步驟 4）
 function talentPointCost(){ return Math.max(0,(creator.talents?creator.talents.length:0)-CREATOR_FREE_TALENTS); }
 function talentMaxCount(i){ return CREATOR_TALENTS[i].max||1; }
+function profTalentBonus(i){ const t=CREATOR_TALENTS[i]; return (professionTalentName()===t.name && !t.subjects && (t.max||1)>1) ? 1 : 0; }
 function countTalent(i){ return creator.talents.filter(t=>t.id===i).length; }
 function hasTalentSubject(i,subj){ return creator.talents.some(t=>t.id===i&&t.subject===subj); }
 function professionTalentName(){ if(creator.profession==null||creator.professionTalent==null) return null; return CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent]||null; }
@@ -2838,8 +2989,8 @@ function isLoreSubjectBlocked(subj){ return professionTalentName()==="學識淵�
 function addTalentInstance(i,subject){
   subject = (subject===undefined?null:subject);
   if(isCreatorTalentBlocked(i)) return;
-  const t=CREATOR_TALENTS[i], max=talentMaxCount(i);
-  if(countTalent(i)>=max){ showInfo("已達上限",`「${t.name}」最多可選擇 ${max} 次。`); return; }
+  const t=CREATOR_TALENTS[i], max=talentMaxCount(i), bonus=profTalentBonus(i);
+  if(countTalent(i)+bonus>=max){ showInfo("已達上限",`「${t.name}」最多可選擇 ${max} 次${bonus?`（已含步驟 4 職業天賦 ${bonus} 次）`:""}。`); return; }
   if(t.subjects){ if(subject==null) return; if(isLoreSubjectBlocked(subject)) return; if(hasTalentSubject(i,subject)) return; }
   if(creator.talents.length>=CREATOR_FREE_TALENTS && pointsLeft()<1){ showInfo("創角點數不足","2 個免費天賦（職業天賦＋自選天賦）已用完，再多選 1 個天賦需要 1 點創角點數，但你的點數不足。"); return; }
   creator.talents.push({id:i,subject}); renderCreator();
@@ -2857,12 +3008,13 @@ function talentCostTag(i){
 }
 function talentCard(i){
   const t=CREATOR_TALENTS[i], count=countTalent(i), max=talentMaxCount(i), hasSub=!!t.subjects, blocked=isCreatorTalentBlocked(i);
+  const bonus=profTalentBonus(i), total=count+bonus;
   let tags="";
   if(blocked){ tags=""; }
   else {
     tags+=talentCostTag(i);
     if(max>1) tags+=`<span class="src-tag free">${isFinite(max)?`可選 ${max} 次`:"可重複"}</span>`;
-    if(count>0&&(max>1||hasSub)) tags+=`<span class="src-tag sel">已選 ${count} 次</span>`;
+    if(total>0&&(max>1||hasSub)) tags+=`<span class="src-tag sel">已選 ${total} 次</span>`;
   }
   let control="";
   if(blocked){ control=`<span class="tal-lock">🔒 已作為職業天賦取得，天賦不可重複</span>`; }
@@ -2873,19 +3025,20 @@ function talentCard(i){
     }).join("")}</div>`;
   }
   else if(max>1){
-    control=`<div class="tal-stepper"><button class="btn btn-ghost btn-sm" data-tal-remove="${i}"${count<=0?" disabled":""}>−</button><span class="tal-count display">${count}</span><button class="btn btn-sm" data-tal-add="${i}"${count>=max?" disabled":""}>＋ 選擇</button></div>`;
+    control=`<div class="tal-stepper"><button class="btn btn-ghost btn-sm" data-tal-remove="${i}"${count<=0?" disabled":""}>−</button><span class="tal-count display">${total}</span><button class="btn btn-sm" data-tal-add="${i}"${total>=max?" disabled":""}>＋ 選擇</button></div>`;
   }
   else {
     control = count>0 ? `<button class="btn btn-ghost btn-sm" data-tal-remove="${i}">✓ 已選（移除）</button>`
                       : `<button class="btn btn-sm" data-tal-add="${i}">＋ 選擇</button>`;
   }
-  return `<div class="weak-card${count>0?" on":""}"><div class="weak-head"><span class="weak-name">${t.name}${tags}</span>${hasSub?"":control}</div><div class="weak-desc">${fmtHTML(t.desc)}</div>${hasSub?control:""}</div>`;
+  const bonusNote = bonus>0 ? `<div class="talent-hint">其中 ${bonus} 次來自步驟 4 的職業天賦（免費）；此天賦最多 ${max} 次，還可再選 ${Math.max(0,max-total)} 次。</div>` : "";
+  return `<div class="weak-card${total>0?" on":""}"><div class="weak-head"><span class="weak-name">${t.name}${tags}</span>${hasSub?"":control}</div><div class="weak-desc">${fmtHTML(t.desc)}</div>${hasSub?control:""}${bonusNote}</div>`;
 }
 function renderTalentStep(){
   const pn=professionTalentName();
   const profLine = pn ? `已獲得職業天賦：<b>${pn}</b>（步驟 4），視為 2 個免費天賦中的 1 個。` : `尚未於步驟 4 選擇職業天賦──那會是你 2 個免費天賦中的第 1 個。`;
   const rows=CREATOR_TALENTS.map((t,i)=>talentCard(i)).join("");
-  return `<p class="step-intro">「天賦」是讓英雄取得優勢的各種技巧、招式與次要能力。創角時免費獲得 <b>2 個天賦</b>：1 個職業天賦（已於上一步選定）＋1 個自選天賦。用完這 2 個免費天賦後，每多選 1 個天賦花費 <b>1 點</b>創角點數。部分天賦可重複選取（如堅定決心、頑強生命最多 5 次；學識淵博每個主題各 1 次），每多 1 份照樣計入點數與數據加成。（天賦共 51 個，目前先收錄 ${CREATOR_TALENTS.length} 個做測試。）</p>
+  return `<p class="step-intro">創角時可免費獲得 2 個天賦：1 個職業天賦 + 1 個自選天賦。之後，每花費 1 點創角點數可以額外購買 1 個天賦。</p>
     <div class="prof-talent-notice">${profLine}</div>
     <div class="talent-list">${rows}</div>`;
 }
@@ -2903,8 +3056,7 @@ function removeWeaknessAt(pos){
 function removeWeaknessId(i){ const pos=creator.weaknesses.indexOf(i); if(pos>=0) removeWeaknessAt(pos); }
 function renderWeaknessStep(){
   const cnt=creator.weaknesses.length;
-  const intro=`<p class="step-intro">「弱點」是讓英雄生活更複雜的限制或缺陷。選擇弱點並非必要，但<b>每選 1 個弱點可額外獲得 1 點創角點數</b>。創角時最多選擇 <b>${WEAKNESS_MAX}</b> 個弱點。（「手頭拮据」可重複選擇，但仍受 ${WEAKNESS_MAX} 個上限限制。）</p>`;
-  const status=`已選 <b>${cnt}</b> / ${WEAKNESS_MAX} 個弱點${cnt>0?`，獲得 <b>${cnt}</b> 點創角點數`:""}。`;
+  const intro=`<p class="step-intro">不一定要選擇弱點，但每選 1 個弱點可以額外獲得 1 點創角點數。創角時最多選擇 <b>${WEAKNESS_MAX}</b> 個弱點。</p>`;
   const full=cnt>=WEAKNESS_MAX;
   const rows=WEAKNESSES.map((w,i)=>{
     const count=creator.weaknesses.filter(x=>x===i).length;
@@ -2918,13 +3070,17 @@ function renderWeaknessStep(){
   return intro+`<div class="weak-list">${rows}</div>`;
 }
 // 創角數據計算（沿用 statModsFromText 解析天賦／異能的數據加成）
+function creatorStatBreakdown(){
+  const out={health:[],resolve:[],melee:[]};
+  const add=(stat,src)=>{ if(!stat)return; ["health","resolve","melee"].forEach(k=>{ if(stat[k]) out[k].push({source:src,amount:stat[k]}); }); };
+  (creator.powers||[]).forEach(p=>{const pw=POWERS[p.id]; if(pw&&pw.stat){const mult=(p.level||0)+1; const sc={}; for(const k in pw.stat)sc[k]=pw.stat[k]*mult; const lvl=p.level>0?POWER_LEVELS[p.level]:""; add(sc,`${lvl}${pw.name}（異能）`);}});
+  if(creator.profession!=null&&creator.professionTalent!=null){ const pn=CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent]; const t=CREATOR_TALENTS.find(x=>x.name===pn); if(t) add(t.stat||statModsFromText(t.desc||""),`${t.name}（職業天賦）`); }
+  (creator.talents||[]).forEach(t=>{ const T=CREATOR_TALENTS[t.id]; if(T) add(T.stat||statModsFromText(T.desc||""),`${T.name}（天賦）`); });
+  return out;
+}
 function creatorStatMods(){
-  const tot={health:0,resolve:0,melee:0};
-  const addStat=s=>{if(!s)return;tot.health+=s.health||0;tot.resolve+=s.resolve||0;tot.melee+=s.melee||0;};
-  const addEntry=o=>{if(!o)return;if(o.stat)addStat(o.stat);else addStat(statModsFromText(o.desc||""));};
-  (creator.powers||[]).forEach(p=>{const pw=POWERS[p.id];if(pw&&pw.stat)addStat(pw.stat);});
-  if(creator.profession!=null&&creator.professionTalent!=null) addEntry(CREATOR_PROFESSIONS[creator.profession].talents[creator.professionTalent]);
-  (creator.talents||[]).forEach(t=>addEntry(CREATOR_TALENTS[t.id]));
+  const bd=creatorStatBreakdown(), tot={health:0,resolve:0,melee:0};
+  ["health","resolve","melee"].forEach(k=>bd[k].forEach(e=>tot[k]+=e.amount));
   return tot;
 }
 function creatorDerived(){
@@ -2939,15 +3095,189 @@ function creatorDerived(){
 function renderDataStep(){
   if(creator.tier==null) return needTierHint();
   ensureCreatorAttrs();
-  const a=creator.attrs, d=creatorDerived();
-  const card=(label,val,formula,note,bonus)=>`<div class="data-card"><div class="data-val display">${val}</div><div class="data-label">${label}</div><div class="data-formula">${formula}</div>${bonus>0?`<div class="data-bonus">（含天賦／異能加成 +${bonus}）</div>`:""}<div class="data-note">${note}</div></div>`;
+  const a=creator.attrs, d=creatorDerived(), bd=creatorStatBreakdown();
+  const aggregate=(items)=>{ const m=new Map(); items.forEach(e=>{ const cur=m.get(e.source)||{amount:0,count:0}; cur.amount+=e.amount; cur.count++; m.set(e.source,cur); }); return [...m.entries()].map(([source,v])=>({source,amount:v.amount,count:v.count})); };
+  const bonusHTML=(items)=>{ const agg=aggregate(items); if(!agg.length) return ""; return `<div class="data-bonus"><div class="data-bonus-head">加成來源</div>${agg.map(e=>`<div class="data-bonus-row"><span>${e.source}${e.count>1?` ×${e.count}`:""}</span><b>+${e.amount}</b></div>`).join("")}</div>`; };
+  const card=(label,val,formula,note,items)=>`<div class="data-card"><div class="data-val display">${val}</div><div class="data-label">${label}</div><div class="data-formula">${formula}</div>${bonusHTML(items)}<div class="data-note">${note}</div></div>`;
   return `<p class="step-intro">根據你分配的屬性，自動計算英雄的三項衍生數據。數值會隨屬性與所選天賦／異能即時更新。</p>
     <div class="data-grid">
-      ${card("最大生命",d.health,`⌈(格鬥 ${a.格鬥} ＋ 敏捷 ${a.敏捷} ＋ 力量 ${a.力量}) ÷ 2⌉`,"承受「傷害」會減少生命。當生命歸零時，你會因傷害而崩潰。",d.mod.health)}
-      ${card("最大決心",d.resolve,`⌈(理智 ${a.理智} ＋ 直覺 ${a.直覺} ＋ 氣場 ${a.氣場}) ÷ 2⌉`,"承受「壓力」會減少決心。當決心歸零時，你會因壓力而崩潰。",d.mod.resolve)}
-      ${card("基礎肉搏傷害",d.melee,`⌈力量 ${a.力量} ÷ 2⌉`,"近身肉搏攻擊命中時造成的基礎傷害。",d.mod.melee)}
+      ${card("最大生命",d.health,`⌈(格鬥 ${a.格鬥} ＋ 敏捷 ${a.敏捷} ＋ 力量 ${a.力量}) ÷ 2⌉`,"承受「傷害」會減少生命。當生命歸零時，你會因傷害而崩潰。",bd.health)}
+      ${card("最大決心",d.resolve,`⌈(理智 ${a.理智} ＋ 直覺 ${a.直覺} ＋ 氣場 ${a.氣場}) ÷ 2⌉`,"承受「壓力」會減少決心。當決心歸零時，你會因壓力而崩潰。",bd.resolve)}
+      ${card("基礎肉搏傷害",d.melee,`⌈力量 ${a.力量} ÷ 2⌉`,"近身肉搏攻擊命中時造成的基礎傷害。",bd.melee)}
     </div>`;
 }
+function togglePersona(p){
+  const arr=creator.personalities||(creator.personalities=[]);
+  const i=arr.indexOf(p);
+  if(i>=0) arr.splice(i,1);
+  else { if(arr.length>=2){ showInfo("已達上限","個性最多選擇 2 項，請先取消 1 項再選。"); return; } arr.push(p); }
+  renderCreator();
+}
+function addCustomPersona(v){ v=(v||"").trim(); if(!v)return; const arr=creator.personalities||(creator.personalities=[]); if(arr.includes(v))return; if(arr.length>=2){ showInfo("已達上限","個性最多選擇 2 項，請先取消 1 項再選。"); return; } arr.push(v); renderCreator(); }
+function selectMotivation(i){ creator.motivation = (creator.motivation===i? null : i); renderCreator(); }
+function selectFlaw(i){ creator.flaw = (creator.flaw===i? null : i); renderCreator(); }
+function setCustomMotivation(v){ v=(v||"").trim(); creator.motivation = v||null; renderCreator(); }
+function setCustomFlaw(v){ v=(v||"").trim(); creator.flaw = v||null; renderCreator(); }
+function rollPersonalities(){ const p=[]; while(p.length<2){ const r=rand(CREATOR_PERSONALITIES.length); if(!p.includes(r)) p.push(r); } creator.personalities=p.map(i=>CREATOR_PERSONALITIES[i]); }
+function detailRoll(kind){
+  if(kind==="personality") rollPersonalities();
+  else if(kind==="motivation") creator.motivation=rand(CREATOR_MOTIVATIONS.length);
+  else if(kind==="flaw") creator.flaw=rand(CREATOR_FLAWS.length);
+  renderCreator();
+}
+function rollAllDetails(){ rollPersonalities(); creator.motivation=rand(CREATOR_MOTIVATIONS.length); creator.flaw=rand(CREATOR_FLAWS.length); renderCreator(); }
+function clearAllDetails(){ creator.personalities=[]; creator.motivation=null; creator.flaw=null; renderCreator(); }
+function detailSecHead(title,hint,rollKey,count){
+  return `<div class="sec-head"><div><span class="sec-title display">${title}</span><span class="sec-hint">${hint}</span></div><div class="detail-head-right"><span class="detail-count">${count}</span><button class="dice-btn" data-detail-roll="${rollKey}">🎲 擲骰</button></div></div>`;
+}
+function renderDetailsStep(){
+  const persSel=creator.personalities||[];
+  const builtinPers=CREATOR_PERSONALITIES.map(p=>{ const on=persSel.includes(p), full=persSel.length>=2&&!on; return `<button class="tal-chip${on?" on":""}${full?" blocked":""}" data-persona="${p}"${full?" disabled":""}>${p}</button>`; }).join("");
+  const customPers=persSel.filter(p=>!CREATOR_PERSONALITIES.includes(p)).map(p=>`<button class="tal-chip on" data-persona="${esc(p)}">${esc(p)}</button>`).join("");
+  const persInput=`<div class="detail-custom"><input class="detail-custom-input" data-persona-custom placeholder="自創個性…" autocomplete="off"><button class="btn btn-sm btn-ink" data-persona-add>＋ 自創</button></div>`;
+  const motCustom=typeof creator.motivation==="string";
+  const motChips=CREATOR_MOTIVATIONS.map((m,i)=>`<button class="tal-chip${creator.motivation===i?" on":""}" data-motivation="${i}">${m.name}</button>`).join("");
+  const motInput=`<div class="detail-custom"><input class="detail-custom-input" data-motivation-custom placeholder="自創動機…" value="${motCustom?esc(creator.motivation):""}" autocomplete="off"><button class="btn btn-sm btn-ink" data-motivation-add>套用自創</button></div>`;
+  const motDesc=creator.motivation!=null?`<div class="detail-desc">${motCustom?`<b>${esc(creator.motivation)}</b>（自創動機）`:`<b>${CREATOR_MOTIVATIONS[creator.motivation].name}</b>：${CREATOR_MOTIVATIONS[creator.motivation].desc}`}</div>`:"";
+  const flawCustom=typeof creator.flaw==="string";
+  const flawChips=CREATOR_FLAWS.map((m,i)=>`<button class="tal-chip${creator.flaw===i?" on":""}" data-flaw="${i}">${m.name}</button>`).join("");
+  const flawInput=`<div class="detail-custom"><input class="detail-custom-input" data-flaw-custom placeholder="自創缺陷…" value="${flawCustom?esc(creator.flaw):""}" autocomplete="off"><button class="btn btn-sm btn-ink" data-flaw-add>套用自創</button></div>`;
+  const flawDesc=creator.flaw!=null?`<div class="detail-desc">${flawCustom?`<b>${esc(creator.flaw)}</b>（自創缺陷）`:`<b>${CREATOR_FLAWS[creator.flaw].name}</b>：${CREATOR_FLAWS[creator.flaw].desc}`}</div>`:"";
+  const bar=`<div class="detail-bar"><button class="btn btn-sm" data-detail-rollall>🎲 全部擲骰</button><button class="btn btn-sm btn-ghost" data-detail-clear>全部清除</button></div>`;
+  return `<p class="step-intro">為你的英雄補上性格細節。你可以挑選：2 項個性、1 項動機與 1 項缺陷。</p>
+    ${bar}
+    <div class="bsec-sub">${detailSecHead("個性","擲骰、自選，或自創 2 項","personality",`${persSel.length}/2`)}<div class="chip-cloud">${builtinPers}${customPers}</div>${persInput}</div>
+    <div class="bsec-sub">${detailSecHead("動機","擲骰、自選，或自創 1 項","motivation",`${creator.motivation!=null?1:0}/1`)}<div class="chip-cloud">${motChips}</div>${motInput}${motDesc}</div>
+    <div class="bsec-sub">${detailSecHead("缺陷","擲骰、自選，或自創 1 項","flaw",`${creator.flaw!=null?1:0}/1`)}<div class="chip-cloud">${flawChips}</div>${flawInput}${flawDesc}</div>`;
+}
+function renderNameStep(){
+  const p = creator.profession!=null ? CREATOR_PROFESSIONS[creator.profession] : null;
+  const nameSec=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">名稱</span><span class="sec-hint">真實姓名與英雄代號皆為必填</span></div></div>
+    <div class="field"><label>真實姓名 <span class="req">＊必填</span></label><input data-real-name value="${esc(creator.realName||"")}" placeholder="例如：陳彥廷" autocomplete="off"></div>
+    <div class="field"><label>英雄代號 <span class="req">＊必填</span></label><input data-codename value="${esc(creator.codename||"")}" placeholder="例如：夜鴉" autocomplete="off"></div></div>`;
+  const appSec=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">外觀</span><span class="sec-hint">用一兩句話描述英雄的外觀（非必填）</span></div></div>
+    <div class="field"><textarea data-appearance rows="3" placeholder="例如：一身漆黑戰衣、銀色面罩，肩上披著破舊的紅色斗篷…">${esc(creator.appearance||"")}</textarea></div></div>`;
+  let npcInner;
+  if(!p){
+    npcInner=`<p class="src-note">尚未選擇職業。請先於步驟 4 選擇職業，即可在此設定與職業相關的 NPC 關鍵羈絆。</p>`;
+  } else {
+    const rows=p.bonds.map((b,i)=>`<div class="opt${creator.bondMode==="preset"&&creator.bondIdx===i?" sel":""}" data-npc-bond="${i}" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">${b.name}</span><span class="opt-desc">${b.desc}</span></div></div>`).join("")
+      +`<div class="opt${creator.bondMode==="custom"?" sel":""}" data-npc-bond-custom="1" role="button" tabindex="0"><span class="opt-mark"></span><div><span class="opt-name">自創 NPC 關鍵羈絆</span><span class="opt-desc">自行描述 1 段與職業或日常生活有關的重要 NPC 關係。</span></div></div>`
+      +(creator.bondMode==="custom"?`<textarea class="bond-input" data-bond-custom="1" rows="2" placeholder="描述你的 NPC 關鍵羈絆…">${esc(creator.bondCustom||"")}</textarea>`:"");
+    npcInner=`<p class="src-note">與你的職業「${p.name}」相關的重要 NPC。若你在步驟 4 已選過，這裡會同步顯示，也可在此變更。</p>${rows}`;
+  }
+  const bondSec=`<div class="bsec-sub"><div class="sec-head"><div><span class="sec-title display">關鍵羈絆</span><span class="sec-hint">通常有 2 個：團隊 PC 與職業 NPC；建議至少 1 個（皆非必填）</span></div></div>
+    <div class="bond-block"><div class="sec-sub-head">PC 關鍵羈絆</div><p class="src-note">與團隊裡另 1 位 PC 的重要關係，由你自行描述。</p><textarea class="bond-input" data-pc-bond rows="2" placeholder="例如：我曾在戰場上救過『鋼爪』一命，如今他視我為兄弟…">${esc(creator.pcBond||"")}</textarea></div>
+    <div class="bond-block"><div class="sec-sub-head sec-sub-head-row"><span>NPC 關鍵羈絆</span>${p?`<button class="dice-btn" data-npc-bond-roll="1">🎲 擲骰</button>`:""}</div>${npcInner}</div></div>`;
+  return `<p class="step-intro">最後一步，為你的英雄命名並補上外觀與人際關係。<b>真實姓名</b> 與 <b>英雄代號</b> 為必填。</p>
+    ${nameSec}${appSec}${bondSec}`;
+}
+function buildCreatorText(){
+  const codename=(creator.codename||"").trim()||"（未命名英雄）";
+  const tier=creator.tier!=null?TIERS[creator.tier]:null;
+  const prof=creator.profession!=null?CREATOR_PROFESSIONS[creator.profession]:null;
+  ensureCreatorAttrs();
+  let o="超級英雄註冊資料\n";
+  o+="代號："+codename+"\n";
+  o+="本名："+((creator.realName||"").trim()||"（尚未填寫）")+"\n";
+  if(tier) o+="階級："+tier.name+"（"+tier.en+"）\n";
+  o+="真實身分："+(creator.identity==="secret"?"保密":creator.identity==="public"?"公開":"（尚未選擇）")+"\n";
+  if((creator.appearance||"").trim()) o+="外觀："+creator.appearance.trim()+"\n";
+  o+="\n";
+  o+="【屬性】"+ATTR_ORDER.map(a=>a+" "+creator.attrs[a]).join("　")+"\n\n";
+  const d=creatorDerived();
+  o+="【數據】生命 "+d.health+"　決心 "+d.resolve+"　肉搏傷害 "+d.melee+(prof?"　資源 "+prof.resource:"")+"\n\n";
+  o+="【異能來源】"+(creator.powerSources.length?creator.powerSources.map(s=>POWER_SOURCES[s].name).join("、"):"（尚未選擇）")+"\n\n";
+  o+="【異能】\n";
+  if(creator.powers.length){
+    o+=creator.powers.map(p=>{
+      const pw=POWERS[p.id], nm=(p.level>0?POWER_LEVELS[p.level]:"")+pw.name;
+      const src=creator.powerSources.length>1?"（來源："+POWER_SOURCES[powerSrc(p)].name+"）":"";
+      let s="◆ "+nm+src+"\n"+indent(fmtTxt(pw.desc));
+      if(p.level>0&&pw.levelDesc){const k=POWER_LEVELS[p.level];if(pw.levelDesc[k])s+="\n"+indent("〔"+k+"〕"+fmtTxt(pw.levelDesc[k]),"    ");}
+      p.enh.forEach(ei=>{if(pw.enh[ei])s+="\n"+indent("＋強化・"+pw.enh[ei].name+"："+fmtTxt(pw.enh[ei].desc),"    ");});
+      p.lim.forEach(li=>{if(pw.lim[li])s+="\n"+indent("－限制・"+pw.lim[li].name+"："+fmtTxt(pw.lim[li].desc),"    ");});
+      return s;
+    }).join("\n\n")+"\n\n";
+  } else o+="（尚未選擇）\n\n";
+  if(prof){
+    o+="【職業】"+prof.name+"（"+prof.en+"）　資源 "+prof.resource+"\n"+indent(fmtTxt(prof.desc))+"\n";
+    const ptName=professionTalentName();
+    if(ptName){
+      const t=CREATOR_TALENTS.find(x=>x.name===ptName);
+      let te=ptName;
+      if(t&&t.subjects&&creator.professionTalentSubject!=null) te+="（"+t.subjects[creator.professionTalentSubject].name+"）";
+      o+="  ▸ 職業天賦："+te+"\n"+(t?indent(fmtTxt(t.desc),"    ")+"\n":"");
+    } else o+="  ▸ 職業天賦：（尚未選擇）\n";
+  } else o+="【職業】（尚未選擇）\n";
+  o+="\n";
+  o+="【自選天賦】\n";
+  if(creator.talents.length){
+    const ids=[...new Set(creator.talents.map(t=>t.id))];
+    o+=ids.map(id=>{
+      const T=CREATOR_TALENTS[id], insts=creator.talents.filter(t=>t.id===id);
+      let head;
+      if(T.subjects){ head="◆ "+T.name+"（"+insts.map(t=>T.subjects[t.subject]?T.subjects[t.subject].name:"?").join("、")+"）"; }
+      else head="◆ "+T.name+(insts.length>1?" ×"+insts.length:"");
+      return head+"\n"+indent(fmtTxt(T.desc));
+    }).join("\n\n")+"\n\n";
+  } else o+="（未選，非必填）\n\n";
+  o+="【弱點】";
+  if(creator.weaknesses.length){ o+="\n"+creator.weaknesses.map(i=>"◆ "+WEAKNESSES[i].name+"\n"+indent(fmtTxt(WEAKNESSES[i].desc))).join("\n")+"\n\n"; }
+  else o+="（未選，非必填）\n\n";
+  o+="【個性】"+((creator.personalities||[]).length?creator.personalities.join("、"):"（尚未選擇）")+"\n";
+  const motTxt = typeof creator.motivation==="string" ? creator.motivation+"（自創）" : (creator.motivation!=null?CREATOR_MOTIVATIONS[creator.motivation].name+"："+CREATOR_MOTIVATIONS[creator.motivation].desc:"（尚未選擇）");
+  o+="【動機】"+motTxt+"\n";
+  const flTxt = typeof creator.flaw==="string" ? creator.flaw+"（自創）" : (creator.flaw!=null?CREATOR_FLAWS[creator.flaw].name+"："+CREATOR_FLAWS[creator.flaw].desc:"（尚未選擇）");
+  o+="【缺陷】"+flTxt+"\n\n";
+  o+="【關鍵羈絆】\n";
+  o+="  ・PC："+((creator.pcBond||"").trim()||"（未填）")+"\n";
+  let npc;
+  if(creator.bondMode==="preset"&&creator.bondIdx!=null&&prof) npc=prof.bonds[creator.bondIdx].name+"："+prof.bonds[creator.bondIdx].desc;
+  else if(creator.bondMode==="custom") npc=(creator.bondCustom||"").trim()||"（自創，未填）";
+  else npc="（未選）";
+  o+="  ・NPC："+npc+"\n";
+  return o.trimEnd()+"\n";
+}
+function creatorCompletion(){
+  const prof=creator.profession!=null?CREATOR_PROFESSIONS[creator.profession]:null;
+  const pt=(prof&&creator.professionTalent!=null)?profTalentObjs(prof)[creator.professionTalent]:null;
+  const items=[
+    {label:"階級",done:creator.tier!=null,required:true},
+    {label:"異能來源",done:creator.powerSources.length>0,required:true},
+    {label:"異能",done:creator.powers.length>0,required:true},
+    {label:"職業",done:creator.profession!=null,required:true},
+    {label:"職業天賦",done:creator.professionTalent!=null&&(!pt||!pt.subjects||creator.professionTalentSubject!=null),required:true},
+    {label:"自選天賦",done:creator.talents.length>0,required:false},
+    {label:"弱點",done:creator.weaknesses.length>0,required:false},
+    {label:"個性（2 項）",done:(creator.personalities||[]).length===2,required:false},
+    {label:"動機",done:creator.motivation!=null,required:false},
+    {label:"缺陷",done:creator.flaw!=null,required:false},
+    {label:"真實姓名",done:!!(creator.realName||"").trim(),required:true},
+    {label:"英雄代號",done:!!(creator.codename||"").trim(),required:true},
+    {label:"關鍵羈絆（至少 1 個）",done:!!(creator.pcBond||"").trim()||creator.bondMode!=null,required:false}
+  ];
+  return {items, requiredMissing:items.filter(i=>i.required&&!i.done).map(i=>i.label), recMissing:items.filter(i=>!i.required&&!i.done).map(i=>i.label)};
+}
+function renderReviewStep(){
+  const c=creatorCompletion();
+  const checklist=c.items.map(i=>`<div class="review-item${i.done?" done":""}"><span class="review-mark">${i.done?"✓":"•"}</span><span>${i.label}${i.required?'<span class="req">*</span>':""}</span></div>`).join("");
+  const note=c.requiredMissing.length===0?`<div class="review-note ok">✓ 必填項目都完成了，可以匯出角色卡。</div>`:`<div class="review-note warn">尚有必填項目未完成：${c.requiredMissing.join("、")}</div>`;
+  const text=buildCreatorText();
+  return `<p class="step-intro">檢查以下彙整資料。確認無誤後，可匯出文字檔或複製，分享給其他玩家或 GM。</p>
+    <div class="review-check">${checklist}</div>
+    ${note}
+    <div class="preview-label">角色卡預覽</div>
+    <pre class="preview">${esc(text)}</pre>
+    <div class="builder-actions"><button class="btn btn-gold" onclick="downloadCreatorTxt()">匯出文字檔</button><button class="btn btn-ink" onclick="copyCreatorTxt()">複製文字</button></div>`;
+}
+function guardCreatorExport(proceed){
+  const c=creatorCompletion();
+  if(c.requiredMissing.length) showConfirm("還有必填項目尚未完成：\n"+c.requiredMissing.map(m=>"・"+m).join("\n")+"\n\n仍要匯出嗎？",proceed);
+  else proceed();
+}
+function downloadCreatorTxt(){ guardCreatorExport(()=>{ const text=buildCreatorText(); const fname=((creator.codename||"").trim()||"英雄")+"_角色卡.txt"; const blob=new Blob([text],{type:"text/plain;charset=utf-8"}); const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(a.href),1000);showToast("已匯出 "+fname); }); }
+function copyCreatorTxt(){ guardCreatorExport(async()=>{ const text=buildCreatorText(); try{await navigator.clipboard.writeText(text);showToast("已複製到剪貼簿");}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast("已複製到剪貼簿");}catch(_){showToast("複製失敗，請手動選取");}document.body.removeChild(ta);} }); }
 function stepCountHTML(){
   if(creator.tier==null) return "";
   const st=creator.step;
@@ -2965,6 +3295,14 @@ function stepCountHTML(){
   if(st===6){ // 6 弱點（每個 +1 點）
     const cnt=creator.weaknesses.length;
     return `弱點 <b>${cnt}</b>/${WEAKNESS_MAX}　共獲得 <b>${cnt}</b> 點`;
+  }
+  if(st===8){ // 8 補充細節
+    const pn=(creator.personalities||[]).length;
+    return `個性 <b>${pn}</b>/2　動機 <b>${creator.motivation!=null?1:0}</b>/1　缺陷 <b>${creator.flaw!=null?1:0}</b>/1`;
+  }
+  if(st===9){ // 9 命名英雄（必填：姓名＋代號）
+    const n=((creator.realName||"").trim()?1:0)+((creator.codename||"").trim()?1:0);
+    return `必填 <b>${n}</b>/2`;
   }
   return "";
 }
@@ -3056,10 +3394,32 @@ function wireCreator(){
     if(talRem){ if(!talRem.disabled) removeTalentInstance(+talRem.dataset.talRemove); return; }
     const talSubj=e.target.closest("[data-tal-subj]");
     if(talSubj){ if(!talSubj.disabled){ const [i,j]=talSubj.dataset.talSubj.split(":").map(Number); toggleTalentSubject(i,j); } return; }
+    const persona=e.target.closest("[data-persona]");
+    if(persona){ if(!persona.disabled) togglePersona(persona.dataset.persona); return; }
+    const motiv=e.target.closest("[data-motivation]");
+    if(motiv){ selectMotivation(+motiv.dataset.motivation); return; }
+    const flaw=e.target.closest("[data-flaw]");
+    if(flaw){ selectFlaw(+flaw.dataset.flaw); return; }
+    const dRoll=e.target.closest("[data-detail-roll]");
+    if(dRoll){ detailRoll(dRoll.dataset.detailRoll); return; }
+    if(e.target.closest("[data-detail-rollall]")){ rollAllDetails(); return; }
+    if(e.target.closest("[data-detail-clear]")){ clearAllDetails(); return; }
+    if(e.target.closest("[data-persona-add]")){ const inp=body.querySelector("[data-persona-custom]"); if(inp) addCustomPersona(inp.value); return; }
+    if(e.target.closest("[data-motivation-add]")){ const inp=body.querySelector("[data-motivation-custom]"); if(inp) setCustomMotivation(inp.value); return; }
+    if(e.target.closest("[data-flaw-add]")){ const inp=body.querySelector("[data-flaw-custom]"); if(inp) setCustomFlaw(inp.value); return; }
+    const npcBond=e.target.closest("[data-npc-bond]");
+    if(npcBond){ selectBondPreset(+npcBond.dataset.npcBond); return; }
+    if(e.target.closest("[data-npc-bond-custom]")){ chooseBondCustom(); return; }
+    if(e.target.closest("[data-npc-bond-roll]")){ rollBond(); return; }
     const tier=e.target.closest("[data-tier]");
     if(tier){ confirmTier(+tier.dataset.tier); return; }
   });
   body.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      const pc=e.target.closest("[data-persona-custom]"); if(pc){ e.preventDefault(); addCustomPersona(pc.value); return; }
+      const mc=e.target.closest("[data-motivation-custom]"); if(mc){ e.preventDefault(); setCustomMotivation(mc.value); return; }
+      const fc=e.target.closest("[data-flaw-custom]"); if(fc){ e.preventDefault(); setCustomFlaw(fc.value); return; }
+    }
     if(e.key!=="Enter"&&e.key!==" ") return;
     const fwd=e.target.closest("[data-prof],[data-bond-custom-pick],[data-group]");
     if(fwd){ e.preventDefault(); fwd.click(); return; }
@@ -3069,7 +3429,11 @@ function wireCreator(){
   });
   body.addEventListener("input",e=>{
     const bc=e.target.closest("[data-bond-custom]");
-    if(bc){ creator.bondCustom=bc.value; }
+    if(bc){ creator.bondCustom=bc.value; return; }
+    const rn=e.target.closest("[data-real-name]"); if(rn){ creator.realName=rn.value; return; }
+    const cn=e.target.closest("[data-codename]"); if(cn){ creator.codename=cn.value; return; }
+    const ap=e.target.closest("[data-appearance]"); if(ap){ creator.appearance=ap.value; return; }
+    const pb=e.target.closest("[data-pc-bond]"); if(pb){ creator.pcBond=pb.value; return; }
   });
 }
 function openCreator(){ renderCreator(); wireCreator(); showScreen("creatorScreen"); }
@@ -3482,7 +3846,8 @@ document.getElementById("powerModal").addEventListener("keydown",e=>{
 });
 document.getElementById("profModal").addEventListener("click",e=>{
   if(e.target.id==="profModal"){ closeProfModal(); return; }
-  if(e.target.closest("[data-prof-modal-close]")){ closeProfModal(); return; }
+  const closeBtn=e.target.closest("[data-prof-modal-close]");
+  if(closeBtn){ if(!closeBtn.disabled) closeProfModal(); return; }
   const profRoll=e.target.closest("[data-prof-roll]");
   if(profRoll){ const k=profRoll.dataset.profRoll; if(k==="talent")rollProfTalent(); else if(k==="subject")rollProfSubj(); else if(k==="bond")rollBond(); return; }
   const bondPick=e.target.closest("[data-bond-custom-pick]");
@@ -3494,7 +3859,7 @@ document.getElementById("profModal").addEventListener("keydown",e=>{
   if(e.key!=="Enter"&&e.key!==" ") return;
   if(e.target.closest("[data-bond-custom]")) return;        // 自創羈絆輸入框照常輸入
   const t=e.target.closest("[data-prof-roll],[data-bond-custom-pick],[data-group],[data-prof-modal-close]");
-  if(t&&!t.classList.contains("disabled")){ e.preventDefault(); t.click(); }
+  if(t&&!t.classList.contains("disabled")&&!t.disabled){ e.preventDefault(); t.click(); }
 });
 document.getElementById("profModal").addEventListener("input",e=>{
   const bc=e.target.closest("[data-bond-custom]");
